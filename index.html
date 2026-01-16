@@ -3,162 +3,1188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELDiB - Entwicklungstherapeutischer Lernziel-Diagnose-Bogen</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>ELDiB - Digitale Entwicklungseinschätzung</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%);
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-logo svg {
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #3498db;
+        }
+
+        .logo-sub {
+            font-size: 10px;
+            opacity: 0.8;
+            letter-spacing: 0.5px;
+            max-width: 180px;
+            line-height: 1.3;
+        }
+
+        .header-title {
+            text-align: center;
+            flex: 1;
+        }
+
+        .header-title h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .header-title h1 span {
+            color: #3498db;
+        }
+
+        .header-subtitle {
+            font-size: 13px;
+            opacity: 0.7;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .export-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .export-btn:hover {
+            background: #219a52;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .export-btn.pei-btn {
+            background: #3498db;
+        }
+
+        .export-btn.pei-btn:hover {
+            background: #2980b9;
+        }
+
+        /* Profil & Evaluationen Management */
+        .profile-bar {
+            background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+            padding: 12px 40px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .profile-bar label {
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-bar select {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 180px;
+            cursor: pointer;
+        }
+
+        .profile-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+
+        .profile-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.4);
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .profile-btn:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: white;
+        }
+
+        .profile-btn.primary {
+            background: #27ae60;
+            border-color: #27ae60;
+        }
+
+        .profile-btn.primary:hover {
+            background: #219a52;
+        }
+
+        .profile-btn.danger {
+            background: rgba(231,76,60,0.3);
+            border-color: #e74c3c;
+        }
+
+        .profile-btn.danger:hover {
+            background: rgba(231,76,60,0.5);
+        }
+
+        .profile-btn.small {
+            padding: 4px 8px;
+            font-size: 11px;
+        }
+
+        .divider {
+            border-left: 2px solid rgba(255,255,255,0.3);
+            height: 35px;
+            margin: 0 5px;
+        }
+
+        .evaluation-info {
+            margin-left: auto;
+            color: white;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .evaluation-count {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .save-indicator {
+            display: none;
+            color: #2ecc71;
+            font-size: 12px;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .save-indicator.show {
+            display: inline-block;
+        }
+
+        /* Vergleichs-Tab */
+        .comparison-tab {
+            background: #8e44ad;
+            color: white;
+        }
+
+        .comparison-tab.active {
+            background: white;
+            color: #8e44ad;
+        }
+
+        /* Vergleichs-Ansicht */
+        .comparison-section {
+            display: none;
+            padding: 24px 40px;
+            background: white;
+        }
+
+        .comparison-section.active {
+            display: block;
+        }
+
+        .comparison-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #8e44ad;
+        }
+
+        .comparison-header h2 {
+            color: #8e44ad;
+            font-size: 20px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+        }
+
+        .comparison-table th {
+            background: #8e44ad;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .comparison-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f4fc;
+        }
+
+        .delta-positive {
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .delta-negative {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        .progress-chart {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .progress-chart h3 {
+            color: #2c3e50;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+
+        .chart-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            gap: 12px;
+        }
+
+        .chart-label {
+            width: 120px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .chart-bars {
+            flex: 1;
+            display: flex;
+            gap: 4px;
+            align-items: flex-end;
+            height: 60px;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(180deg, #9b59b6 0%, #8e44ad 100%);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            min-width: 30px;
+            transition: all 0.3s;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+        }
+
+        .chart-bar-label {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .chart-bar-value {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            font-weight: 600;
+            color: #8e44ad;
+        }
+
+        /* Schülerdaten */
+        .student-section {
+            background: white;
+            padding: 24px 40px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .student-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            max-width: 1000px;
+        }
+
+        .student-grid label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .student-grid input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-top: 4px;
+            transition: border-color 0.2s;
+        }
+
+        .student-grid input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        /* Bereiche Navigation */
+        .domain-nav {
+            background: white;
+            padding: 0 40px;
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid #e0e0e0;
+            overflow-x: auto;
+        }
+
+        .domain-tab {
+            padding: 16px 24px;
+            border: none;
+            background: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .domain-tab:hover {
+            background: #f8f9fa;
+        }
+
+        .domain-tab.active {
+            border-bottom-color: var(--domain-color);
+            color: var(--domain-color);
+        }
+
+        .domain-tab[data-domain="verhalten"] { --domain-color: #e74c3c; }
+        .domain-tab[data-domain="kommunikation"] { --domain-color: #3498db; }
+        .domain-tab[data-domain="sozialisation"] { --domain-color: #27ae60; }
+        .domain-tab[data-domain="kognition"] { --domain-color: #9b59b6; }
+
+        /* Main Content */
+        .main-content {
+            padding: 24px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .domain-section {
+            display: none;
+        }
+
+        .domain-section.active {
+            display: block;
+        }
+
+        /* Stufen */
+        .stufe-container {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .stufe-header {
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stufe-header-text {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .stufe-header h3 {
+            font-size: 16px;
+            color: var(--domain-color);
+            margin-bottom: 4px;
+        }
+
+        .stufe-header p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .age-hint {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 4px 10px;
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .stufe-complete-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .stufe-complete-btn:hover {
+            background: #219a52;
+            transform: scale(1.02);
+        }
+
+        .stufe-complete-btn.completed {
+            background: #95a5a6;
+        }
+
+        /* Items Liste */
+        .items-list {
+            padding: 0;
+        }
+
+        .item-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+            padding: 16px 24px;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: start;
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .item-row:hover {
+            background: #fafafa;
+        }
+
+        .item-info {
+            min-width: 0;
+            cursor: pointer;
+            transition: background 0.2s;
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin: -4px -8px;
+        }
+
+        .item-info:hover {
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .item-code {
+            display: inline-block;
+            background: var(--domain-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        .item-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .item-description {
+            font-size: 13px;
+            color: #666;
+            margin-top: 6px;
+            line-height: 1.6;
+        }
+
+        /* Checkboxen */
+        .item-checkboxes {
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .checkbox-group label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .checkbox-erreicht,
+        .checkbox-ziel {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 3px solid #ddd;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+        }
+
+        .checkbox-erreicht:hover {
+            border-color: #27ae60;
+        }
+
+        .checkbox-ziel:hover {
+            border-color: #f39c12;
+        }
+
+        .checkbox-erreicht.checked {
+            background: #27ae60;
+            border-color: #27ae60;
+        }
+
+        .checkbox-ziel.checked {
+            background: #f39c12;
+            border-color: #f39c12;
+        }
+
+        .checkbox-erreicht.checked::after,
+        .checkbox-ziel.checked::after {
+            content: "✓";
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Neue Checkbox-Typen */
+        .checkbox-nicht-erreicht {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 3px solid #ddd;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+        }
+
+        .checkbox-nicht-erreicht:hover {
+            border-color: #95a5a6;
+        }
+
+        .checkbox-nicht-erreicht.checked {
+            background: #95a5a6;
+            border-color: #95a5a6;
+        }
+
+        .checkbox-nicht-erreicht.checked::after {
+            content: "✗";
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Disabled states */
+        .checkbox-disabled {
+            opacity: 0.3;
+            cursor: not-allowed !important;
+            pointer-events: none;
+        }
+
+        .checkbox-group.disabled label {
+            opacity: 0.4;
+        }
+
+        /* Item row clickable */
+        .item-info {
+            cursor: pointer;
+        }
+
+        .item-info:hover .item-name {
+            color: #3498db;
+            text-decoration: underline;
+        }
+
+        /* Modal für Item-Erklärung */
+        .item-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .item-modal-overlay.active {
+            display: flex;
+        }
+
+        .item-modal {
+            background: white;
+            border-radius: 12px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .item-modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+
+        .item-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .item-modal-close:hover {
+            color: #333;
+        }
+
+        .item-modal-body {
+            padding: 24px;
+        }
+
+        .item-modal-code {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .item-modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 16px;
+        }
+
+        .item-modal-description {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #333;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .item-modal-examples {
+            margin-top: 20px;
+            background: #e8f5e9;
+            padding: 16px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .examples-header {
+            font-weight: 600;
+            color: #27ae60;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .examples-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .examples-list li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+            border-bottom: 1px solid rgba(39, 174, 96, 0.2);
+        }
+
+        .examples-list li:last-child {
+            border-bottom: none;
+        }
+
+        .examples-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .item-modal-hint {
+            margin-top: 16px;
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Legende */
+        .legend {
+            display: flex;
+            gap: 24px;
+            padding: 16px 24px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.erreicht { background: #27ae60; }
+        .legend-dot.ziel { background: #f39c12; }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: #3498db;
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Zusammenfassung */
+        .summary-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            padding: 12px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .summary-stats {
+            display: flex;
+            gap: 32px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .stat-value.erreicht { color: #27ae60; }
+        .stat-value.ziel { color: #f39c12; }
+
+        .stat-label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header, .student-section, .domain-nav, .main-content {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .item-row {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .item-checkboxes {
+                justify-content: flex-start;
+            }
+
+            .summary-bar {
+                padding: 12px 16px;
+            }
+
+            .summary-stats {
+                gap: 16px;
+            }
+        }
+
+        /* Padding für fixed summary bar */
+        .main-content {
+            padding-bottom: 100px;
+        }
+
+        /* Domain colors als CSS variables */
+        [data-domain="verhalten"] { --domain-color: #e74c3c; }
+        [data-domain="kommunikation"] { --domain-color: #3498db; }
+        [data-domain="sozialisation"] { --domain-color: #27ae60; }
+        [data-domain="kognition"] { --domain-color: #9b59b6; }
+    </style>
 </head>
 <body>
     <!-- Header -->
     <header class="header">
+        <!-- CDSE Logo -->
         <div class="header-logo">
-            <svg width="50" height="50" viewBox="0 0 50 50">
-                <circle cx="25" cy="25" r="23" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
-                <text x="25" y="32" font-family="Arial" font-size="18" font-weight="bold" fill="white" text-anchor="middle">E</text>
-            </svg>
-            <div class="logo-text">
-                <span class="logo-main">ELDiB</span>
-                <span class="logo-sub">Entwicklungstherapeutischer Lernziel-Diagnose-Bogen</span>
-            </div>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARwAAACxCAMAAAAh3/JWAAABp1BMVEX///9YxcbuOG5Pcbcgos47v7wTq2eGxEAAAADyYk271jr84hw/k6/5oEsUknfxda3RIVM6Xavv7+88uHLp6elAZ7PtI2R1jsiF09PvQHfY3u17enr5nECLiYmgnp9oZmZWg7v83ORPsda12ZH+8fX60dtuwmuHzqn29vYosG5TdLjT09Pi3z7/5g9bp3TGxsb8yqH81bYjHyD7xJXjiJ3QEEvycJQxj8P2X0e62Ep+wCzn891JoKn4vcz0mcHLlbjvV4w9sM63hIxOvMEjJFq30lC0s7MPhnDl9fW4lIu+f3+Jx1bf0WJQtWO2tbUbqG87p5LfdY5Po9Bric6y2euUzeSh3NzAyeKuu9tLbLw9OjtYVVb2pbphtMZWjrlCVJF6sWi64spympqDgoLm9e1GgaAgGFQABFzTwDxOTEwcFxgpUqfsAFj95tP93cPNAD3Wr8nzg6n4t670eWn2mI36tq6ckqLEcICLn9BTgb18imMlU7LLzEvs4Ib+9LqewZyCul395kTO5d9Br4FnsJ45qoy44sh7wt8Arlk8k5JswZSYp8+ryuLADebOAAAKsUlEQVR4nO2ci5/URh3AB5BrbBF7YY7HxZkIijcQcezaCq2g1keKj6bVUh4bS7XR6h6tWl8UUYvFUgT/aH+T50w2ySbZ7O4d9/t+PsBmMpud+e4v88qwhCAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAI8iRwssyqC7ST2H/U5L0vr7pEO4gT+02OopwClNMAymkA5TRQI+f95wreX3ERV0eNnK9/oeC5FRdxddTK+VwGykE5VaCcBlBOAygn4fK+jONFIspJQDkNoJwGKuXULFmgHMXpMkkyymlgz00fusj5/TcK9sTEs5Bztce7Tz5fcGnwsu1yTv/hhZyfrbowO43TLzybgXLKnNxLcq4er+GP38754Jsae0nO8X3VHPzO53O+e1QbOz+Lcvbt0+XsRzl7Xc6np6Z5GeUknPrMNCgnZQA5J3L2f7Dq6gzLAHK0NR+Ug3L6yXl+1dUZFpTTQE85JyrZv3flFBz80YXPVnHhT6uuzrD0krMP5fSQ84RtOc3lnC841VvOLt39dTWjlJ7JOX9rPePWzYMlWssRK6nb3OT1KqXnctYL+stZSdXmZyly/rySqs3PMuRc+MtKqjY/7eXcatXmVPLXlVRtfurkXEn538aBhI1Dhy7Wy3kr4W+3b9/+ccb3cnZrT14nJ2Mzk3Pj+2U1upyzNzYUSuLNQynFAOnyUqs0HFntDtacbynnzoGcCjlLrdGAXM6oOT+EnFNLrdESGULOp6uuxKIYQs6VVVdiUQwhZ7e2xzPpIec3ips3b/48Y9V1WBjd5bz9LvA2jBqPZay6DnNzLWWzlN5Dzg8AXc6HK6nQvAi/WEo4Fg/iNtavl/K0HgTmPCFyqGXnr4+lk4RaOQfufLHMnXd+kvHDgr+/W5Lzxq5czekmZ5ob77z0VMqLT+dMyTlWvuauYEFyfgvcunv37hs5uzF0FiPnH79T/FTnn8ut1yAsRs5Xz03zr+VWbAgMOXW91fpGBWnHVC3nmWnOLbdiQ6DLqRvniM0qPvplzL2n2sr593JrNgC6nG58KQ+ZdnKeObfrmp055GhevnLmyJEzdXLOHXktYe3jQYu+eAaScwSolfPqWsqZQYu+eJYqZ21r0LIPgLBpRf0hNR6WmXIEtacHazb1qgT2kbNWXUKPmp/a9/vqSjCxgG2HGqkyTrUgVZfjj1XiiBsl5XGi5XrlK/eR8/DXVUV0A1/qCR6fq8ptEWPLp+qrcS39AycWj1Mdi9u5nDivEDQYW4UIezQKlCvIykrX7iOnqtGxw+TfAARRAX9THkn1Cr7DxJknVCXiIxViHgS4HCC4RmH2Slp+njqeZK88i+VyxnleXgjbdoqspe+zj5yq7iqNGodKTrjrcV/4zCO+KyHJi9Qpl1EIXNeTLuHwvbnEmwTzT9XYSCuDlV2PW0WqtDIR/naR6mZKonGRGJSa7h5yKrtyHsepdDkfEy6JiOLbyvcJDVUSMBEQTT5kc4SfyHGqLtQRS7+VR9k3bwVaaphVeayl0lSksPSWZmyGTqMcY1b1amNXFcQfDPEDnwl3eyoHlEEkJcVwoURcNQSMpnIGaJQ8Sz/ikyxVD8k8Hoy4SKVILZqKC6Q0ybn3NZ3DMXUjQBFHhxc3aYYc201zuOpQ+uoFOAycQeTwUD+SqSp/rKd6qRTbEBkmYcRdPVEaWZrlvHJ4itpieq7j+IQ7kZ/KIROHqBDx3Si24EYMzESRA8JC5oM9v/ZirWHGrZlFjKks78rNeEoiJ4rMCxhXr5DzYsrT96bd1EbObNzZWbpjyklv4FI45HJGxlAjwTG671lyNO5XyPlP73osQ05KjRwzoBIGlXO490PPYHaW7nSSY/ZMCcPK6R86i6CTHMK3p7I2y3mpoJWcwztqjb2bHDKeurcb5XxLY2vtjMlrGZ+8UrCjNhN0lGOXJwjNcnS21uq4X7ipu61E7UFNyiB0lAO1LzV9g8p5ve7NRnkYDIR9Xk7pQNvWu6scGC6bjfL8ch7enxU38ClG6UCFaaOjnLb9fmc52nw8pqecTy4WvPVySn0xoZQsSkZZLBpT4jNGOJSDwZwiEkqOHTlwnvswkKYBc9TgmakphnQ4nFJzMjWEhvOcsHHULna6yyHuSD+Ktkca26acjx/8CnggpuW8fqjg1Owdkw7Mtkm8GucKiBwZwNwJZk+U2YwIR8kJ1YoG2fZIROlIwGEgCcy1JoGqImSFLDAXG3nqAouLnFKX5bjSwMi5taY67WRtr15Oi41vDpkwpuTYMFuBUGAM4iCEGgcuvCTMVvNMTyURGVAIZmY7cCIgk3h+CikhY5GnzoOlRcoR+oqfU17909lKhjQz5BT/oa12P6mTVUhV3LGdOBY5ddNlsEQOxJOjVgspvI5EUrEwl5NeZ9FyIKGY8g4gp+DNugvBbeUljfBE0JEtIyJsYsM9Y4dCUFXhiS1c1dTarlLhOSRgxLYLORzyxjeUklPxiKCKXnKILLqsIeXU77UNVIMa996U+dImkqkOSiV4jHlECmIz1UBPOBeETrj68gKVB15AdlvG7bNQ14FDGlXMoCvoJ0frsprlPIxpJefNIQbHcW3oUE8mesohbrbk1yhHZ4ac8s6EfsTl9toWaRZ95ZCs2RlKzjDb15OCDjWb6C0nSCfoQ8mpbYtXSG852QJ7Jzn/zbc4nS1zp1Oxl0N/OW7S7HWTk/8H66m9cWc7FXs5mHLoJF1gr5RDjSln+s7IkGPXr/mbcs4OKKdqE0QjXstGydSQzRv9iZmafLr5UCp9Z+WjmZOXEvRfGHjw6NGji/VyOu1fN7+7iuCPypkM2k7izQdNPH1eZU6u/VSONGecSZkCIzF94HXpveTXs8u/UnutVs7GjK483oCS1CmNk2KUm7yg2nmRjYGTf4Sd5UhSeEs55pr5JLtHjIfEYf5QT7/oyK9ITC9wKfkFyaNlOdcLOSYHmv/LDHVgDkVd7lKYGMBEAILC4U5SAE89wqMO44yppyMyglj2J1ymmWBuHrHIj3NAPEFmr7Uc4miPW7y8ovruAC/fSBBqASyzRNfVE2lLOebO3PUDza0AV98VfA7MJuPiJhPO5INDSl1qQ3lHVNXajZ+sO3Emtf8gJNJRf6scIZikdNJejrDyR5a0mG0LyylSo8yDNuEs8mrv8rKX9XIytB8wgKPHs0rpqP0lyoRINpyQSK102T4LSCilFGqyruaYVE0d4E8ix7HVhAIm6ySejSqnXMoOkQM1Gsf3kM0tLQZolsosVmxekla6/UvP61mTOCtludF6OR9e29zcvHb98bGz66mlO4+vtek8JmppBtSkkZNswlGEyWcnewmoHS9axKfcuOF14w1NmRwZLwG2lwOxalnbY8saGWuHIkpSoeLaOIeG1nboQrLeZdtwgRGkjfOGqtQgX85/t6DnwJ4GnMPtIV2bMBaoNkdMJEt3MkSSkzxySMQDtWjDVaTZkEnG+1fCLEfow2G3JWdP+nL6DZ4MprdBCunzYOrBJ2TVd5md/EVC+vsLV7LFrL5zBOGp0tnxx1IYpaijvGjxXk077oxUV0TjisAb4kyQIERyLumuPG95my1bMbecJxmU0wDKaQDlNIByGkA5DVw5j3JqEbN+fQdBEARBEARBEARBEARBEARBEARBEARBEARBkCeb/wPoo6rxL6KuWAAAAABJRU5ErkJggg=="
+                 alt="CDSE Logo"
+                 style="height: 55px; width: auto;">
         </div>
+
+        <!-- Title -->
         <div class="header-title">
-            <h1>ELDiB <span>Digital</span></h1>
-            <p class="header-subtitle">Sozio-emotionale Entwicklungserfassung</p>
+            <h1>ELD<span>i</span>B Digital</h1>
+            <p class="header-subtitle">Entwicklungspädagogischer Lernziel-Diagnose-Bogen</p>
         </div>
+
+        <!-- Export Button -->
         <div class="header-actions">
-            <button class="export-btn" onclick="exportDS()">
-                <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+            <button class="export-btn pei-btn" onclick="exportDS()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <path d="M9 13h6"></path>
+                    <path d="M9 17h6"></path>
                 </svg>
                 DS Export
             </button>
         </div>
     </header>
 
-    <!-- Profil & Evaluationen Leiste -->
-    <div class="profile-bar">
+    <!-- Profil & Evaluationen Management -->
+    <section class="profile-bar">
+        <!-- Profil-Gruppe -->
         <div class="profile-group">
-            <label>Schülerprofil:</label>
+            <label>Profil:</label>
             <select id="profileSelect" onchange="loadProfile(this.value)">
-                <option value="">-- Profil wählen --</option>
+                <option value="">-- Wählen --</option>
             </select>
-            <button class="profile-btn primary" onclick="createNewProfile()">+ Neu</button>
-            <button class="profile-btn danger" id="deleteProfileBtn" onclick="deleteCurrentProfile()" style="display:none;">✕</button>
+            <button class="profile-btn small" onclick="createNewProfile()" title="Neues Profil erstellen">+ Neu</button>
+            <button class="profile-btn small danger" onclick="deleteCurrentProfile()" id="deleteProfileBtn" style="display:none;" title="Profil löschen">X</button>
         </div>
 
         <div class="divider"></div>
 
+        <!-- Evaluationen-Gruppe -->
         <div class="profile-group">
             <label>Evaluation:</label>
             <select id="evaluationSelect" onchange="loadEvaluation(this.value)">
-                <option value="">-- Evaluation wählen --</option>
+                <option value="">-- Wählen --</option>
             </select>
-            <button class="profile-btn primary" onclick="createNewEvaluation()">+ Neue Eval.</button>
-            <button class="profile-btn danger" id="deleteEvalBtn" onclick="deleteCurrentEvaluation()" style="display:none;">✕</button>
+            <button class="profile-btn small" onclick="createNewEvaluation()" title="Neue Evaluation erstellen">+ Neu</button>
+            <button class="profile-btn small danger" onclick="deleteCurrentEvaluation()" id="deleteEvalBtn" style="display:none;" title="Evaluation löschen">X</button>
         </div>
 
         <div class="divider"></div>
 
+        <!-- Speichern-Button -->
+        <button class="profile-btn primary" onclick="manualSave()" id="saveBtn" title="Aktuelle Evaluation speichern">
+            Speichern
+        </button>
+        <span class="save-indicator" id="saveIndicator">Gespeichert!</span>
+
+        <!-- Info-Bereich -->
         <div class="evaluation-info">
-            <span id="evaluationCount">0 Evaluationen</span>
-            <button class="profile-btn" id="compareBtn" onclick="showComparison()" style="display:none;">Vergleichen</button>
-            <button class="profile-btn primary" onclick="manualSave()">💾 Speichern</button>
-            <span id="saveIndicator" class="save-indicator">✓ Gespeichert</span>
+            <span id="evaluationCount" class="evaluation-count">0 Evaluationen</span>
+            <button class="profile-btn" onclick="showComparison()" id="compareBtn" style="display:none;">Vergleich</button>
         </div>
-    </div>
+    </section>
 
     <!-- Schülerdaten -->
-    <div class="student-section">
+    <section class="student-section">
         <div class="student-grid">
             <div>
-                <label for="studentName">Schüler/in Name</label>
-                <input type="text" id="studentName" placeholder="Name eingeben...">
+                <label>Name des Kindes/Jugendlichen</label>
+                <input type="text" id="studentName" placeholder="Vorname Nachname">
             </div>
             <div>
-                <label for="birthDate">Geburtsdatum</label>
+                <label>Geburtsdatum</label>
                 <input type="date" id="birthDate">
             </div>
             <div>
-                <label for="foerderort">Förderort / Schule</label>
-                <input type="text" id="foerderort" placeholder="Schule/Förderort...">
+                <label>Förderort</label>
+                <input type="text" id="foerderort" placeholder="z.B. CDSE">
             </div>
             <div>
-                <label for="assessmentDate">Datum der Einschätzung</label>
+                <label>Datum der Einschätzung</label>
                 <input type="date" id="assessmentDate">
             </div>
             <div>
-                <label for="assessorName">Einschätzer/in</label>
-                <input type="text" id="assessorName" placeholder="Name...">
+                <label>Einschätzende Person</label>
+                <input type="text" id="assessorName" placeholder="Name und Funktion">
             </div>
-            <div style="display: flex; align-items: center; gap: 10px; margin-top: 20px;">
-                <label class="toggle-switch">
+        </div>
+    </section>
+
+    <!-- Bereichs-Navigation -->
+    <nav class="domain-nav">
+        <button class="domain-tab active" data-domain="verhalten" onclick="switchDomain('verhalten')">
+            Verhalten
+        </button>
+        <button class="domain-tab" data-domain="kommunikation" onclick="switchDomain('kommunikation')">
+            Kommunikation
+        </button>
+        <button class="domain-tab" data-domain="sozialisation" onclick="switchDomain('sozialisation')">
+            Sozialisation
+        </button>
+        <button class="domain-tab" data-domain="kognition" onclick="switchDomain('kognition')">
+            Kognition
+        </button>
+        <button class="domain-tab comparison-tab" data-domain="vergleich" onclick="switchDomain('vergleich')" id="comparisonTab" style="display:none;">
+            📊 Entwicklungsverlauf
+        </button>
+    </nav>
+
+    <!-- Vergleichs-Ansicht -->
+    <section class="comparison-section" id="comparisonSection">
+        <div class="comparison-header">
+            <h2>📊 Entwicklungsverlauf über Zeit</h2>
+            <span id="comparisonInfo"></span>
+        </div>
+
+        <div class="progress-chart" id="progressChart">
+            <h3>Entwicklungsalter pro Bereich über Zeit</h3>
+            <div id="chartContent">
+                <!-- Wird dynamisch gefüllt -->
+            </div>
+        </div>
+
+        <h3 style="margin-bottom: 16px; color: #2c3e50;">Evaluations-Übersicht</h3>
+        <table class="comparison-table" id="comparisonTable">
+            <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Verhalten</th>
+                    <th>Kommunikation</th>
+                    <th>Sozialisation</th>
+                    <th>Kognition</th>
+                    <th>Ø Gesamt</th>
+                </tr>
+            </thead>
+            <tbody id="comparisonTableBody">
+                <!-- Wird dynamisch gefüllt -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Hauptinhalt -->
+    <main class="main-content">
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #27ae60;"></div>
+                <span><strong>Erreicht</strong> - Fähigkeit vorhanden</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span><strong>Nicht erreicht</strong> - Noch nicht vorhanden</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #f39c12;"></div>
+                <span><strong>Ziel</strong> - Aktuelles Förderziel</span>
+            </div>
+            <div class="legend-item" style="margin-left: auto;">
+                <label class="toggle-switch" title="Blockade-Regeln ein/ausschalten">
                     <input type="checkbox" id="blockingRulesToggle" checked onchange="toggleBlockingRules()">
                     <span class="toggle-slider"></span>
                 </label>
-                <span style="font-size: 12px; color: #666;">Ziel-Blockade-Regeln aktiv</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bereiche Navigation -->
-    <nav class="domain-nav">
-        <button class="domain-tab active" data-domain="verhalten" onclick="switchDomain('verhalten')">Verhalten (V)</button>
-        <button class="domain-tab" data-domain="kommunikation" onclick="switchDomain('kommunikation')">Kommunikation (K)</button>
-        <button class="domain-tab" data-domain="sozialisation" onclick="switchDomain('sozialisation')">Sozialisation (SOZ)</button>
-        <button class="domain-tab" data-domain="kognition" onclick="switchDomain('kognition')">Kognition (KOG)</button>
-        <button class="domain-tab comparison-tab" data-domain="vergleich" id="comparisonTab" onclick="switchDomain('vergleich')" style="display:none;">📊 Vergleich</button>
-    </nav>
-
-    <!-- Legende -->
-    <div class="main-content">
-        <div class="legend">
-            <div class="legend-item">
-                <span class="legend-dot erreicht"></span>
-                <span>Erreicht (grün)</span>
-            </div>
-            <div class="legend-item">
-                <span class="legend-dot ziel"></span>
-                <span>Ziel (gelb)</span>
-            </div>
-            <div class="legend-item">
-                <span style="font-size: 12px; color: #666;">Doppelklick auf Item für Details</span>
+                <span style="font-size: 12px; margin-left: 8px;">Blockade-Regeln</span>
             </div>
         </div>
 
-        <!-- Domain Content Container -->
-        <div id="domainContent"></div>
-    </div>
-
-    <!-- Vergleichs-Sektion -->
-    <div id="comparisonSection" class="comparison-section">
-        <div class="comparison-header">
-            <h2>📊 Evaluationsvergleich</h2>
-            <button class="profile-btn" onclick="switchDomain('verhalten')">← Zurück zur Bewertung</button>
+        <div id="domainContent">
+            <!-- Wird dynamisch gefüllt -->
         </div>
-        <div id="comparisonContent"></div>
-    </div>
+    </main>
 
-    <!-- Item Detail Modal -->
-    <div id="itemModal" class="item-modal-overlay" onclick="closeItemModal(event)">
+    <!-- Modal für Item-Details -->
+    <div class="item-modal-overlay" id="itemModal" onclick="closeItemModal(event)">
         <div class="item-modal" onclick="event.stopPropagation()">
             <div class="item-modal-header">
                 <h3>Item-Details</h3>
                 <button class="item-modal-close" onclick="closeItemModal()">&times;</button>
             </div>
             <div class="item-modal-body">
-                <div id="modalItemCode" class="item-modal-code"></div>
-                <div id="modalItemTitle" class="item-modal-title"></div>
-                <div id="modalItemDescription" class="item-modal-description"></div>
-                <div id="modalItemExamples" class="item-modal-examples" style="display:none;">
+                <span class="item-modal-code" id="modalItemCode"></span>
+                <div class="item-modal-title" id="modalItemTitle"></div>
+                <div class="item-modal-description" id="modalItemDescription"></div>
+                <div class="item-modal-examples" id="modalItemExamples">
                     <div class="examples-header">Beobachtungsbeispiele:</div>
-                    <ul id="modalExamplesList" class="examples-list"></ul>
+                    <ul class="examples-list" id="modalExamplesList"></ul>
                 </div>
-                <div class="item-modal-hint">Tipp: Die Beispiele helfen bei der Einschätzung, ob das Item erreicht ist.</div>
+                <div class="item-modal-hint">Tipp: Diese Beispiele helfen bei der Einschätzung ob das Verhalten erreicht, nicht erreicht oder als Ziel definiert werden sollte.</div>
             </div>
         </div>
     </div>
 
-    <!-- Zusammenfassung unten -->
-    <footer class="summary-bar">
+    <!-- Zusammenfassung -->
+    <div class="summary-bar">
         <div class="summary-stats">
             <div class="stat-item">
                 <div class="stat-value erreicht" id="totalErreicht">0</div>
@@ -169,29 +1195,2889 @@
                 <div class="stat-label">Ziele</div>
             </div>
         </div>
-    </footer>
+        <button class="export-btn" onclick="exportDS()">
+            DS exportieren
+        </button>
+    </div>
 
-    <!-- JavaScript Files - Load order matters! -->
-    <!-- 1. Data files (no dependencies) -->
-    <script src="js/data/eldib-data.js"></script>
-    <script src="js/data/beispielkatalog.js"></script>
-    <script src="js/data/interventions.js"></script>
+    <script>
+// ==========================================
+// Profil & Evaluationen Management
+// ==========================================
+let allProfiles = {};  // Alle Schülerprofile
+let currentProfileId = null;
+let currentEvaluationId = null;
+let blockingRulesEnabled = true;  // Blockade-Regeln standardmäßig aktiviert
 
-    <!-- 2. Core files (depend on data) -->
-    <script src="js/core/state.js"></script>
-    <script src="js/core/storage.js"></script>
-    <script src="js/core/profiles.js"></script>
+// Toggle für Blockade-Regeln
+function toggleBlockingRules() {
+    const toggle = document.getElementById('blockingRulesToggle');
+    blockingRulesEnabled = toggle.checked;
+    renderAllDomains();
+    // Speichere Einstellung
+    localStorage.setItem('eldib_blocking_rules', blockingRulesEnabled);
+}
 
-    <!-- 3. UI files (depend on core) -->
-    <script src="js/ui/render.js"></script>
-    <script src="js/ui/modal.js"></script>
-    <script src="js/ui/comparison.js"></script>
+// Lade Blockade-Regeln Einstellung
+function loadBlockingRulesSetting() {
+    const saved = localStorage.getItem('eldib_blocking_rules');
+    if (saved !== null) {
+        blockingRulesEnabled = saved === 'true';
+        const toggle = document.getElementById('blockingRulesToggle');
+        if (toggle) toggle.checked = blockingRulesEnabled;
+    }
+}
 
-    <!-- 4. Export files (depend on core and UI) -->
-    <script src="js/export/export-helpers.js"></script>
-    <script src="js/export/export-ds.js"></script>
+function generateId() {
+    return 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
 
-    <!-- 5. Main app initialization (depends on everything) -->
-    <script src="js/app.js"></script>
+function createNewProfile() {
+    const name = prompt('Name des Schülers/der Schülerin:');
+    if (!name || name.trim() === '') return;
+
+    const profileId = generateId();
+    allProfiles[profileId] = {
+        id: profileId,
+        studentData: {
+            name: name.trim(),
+            birthDate: '',
+            foerderort: '',
+            assessorName: ''
+        },
+        evaluations: []
+    };
+
+    saveAllProfiles();
+    updateProfileDropdown();
+    loadProfile(profileId);
+
+    // Automatisch erste Evaluation erstellen
+    createNewEvaluation();
+}
+
+function loadProfile(profileId) {
+    if (!profileId) {
+        currentProfileId = null;
+        currentEvaluationId = null;
+        document.getElementById('deleteProfileBtn').style.display = 'none';
+        document.getElementById('evaluationSelect').innerHTML = '<option value="">-- Evaluation wählen --</option>';
+        updateEvaluationUI();
+        localStorage.removeItem('eldib_last_profile');
+        return;
+    }
+
+    currentProfileId = profileId;
+    const profile = allProfiles[profileId];
+
+    // Letztes verwendetes Profil speichern
+    localStorage.setItem('eldib_last_profile', profileId);
+
+    // Stammdaten laden
+    document.getElementById('studentName').value = profile.studentData.name || '';
+    document.getElementById('birthDate').value = profile.studentData.birthDate || '';
+    document.getElementById('foerderort').value = profile.studentData.foerderort || '';
+
+    document.getElementById('deleteProfileBtn').style.display = 'inline-block';
+
+    updateEvaluationDropdown();
+
+    // Letzte Evaluation laden falls vorhanden
+    if (profile.evaluations.length > 0) {
+        loadEvaluation(profile.evaluations[profile.evaluations.length - 1].id);
+    } else {
+        currentEvaluationId = null;
+        resetAssessments();
+        updateEvaluationUI();
+    }
+}
+
+function deleteCurrentProfile() {
+    if (!currentProfileId) return;
+    const profile = allProfiles[currentProfileId];
+    if (!confirm(`Profil "${profile.studentData.name}" und alle ${profile.evaluations.length} Evaluationen löschen?`)) return;
+
+    delete allProfiles[currentProfileId];
+    currentProfileId = null;
+    currentEvaluationId = null;
+
+    saveAllProfiles();
+    updateProfileDropdown();
+    document.getElementById('profileSelect').value = '';
+    loadProfile('');
+}
+
+function createNewEvaluation() {
+    if (!currentProfileId) {
+        alert('Bitte zuerst ein Schülerprofil erstellen oder auswählen.');
+        return;
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+    const evaluationId = generateId();
+
+    const newEvaluation = {
+        id: evaluationId,
+        date: today,
+        assessorName: document.getElementById('assessorName').value || '',
+        assessments: JSON.parse(JSON.stringify(assessments)), // Deep copy
+        developmentalAges: null // Wird beim Speichern berechnet
+    };
+
+    // Bisherige Bewertungen als Ausgangspunkt (falls gewünscht)
+    const profile = allProfiles[currentProfileId];
+    if (profile.evaluations.length > 0) {
+        const copyPrevious = confirm('Vorherige Bewertungen als Ausgangspunkt übernehmen?');
+        if (copyPrevious) {
+            const lastEval = profile.evaluations[profile.evaluations.length - 1];
+            newEvaluation.assessments = JSON.parse(JSON.stringify(lastEval.assessments));
+        }
+    }
+
+    profile.evaluations.push(newEvaluation);
+    saveAllProfiles();
+    updateEvaluationDropdown();
+    loadEvaluation(evaluationId);
+}
+
+function loadEvaluation(evaluationId) {
+    if (!currentProfileId || !evaluationId) {
+        currentEvaluationId = null;
+        document.getElementById('deleteEvalBtn').style.display = 'none';
+        updateEvaluationUI();
+        return;
+    }
+
+    const profile = allProfiles[currentProfileId];
+    const evaluation = profile.evaluations.find(e => e.id === evaluationId);
+
+    if (!evaluation) return;
+
+    currentEvaluationId = evaluationId;
+
+    // Bewertungen laden
+    Object.keys(evaluation.assessments).forEach(domain => {
+        if (assessments[domain]) {
+            Object.assign(assessments[domain], evaluation.assessments[domain]);
+        }
+    });
+
+    // Datum und Bewerter laden
+    document.getElementById('assessmentDate').value = evaluation.date || '';
+    document.getElementById('assessorName').value = evaluation.assessorName || '';
+
+    document.getElementById('deleteEvalBtn').style.display = 'inline-block';
+
+    renderAllDomains();
+    updateStats();
+    updateEvaluationUI();
+}
+
+function deleteCurrentEvaluation() {
+    if (!currentProfileId || !currentEvaluationId) return;
+
+    const profile = allProfiles[currentProfileId];
+    const evalIndex = profile.evaluations.findIndex(e => e.id === currentEvaluationId);
+
+    if (evalIndex === -1) return;
+
+    const evalDate = profile.evaluations[evalIndex].date;
+    if (!confirm(`Evaluation vom ${new Date(evalDate).toLocaleDateString('de-DE')} löschen?`)) return;
+
+    profile.evaluations.splice(evalIndex, 1);
+    currentEvaluationId = null;
+
+    saveAllProfiles();
+    updateEvaluationDropdown();
+
+    // Letzte Evaluation laden falls vorhanden
+    if (profile.evaluations.length > 0) {
+        loadEvaluation(profile.evaluations[profile.evaluations.length - 1].id);
+    } else {
+        resetAssessments();
+        updateEvaluationUI();
+    }
+}
+
+function saveCurrentEvaluation() {
+    if (!currentProfileId || !currentEvaluationId) return;
+
+    const profile = allProfiles[currentProfileId];
+    const evaluation = profile.evaluations.find(e => e.id === currentEvaluationId);
+
+    if (!evaluation) return;
+
+    // Stammdaten aktualisieren
+    profile.studentData.name = document.getElementById('studentName').value;
+    profile.studentData.birthDate = document.getElementById('birthDate').value;
+    profile.studentData.foerderort = document.getElementById('foerderort').value;
+
+    // Evaluation aktualisieren
+    evaluation.date = document.getElementById('assessmentDate').value;
+    evaluation.assessorName = document.getElementById('assessorName').value;
+    evaluation.assessments = JSON.parse(JSON.stringify(assessments));
+
+    // Entwicklungsalter berechnen und speichern
+    evaluation.developmentalAges = calculateAllDevelopmentalAges();
+
+    saveAllProfiles();
+    updateProfileDropdown(); // Name könnte sich geändert haben
+}
+
+function manualSave() {
+    console.log('ELDiB: manualSave aufgerufen, currentProfileId:', currentProfileId);
+
+    // Wenn kein Profil existiert, automatisch eines erstellen
+    if (!currentProfileId) {
+        const studentName = document.getElementById('studentName').value.trim();
+        console.log('ELDiB: Neues Profil erstellen für:', studentName);
+        if (!studentName) {
+            alert('Bitte geben Sie einen Schülernamen ein.');
+            return;
+        }
+
+        // Automatisch Profil erstellen
+        const profileId = generateId();
+        allProfiles[profileId] = {
+            id: profileId,
+            studentData: {
+                name: studentName,
+                birthDate: document.getElementById('birthDate').value || '',
+                foerderort: document.getElementById('foerderort').value || '',
+                assessorName: document.getElementById('assessorName').value || ''
+            },
+            evaluations: []
+        };
+
+        currentProfileId = profileId;
+        console.log('ELDiB: Profil erstellt mit ID:', profileId);
+        saveAllProfiles();
+        updateProfileDropdown();
+        document.getElementById('profileSelect').value = profileId;
+        document.getElementById('deleteProfileBtn').style.display = 'inline-block';
+        localStorage.setItem('eldib_last_profile', profileId);
+        console.log('ELDiB: Last profile ID gespeichert:', profileId);
+    }
+
+    // Wenn keine Evaluation existiert, automatisch eine erstellen
+    if (!currentEvaluationId) {
+        const today = new Date().toISOString().split('T')[0];
+        const evaluationId = generateId();
+        console.log('ELDiB: Neue Evaluation erstellen mit ID:', evaluationId);
+
+        const newEvaluation = {
+            id: evaluationId,
+            date: document.getElementById('assessmentDate').value || today,
+            assessorName: document.getElementById('assessorName').value || '',
+            assessments: JSON.parse(JSON.stringify(assessments)),
+            developmentalAges: null
+        };
+
+        allProfiles[currentProfileId].evaluations.push(newEvaluation);
+        currentEvaluationId = evaluationId;
+        updateEvaluationDropdown();
+        document.getElementById('evaluationSelect').value = evaluationId;
+        document.getElementById('deleteEvalBtn').style.display = 'inline-block';
+    }
+
+    saveCurrentEvaluation();
+
+    // Visuelles Feedback
+    const indicator = document.getElementById('saveIndicator');
+    indicator.classList.add('show');
+    setTimeout(() => {
+        indicator.classList.remove('show');
+    }, 2000);
+
+    console.log('ELDiB: Speichern abgeschlossen, currentProfileId:', currentProfileId);
+
+    // Überprüfe Speicherung
+    setTimeout(() => {
+        const savedProfiles = localStorage.getItem('eldib_profiles_v3');
+        const lastProfile = localStorage.getItem('eldib_last_profile');
+        console.log('ELDiB: Verifizierung - Gespeicherte Profile:', savedProfiles ? 'vorhanden' : 'FEHLT');
+        console.log('ELDiB: Verifizierung - Last Profile ID:', lastProfile);
+    }, 100);
+}
+
+// Hilfsfunktion für Farbschattierungen (für Word-Export)
+function getColorShades(baseColor) {
+    // Gibt ein Array von Farben zurück: [hellste, ..., dunkelste (original)]
+    const shades = {
+        '#e74c3c': ['#fadbd8', '#f5b7b1', '#f1948a', '#ec7063', '#e74c3c'], // Rot
+        '#3498db': ['#d4e6f1', '#a9cce3', '#7fb3d5', '#5499c7', '#3498db'], // Blau
+        '#27ae60': ['#d4efdf', '#a9dfbf', '#7dcea0', '#52be80', '#27ae60'], // Grün
+        '#9b59b6': ['#e8daef', '#d2b4de', '#bb8fce', '#a569bd', '#9b59b6']  // Lila
+    };
+    return shades[baseColor] || [baseColor, baseColor, baseColor, baseColor, baseColor];
+}
+
+function calculateAllDevelopmentalAges() {
+    const stageData = {};
+    Object.keys(ELDIB_DATA).forEach(domain => {
+        stageData[domain] = {};
+        ELDIB_DATA[domain].stufen.forEach(stufe => {
+            stageData[domain][stufe.nummer] = {
+                total: stufe.items.length,
+                erreicht: 0
+            };
+            stufe.items.forEach(item => {
+                if (assessments[domain][item.id].erreicht) {
+                    stageData[domain][stufe.nummer].erreicht++;
+                }
+            });
+        });
+    });
+
+    const result = {};
+    Object.keys(ELDIB_DATA).forEach(domain => {
+        let highestStage = 0;
+        for (let i = 5; i >= 1; i--) {
+            if (stageData[domain][i].erreicht > 0) {
+                highestStage = i;
+                break;
+            }
+        }
+        const devAge = calculateDevelopmentalAge(highestStage, stageData, domain);
+        result[domain] = devAge.age;
+    });
+
+    return result;
+}
+
+function resetAssessments() {
+    Object.keys(ELDIB_DATA).forEach(domain => {
+        ELDIB_DATA[domain].stufen.forEach(stufe => {
+            stufe.items.forEach(item => {
+                assessments[domain][item.id] = { erreicht: false, nichtErreicht: false, ziel: false };
+            });
+        });
+    });
+    renderAllDomains();
+    updateStats();
+}
+
+function updateProfileDropdown() {
+    const select = document.getElementById('profileSelect');
+    const currentValue = select.value;
+
+    select.innerHTML = '<option value="">-- Profil wählen --</option>';
+
+    Object.values(allProfiles)
+        .sort((a, b) => a.studentData.name.localeCompare(b.studentData.name))
+        .forEach(profile => {
+            const option = document.createElement('option');
+            option.value = profile.id;
+            option.textContent = profile.studentData.name + ` (${profile.evaluations.length} Eval.)`;
+            select.appendChild(option);
+        });
+
+    if (currentProfileId && allProfiles[currentProfileId]) {
+        select.value = currentProfileId;
+    }
+}
+
+function updateEvaluationDropdown() {
+    const select = document.getElementById('evaluationSelect');
+    select.innerHTML = '<option value="">-- Evaluation wählen --</option>';
+
+    if (!currentProfileId) return;
+
+    const profile = allProfiles[currentProfileId];
+    profile.evaluations
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .forEach((evaluation, index) => {
+            const option = document.createElement('option');
+            option.value = evaluation.id;
+            const date = new Date(evaluation.date).toLocaleDateString('de-DE');
+            option.textContent = `${index + 1}. Evaluation - ${date}`;
+            select.appendChild(option);
+        });
+
+    if (currentEvaluationId) {
+        select.value = currentEvaluationId;
+    }
+}
+
+function updateEvaluationUI() {
+    const profile = currentProfileId ? allProfiles[currentProfileId] : null;
+    const evalCount = profile ? profile.evaluations.length : 0;
+
+    document.getElementById('evaluationCount').textContent = evalCount + ' Evaluation' + (evalCount !== 1 ? 'en' : '');
+
+    // Vergleichs-Button und Tab anzeigen wenn mehr als 1 Evaluation
+    const showComparison = evalCount > 1;
+    document.getElementById('compareBtn').style.display = showComparison ? 'inline-block' : 'none';
+    document.getElementById('comparisonTab').style.display = showComparison ? 'inline-block' : 'none';
+}
+
+function showComparison() {
+    switchDomain('vergleich');
+}
+
+function renderComparison() {
+    if (!currentProfileId) return;
+
+    const profile = allProfiles[currentProfileId];
+    const evaluations = profile.evaluations.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    if (evaluations.length < 2) return;
+
+    // Info
+    document.getElementById('comparisonInfo').textContent =
+        `${profile.studentData.name} - ${evaluations.length} Evaluationen`;
+
+    // Tabelle füllen
+    const tbody = document.getElementById('comparisonTableBody');
+    tbody.innerHTML = '';
+
+    evaluations.forEach((evaluation, index) => {
+        const row = document.createElement('tr');
+        const date = new Date(evaluation.date).toLocaleDateString('de-DE');
+        const ages = evaluation.developmentalAges || {};
+
+        // Deltas berechnen
+        let deltas = { verhalten: '', kommunikation: '', sozialisation: '', kognition: '' };
+        if (index > 0) {
+            const prevAges = evaluations[index - 1].developmentalAges || {};
+            ['verhalten', 'kommunikation', 'sozialisation', 'kognition'].forEach(domain => {
+                if (ages[domain] && prevAges[domain]) {
+                    const diff = ages[domain] - prevAges[domain];
+                    if (diff !== 0) {
+                        deltas[domain] = diff > 0 ?
+                            `<span class="delta-positive">+${diff.toFixed(1)}</span>` :
+                            `<span class="delta-negative">${diff.toFixed(1)}</span>`;
+                    }
+                }
+            });
+        }
+
+        const avg = ['verhalten', 'kommunikation', 'sozialisation', 'kognition']
+            .map(d => ages[d] || 0)
+            .filter(a => a > 0);
+        const avgVal = avg.length > 0 ? (avg.reduce((a, b) => a + b, 0) / avg.length).toFixed(1) : '-';
+
+        row.innerHTML = `
+            <td><strong>${date}</strong></td>
+            <td>${ages.verhalten?.toFixed(1) || '-'} J. ${deltas.verhalten}</td>
+            <td>${ages.kommunikation?.toFixed(1) || '-'} J. ${deltas.kommunikation}</td>
+            <td>${ages.sozialisation?.toFixed(1) || '-'} J. ${deltas.sozialisation}</td>
+            <td>${ages.kognition?.toFixed(1) || '-'} J. ${deltas.kognition}</td>
+            <td><strong>${avgVal} J.</strong></td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    // Chart rendern
+    renderProgressChart(evaluations);
+}
+
+function renderProgressChart(evaluations) {
+    const chartContent = document.getElementById('chartContent');
+    const domains = ['verhalten', 'kommunikation', 'sozialisation', 'kognition'];
+    const domainNames = { verhalten: 'Verhalten', kommunikation: 'Kommunikation', sozialisation: 'Sozialisation', kognition: 'Kognition' };
+    const domainColors = { verhalten: '#e74c3c', kommunikation: '#3498db', sozialisation: '#27ae60', kognition: '#9b59b6' };
+
+    const maxAge = 16;
+
+    let html = '';
+    domains.forEach(domain => {
+        html += `<div class="chart-row">
+            <div class="chart-label" style="color: ${domainColors[domain]};">${domainNames[domain]}</div>
+            <div class="chart-bars">`;
+
+        evaluations.forEach(evaluation => {
+            const age = evaluation.developmentalAges?.[domain] || 0;
+            const height = Math.max(5, (age / maxAge) * 100);
+            const date = new Date(evaluation.date).toLocaleDateString('de-DE', { month: 'short', year: '2-digit' });
+
+            html += `<div class="chart-bar" style="height: ${height}%; background: ${domainColors[domain]};">
+                <span class="chart-bar-value">${age > 0 ? age.toFixed(1) : '-'}</span>
+                <span class="chart-bar-label">${date}</span>
+            </div>`;
+        });
+
+        html += `</div></div>`;
+    });
+
+    chartContent.innerHTML = html;
+}
+
+function saveAllProfiles() {
+    try {
+        const data = JSON.stringify(allProfiles);
+        localStorage.setItem('eldib_profiles_v3', data);
+        console.log('ELDiB: Profile gespeichert, Größe:', data.length, 'Bytes');
+
+        // Verifiziere Speicherung
+        const verify = localStorage.getItem('eldib_profiles_v3');
+        if (verify !== data) {
+            console.error('ELDiB: Speicherung fehlgeschlagen - Daten stimmen nicht überein!');
+            alert('WARNUNG: Die Speicherung konnte nicht verifiziert werden. Bitte starten Sie die App über einen lokalen Webserver.');
+        }
+    } catch (e) {
+        console.error('ELDiB: Fehler beim Speichern:', e);
+        alert('Fehler beim Speichern: ' + e.message);
+    }
+}
+
+function loadAllProfiles() {
+    const saved = localStorage.getItem('eldib_profiles_v3');
+    console.log('ELDiB: localStorage eldib_profiles_v3:', saved ? saved.substring(0, 100) + '...' : 'LEER');
+    if (saved) {
+        try {
+            allProfiles = JSON.parse(saved);
+            console.log('ELDiB: Profile erfolgreich geparst:', Object.keys(allProfiles));
+        } catch (e) {
+            console.error('ELDiB: Fehler beim Laden der Profile:', e);
+            allProfiles = {};
+        }
+    } else {
+        console.log('ELDiB: Keine gespeicherten Profile im localStorage gefunden.');
+        allProfiles = {};
+    }
+}
+
+// ==========================================
+// ELDiB Daten
+// ==========================================
+const ELDIB_DATA = {
+    verhalten: {
+        name: "Verhalten",
+        code: "V",
+        color: "#e74c3c",
+        stufen: [
+            {
+                nummer: 1,
+                stufenziel: "Mit Freude auf die Umwelt reagieren",
+                bereichsziel: "Den eigenen körperlichen Fähigkeiten vertrauen",
+                items: [
+                    { id: "V-1", name: "Wahrnehmung", beschreibung: "Lässt Wahrnehmung eines sensorischen Reizes erkennen durch beliebige Bewegungsreaktionen von der Reizquelle weg oder zu ihr hin." },
+                    { id: "V-2", name: "Orientierung", beschreibung: "Reagiert auf sensorischen Reiz mit Zuwendung zur Reizquelle, entweder durch körperliche Reaktion oder durch Hinsehen." },
+                    { id: "V-3", name: "Aufmerksamkeit", beschreibung: "Reagiert auf einen Reiz mit kurzzeitig anhaltender Aufmerksamkeit." },
+                    { id: "V-4", name: "Motorische Reaktion", beschreibung: "Reagiert von sich aus auf einfache Umgebungsreize mit einer motorischen Handlung." },
+                    { id: "V-5", name: "Komplexe Reaktion", beschreibung: "Reagiert auf komplexe Umgebungsreize und verbale Impulse mit motorischer Handlung." },
+                    { id: "V-6", name: "Selbsthilfe", beschreibung: "Beteiligt sich aktiv am Erlernen von Selbsthilfe-Fähigkeiten (Hände waschen, essen, Toilette, anziehen)." },
+                    { id: "V-7", name: "Spielmaterial", beschreibung: "Reagiert eigenständig auf verschiedene Spielmaterialien." },
+                    { id: "V-8", name: "Routineabläufe", beschreibung: "Zeigt Wiedererkennen von Routineabläufen durch eigenständigen Wechsel von einem Aktivitätsbereich zum nächsten." }
+                ]
+            },
+            {
+                nummer: 2,
+                stufenziel: "Erfolgreich auf die Umwelt reagieren",
+                bereichsziel: "Erfolgreich an Routineabläufen und Aktivitäten teilnehmen",
+                items: [
+                    { id: "V-9", name: "Spielerfahrung", beschreibung: "Geht mit Spielmaterialien sachgerecht um." },
+                    { id: "V-10", name: "Warten", beschreibung: "Wartet ohne körperliche Steuerungshilfe durch den Erwachsenen." },
+                    { id: "V-11", name: "Sitzen", beschreibung: "Beteiligt sich verbal und physisch an Aktivitäten im Sitzen ohne körperliche Steuerungshilfe." },
+                    { id: "V-12", name: "Bewegung", beschreibung: "Beteiligt sich verbal und physisch an Bewegungsaktivitäten ohne körperliche Steuerungshilfe." },
+                    { id: "V-13", name: "Aktivitäten", beschreibung: "Nimmt von sich aus verbal und physisch an Aktivitäten teil." },
+                    { id: "V-14", name: "Lob/Erfolg", beschreibung: "Akzeptiert Lob oder Erfolg ohne unangemessenes Verhalten oder Kontrollverlust." }
+                ]
+            },
+            {
+                nummer: 3,
+                stufenziel: "Erwerben von Fähigkeiten zur erfolgreichen Teilnahme in Gruppen",
+                bereichsziel: "Erworbene Fähigkeiten anwenden, um innerhalb einer Gruppe das eigene Verhalten erfolgreich zu steuern",
+                items: [
+                    { id: "V-15", name: "Beenden", beschreibung: "Beendet kurze, individuelle Aufgaben mit vertrautem Material selbstständig." },
+                    { id: "V-16", name: "Erwartungen", beschreibung: "Lässt Bewusstsein für Verhaltensweisen erkennen, die zu Hause, in der Schule und in der Öffentlichkeit erwartet werden." },
+                    { id: "V-17", name: "Begründungen", beschreibung: "Nennt Gründe für Verhaltenserwartungen." },
+                    { id: "V-18", name: "Alternativen", beschreibung: "Beschreibt alternative, angemessenere Verhaltensmöglichkeiten für eine gegebene Situation." },
+                    { id: "V-19", name: "Gruppenwahl", beschreibung: "Reagiert angemessen auf Gruppenwahl als Anführer bzw. Teilnehmer." },
+                    { id: "V-20", name: "Zurückhalten", beschreibung: "Hält sich von inakzeptablem Verhalten zurück, wenn andere in der Gruppe die Selbstkontrolle verlieren." },
+                    { id: "V-21", name: "Kontrolle", beschreibung: "Behält während der Gruppenaktivitäten akzeptable physische und verbale Selbstkontrolle." }
+                ]
+            },
+            {
+                nummer: 4,
+                stufenziel: "Sich einbringen in Gruppenprozesse",
+                bereichsziel: "Persönliche Fähigkeiten einsetzen, um zum Gruppenerfolg beizutragen",
+                items: [
+                    { id: "V-22", name: "Fortschritt", beschreibung: "Zeigt beginnendes Bewusstsein für eigenen Verhaltensfortschritt." },
+                    { id: "V-23", name: "Flexibilität", beschreibung: "Lässt Flexibilität erkennen, wenn Abläufe aufgrund sich ändernder Anforderungen umgestaltet werden müssen." },
+                    { id: "V-24", name: "Neue Erfahrungen", beschreibung: "Beteiligt sich verbal und physisch kontrolliert an neuen Erfahrungen bzw. Aktivitäten." },
+                    { id: "V-25", name: "Anwenden", beschreibung: "Wendet alternative, sozial akzeptable Verhaltensweisen an." },
+                    { id: "V-26", name: "Provokation", beschreibung: "Reagiert von sich aus auf Provokationen mit verbal und physisch kontrolliertem Verhalten." },
+                    { id: "V-27", name: "Verantwortung", beschreibung: "Akzeptiert Verantwortung für die Folgen des eigenen Verhaltens und eigener Einstellungen." },
+                    { id: "V-28", name: "Lösungsvorschlag", beschreibung: "Reagiert in kritischen Situationen auf Probleme mit konstruktiven Lösungsvorschlägen." }
+                ]
+            },
+            {
+                nummer: 5,
+                stufenziel: "Anwenden von Fähigkeiten in neuen Situationen",
+                bereichsziel: "Realen Lebenserfahrungen mit konstruktivem Verhalten begegnen",
+                items: [
+                    { id: "V-29", name: "Gewohnheiten", beschreibung: "Entwickelt neue persönliche Gewohnheiten oder Fähigkeiten mit Bezug zur Arbeitswelt." },
+                    { id: "V-30", name: "Positive Rolle", beschreibung: "Sucht und entwickelt eine begehrte positive Rolle innerhalb einer Gruppe." },
+                    { id: "V-31", name: "Recht/Ordnung", beschreibung: "Zeigt Verständnis und Akzeptanz von Rechts- und Ordnungsprinzipien in Schule und Öffentlichkeit." },
+                    { id: "V-32", name: "Selbstverantwortung", beschreibung: "Befürwortet Verfahren zur Selbstverantwortung und Regelung des Gruppenlebens." },
+                    { id: "V-33", name: "Einsicht", beschreibung: "Löst persönliche Probleme anhand von Einsicht, Analyse und Generalisierung." }
+                ]
+            }
+        ]
+    },
+    kommunikation: {
+        name: "Kommunikation",
+        code: "K",
+        color: "#3498db",
+        stufen: [
+            {
+                nummer: 1,
+                stufenziel: "Mit Freude auf die Umwelt reagieren",
+                bereichsziel: "Gebraucht Wörter, um Bedürfnisse zu befriedigen",
+                items: [
+                    { id: "K-1", name: "Laute", beschreibung: "Produziert Laute (wiederholt eigene Lautmuster, um sich sozial oder imitierend zu äußern)." },
+                    { id: "K-2", name: "Sprecher", beschreibung: "Richtet die Aufmerksamkeit auf eine sprechende Person." },
+                    { id: "K-3", name: "Verbaler Impuls", beschreibung: "Reagiert auf einen verbalen Impuls mit einer Bewegung oder Handlung." },
+                    { id: "K-4", name: "Wort-Annäherung", beschreibung: "Reagiert verbal auf Fragen oder Aufforderungen mit erkennbaren Wort-Annäherungen." },
+                    { id: "K-5", name: "Wörter spontan", beschreibung: "Verwendet von sich aus erkennbare Wörter, um ein Ereignis oder Objekt zu beschreiben oder zu benennen." },
+                    { id: "K-6", name: "Wörter Erwachsener", beschreibung: "Produziert einzelne erkennbare Wörter, um eine gewünschte Reaktion des Erwachsenen zu erhalten." },
+                    { id: "K-7", name: "Wörter Peer", beschreibung: "Produziert einzelne erkennbare Wörter, um eine erwünschte Reaktion von einem gleichaltrigen Kind zu erhalten." },
+                    { id: "K-8", name: "Wortreihung", beschreibung: "Produziert eine sinnvolle Wortsequenz, um von Anderen eine Reaktion zu erhalten." }
+                ]
+            },
+            {
+                nummer: 2,
+                stufenziel: "Erfolgreich auf die Umwelt reagieren",
+                bereichsziel: "Gebraucht Wörter, um andere in konstruktiver Weise zu beeinflussen",
+                items: [
+                    { id: "K-9", name: "Beantworten", beschreibung: "Beantwortet Fragen, Bitten oder Aufforderungen mit erkennbaren, sinnvollen Wörtern." },
+                    { id: "K-10", name: "Vokabular", beschreibung: "Zeigt ein rezeptives Vokabular, das nicht mehr als zwei Jahre hinter normalen Erwartungen zurückliegt." },
+                    { id: "K-11", name: "Wortsequenzen", beschreibung: "Verwendet von sich aus einfache Wortsequenzen, um etwas zu fordern, zu erfragen oder zu erbitten." },
+                    { id: "K-12", name: "Austausch Erwachsene", beschreibung: "Verwendet von sich aus Wörter, um mit einem Erwachsenen minimale Informationen auszutauschen." },
+                    { id: "K-13", name: "Merkmale", beschreibung: "Beschreibt einfache, konkrete Merkmale sowohl von sich als auch von anderen." },
+                    { id: "K-14", name: "Austausch Kind", beschreibung: "Verwendet von sich aus Wörter, um mit einem anderen Kind minimale Informationen auszutauschen." }
+                ]
+            },
+            {
+                nummer: 3,
+                stufenziel: "Erwerben von Fähigkeiten zur erfolgreichen Teilnahme in Gruppen",
+                bereichsziel: "Gebraucht Wörter, um sich auf konstruktive Weise innerhalb einer Gruppe zu äußern",
+                items: [
+                    { id: "K-15", name: "Persönliches", beschreibung: "Verwendet von sich aus Wörter, um eigene Erfahrungen, Vorstellungen oder Arbeit zu beschreiben." },
+                    { id: "K-16", name: "Gefühlsreaktionen", beschreibung: "Verwendet Wörter oder Gesten, um angemessene Gefühlsreaktionen auf die Umgebung zu zeigen." },
+                    { id: "K-17", name: "Gespräche", beschreibung: "Beteiligt sich an Gruppengesprächen in einer Weise, die sich nicht störend auswirkt." },
+                    { id: "K-18", name: "Stolz – ich", beschreibung: "Verwendet von sich aus Wörter, um Stolz auf eigene Arbeit oder Aktivitäten zu zeigen." },
+                    { id: "K-19", name: "Eigenschaften – ich", beschreibung: "Beschreibt charakteristische Eigenschaften, Stärken und Schwächen bei sich selbst." },
+                    { id: "K-20", name: "Eigenschaften – du", beschreibung: "Beschreibt charakteristische Eigenschaften bei anderen." },
+                    { id: "K-21", name: "Gefühle – du", beschreibung: "Erkennt Gefühle anderer." },
+                    { id: "K-22", name: "Stolz – wir", beschreibung: "Verwendet von sich aus Wörter, um Stolz auf Gruppenleistungen auszudrücken." }
+                ]
+            },
+            {
+                nummer: 4,
+                stufenziel: "Sich einbringen in Gruppenprozesse",
+                bereichsziel: "Verwendet Wörter, um Verständnis von Gefühlen und Verhaltensweisen zu zeigen",
+                items: [
+                    { id: "K-23", name: "Kreativität", beschreibung: "Kanalisiert Gefühle oder Erfahrungen durch kreative Ausdrucksmittel wie Kunst, Musik, Tanz." },
+                    { id: "K-24", name: "Fortschritt", beschreibung: "Zeigt beginnendes Bewusstsein für eigenen Verhaltensfortschritt." },
+                    { id: "K-25", name: "Beeinflussung", beschreibung: "Erklärt, wie eigenes Verhalten das Verhalten anderer beeinflusst." },
+                    { id: "K-26", name: "Gefühle – ich", beschreibung: "Verwendet Wörter, um in der Gruppe eigene Gefühle auf angemessene Weise auszudrücken." },
+                    { id: "K-27", name: "Beziehung", beschreibung: "Verwendet Wörter, um positive Beziehungen mit Gleichaltrigen und Erwachsenen anzuknüpfen." },
+                    { id: "K-28", name: "Unterstützen", beschreibung: "Verwendet Wörter, um eine andere Person zu loben oder persönlich zu unterstützen." },
+                    { id: "K-29", name: "Relationen", beschreibung: "Beschreibt den Ursache-Wirkungs-Zusammenhang von Gefühlen und Verhalten." }
+                ]
+            },
+            {
+                nummer: 5,
+                stufenziel: "Anwenden von Fähigkeiten in neuen Situationen",
+                bereichsziel: "Verwendet Wörter, um Beziehungen auszubauen und zu pflegen",
+                items: [
+                    { id: "K-30", name: "Komplexe Aussagen", beschreibung: "Formuliert Aussagen, die weitgehend komplex strukturiert und inhaltlich bildhaft oder abstrakt sind." },
+                    { id: "K-31", name: "Ausgleich", beschreibung: "Wählt bei Provokationen einen Sprachgebrauch, der auf versöhnliche Absichten hindeutet." },
+                    { id: "K-32", name: "Anerkennung", beschreibung: "Unterstützt andere durch Anerkennung ihrer Beiträge." },
+                    { id: "K-33", name: "Motive", beschreibung: "Beschreibt verschiedene Motive und Wertvorstellungen in sozialen Situationen." },
+                    { id: "K-34", name: "Ideale", beschreibung: "Beschreibt von sich aus eigene Wertvorstellungen, Ideale und Überzeugungen." },
+                    { id: "K-35", name: "Erhalt/Pflege", beschreibung: "Verwendet kommunikative Fähigkeiten, um positive zwischenmenschliche Beziehungen zu erhalten." }
+                ]
+            }
+        ]
+    },
+    sozialisation: {
+        name: "Sozialisation",
+        code: "SOZ",
+        color: "#27ae60",
+        stufen: [
+            {
+                nummer: 1,
+                stufenziel: "Mit Freude auf die Umwelt reagieren",
+                bereichsziel: "Einem Erwachsenen genügend vertrauen, um auf ihn zu reagieren",
+                items: [
+                    { id: "SOZ-1", name: "Gegenwart", beschreibung: "Ist sich der Gegenwart anderer bewusst." },
+                    { id: "SOZ-2", name: "Gerichtetheit", beschreibung: "Richtet Aufmerksamkeit auf Handlungen anderer." },
+                    { id: "SOZ-3", name: "Eigenname", beschreibung: "Reagiert, wenn ein Erwachsener den Namen des Kindes nennt." },
+                    { id: "SOZ-4", name: "Spiel allein", beschreibung: "Beschäftigt sich mit organisiertem Spiel und spielt dabei für sich allein." },
+                    { id: "SOZ-5", name: "Nonverbale Interaktion", beschreibung: "Interagiert nonverbal mit Erwachsenen, um Bedürfnisse auszudrücken." },
+                    { id: "SOZ-6", name: "Kommen", beschreibung: "Reagiert auf die Aufforderung des Erwachsenen, zu ihm zu kommen." },
+                    { id: "SOZ-7", name: "Aufforderungen", beschreibung: "Zeigt, dass es einzelne verbale Aufforderungen des Erwachsenen versteht." },
+                    { id: "SOZ-8", name: "Wörter Erwachsener", beschreibung: "Produziert einzelne erkennbare Wörter für eine gewünschte Reaktion des Erwachsenen." },
+                    { id: "SOZ-9", name: "Selbst-Bewusstheit", beschreibung: "Zeigt deutliche Anzeichen für eine beginnende Herausbildung des Selbst." },
+                    { id: "SOZ-10", name: "Spiel parallel", beschreibung: "Nimmt von sich aus an parallelem Spiel teil." },
+                    { id: "SOZ-11", name: "Wörter Peer", beschreibung: "Produziert einzelne erkennbare Wörter für eine Reaktion von einem gleichaltrigen Kind." },
+                    { id: "SOZ-12", name: "Kontaktsuche", beschreibung: "Sucht in unterschiedlichen Situationen Kontakt mit einem vertrauten Erwachsenen." }
+                ]
+            },
+            {
+                nummer: 2,
+                stufenziel: "Erfolgreich auf die Umwelt reagieren",
+                bereichsziel: "Sich erfolgreich an Aktivitäten beteiligen",
+                items: [
+                    { id: "SOZ-13", name: "Fantasie", beschreibung: "Beschäftigt sich von sich aus mit Fantasie- und 'So-tun-als-ob'-Spielen." },
+                    { id: "SOZ-14", name: "Warten", beschreibung: "Wartet ohne körperliche Steuerungshilfe durch den Erwachsenen." },
+                    { id: "SOZ-15", name: "Kontakt", beschreibung: "Zeigt Ansätze, einen angemessenen sozialen Kontakt zu einem anderen Kind aufzunehmen." },
+                    { id: "SOZ-16", name: "Teilen", beschreibung: "Beteiligt sich an einer Aktivität, die Teilen erfordert." },
+                    { id: "SOZ-17", name: "Spiel interaktiv", beschreibung: "Beteiligt sich erfolgreich an interaktivem Spiel mit einem anderen Kind." },
+                    { id: "SOZ-18", name: "Kooperation", beschreibung: "Kooperiert selbstständig mit einem anderen Kind in strukturierten Aktivitäten." }
+                ]
+            },
+            {
+                nummer: 3,
+                stufenziel: "Erwerben von Fähigkeiten zur erfolgreichen Teilnahme in Gruppen",
+                bereichsziel: "Gruppenaktivitäten als befriedigend erleben",
+                items: [
+                    { id: "SOZ-19", name: "Abwechseln", beschreibung: "Teilt von sich aus Materialien und wechselt sich mit anderen ab." },
+                    { id: "SOZ-20", name: "Nachahmen", beschreibung: "Ahmt von sich aus angemessenes Verhalten eines anderen Kindes nach." },
+                    { id: "SOZ-21", name: "Werten", beschreibung: "Bezeichnet einfache soziale Situationen mit wertenden Aussagen (richtig/falsch, gut/schlecht)." },
+                    { id: "SOZ-22", name: "Leiten", beschreibung: "Leitet eine Gruppenaktivität oder demonstriert eine Aktivität für die Gruppe." },
+                    { id: "SOZ-23", name: "Vorschlag andere", beschreibung: "Nimmt an einer Aktivität teil, die ein gleichaltriges Kind vorgeschlagen hat." },
+                    { id: "SOZ-24", name: "Erfahrungen", beschreibung: "Beschreibt eigene Erfahrungen in der Reihenfolge, in der sie sich ereignet haben." },
+                    { id: "SOZ-25", name: "Vorliebe", beschreibung: "Lässt beginnende Freundschaft erkennen durch Vorliebe für ein bestimmtes Kind." },
+                    { id: "SOZ-26", name: "Unterstützung", beschreibung: "Sucht von sich aus Hilfe oder Lob durch ein anderes Kind." },
+                    { id: "SOZ-27", name: "Gruppenregeln", beschreibung: "Hilft anderen von sich aus bei der Einhaltung von Gruppenregeln." }
+                ]
+            },
+            {
+                nummer: 4,
+                stufenziel: "Sich einbringen in Gruppenprozesse",
+                bereichsziel: "Nimmt von sich aus und erfolgreich als Gruppenmitglied an Aktivitäten teil",
+                items: [
+                    { id: "SOZ-28", name: "Identifizieren", beschreibung: "Identifiziert sich mit erwachsenen Führungspersonen oder Vorbildern." },
+                    { id: "SOZ-29", name: "Gruppenerfahrung", beschreibung: "Beschreibt soziale Gruppenerfahrungen in der Reihenfolge, in der sie sich ereignet haben." },
+                    { id: "SOZ-30", name: "Gruppenaktivität", beschreibung: "Schlägt von sich aus eine geeignete Gruppenaktivität vor." },
+                    { id: "SOZ-31", name: "Verschiedenheit", beschreibung: "Erkennt, wie sich die eigenen sozialen Handlungen von denen anderer Kinder unterscheiden." },
+                    { id: "SOZ-32", name: "Respekt", beschreibung: "Hört und respektiert die Vorstellungen, Gedanken und Meinungen anderer." },
+                    { id: "SOZ-33", name: "Interesse", beschreibung: "Bekundet offen sein Interesse an der Meinung Gleichaltriger über die eigene Person." },
+                    { id: "SOZ-34", name: "Lösungsvorschlag", beschreibung: "Reagiert in kritischen Situationen mit konstruktiven Lösungsvorschlägen." },
+                    { id: "SOZ-35", name: "Wertvorstellung", beschreibung: "Erkennt und unterscheidet gegensätzliche Werte in sozialen Situationen." },
+                    { id: "SOZ-36", name: "Schlussfolgerungen", beschreibung: "Zieht Schlussfolgerungen aus sozialen Situationen." }
+                ]
+            },
+            {
+                nummer: 5,
+                stufenziel: "Anwenden von Fähigkeiten in neuen Situationen",
+                bereichsziel: "Beginnt und pflegt selbständig dauerhafte und tragfähige Beziehungen",
+                items: [
+                    { id: "SOZ-37", name: "Empathie", beschreibung: "Lässt erkennen, dass er persönliche Situationen und Gefühle anderer versteht und achtet." },
+                    { id: "SOZ-38", name: "Verschiedene Rollen", beschreibung: "Interagiert erfolgreich mit anderen in unterschiedlichen sozialen Rollen." },
+                    { id: "SOZ-39", name: "Prinzipien", beschreibung: "Trifft in sozialen Situationen persönliche Entscheidungen aufgrund eigener Wertvorstellungen." },
+                    { id: "SOZ-40", name: "Selbstverständnis", beschreibung: "Lässt realistisches Verständnis und Einschätzung des eigenen Selbst erkennen." },
+                    { id: "SOZ-41", name: "Interpersonalität", beschreibung: "Zeigt die Fähigkeit, dauerhafte und tragfähige Beziehungen aufzubauen und zu erhalten." }
+                ]
+            }
+        ]
+    },
+    kognition: {
+        name: "Kognition",
+        code: "KOG",
+        color: "#9b59b6",
+        stufen: [
+            {
+                nummer: 1,
+                stufenziel: "Mit Freude auf die Umwelt reagieren",
+                bereichsziel: "Auf die Umgebung reagieren mit gezielten Körperbewegungen und elementaren mentalen Prozessen",
+                items: [
+                    { id: "KOG-1", name: "Orientierung", beschreibung: "Reagiert auf sensorischen Reiz mit Zuwendung zur Reizquelle." },
+                    { id: "KOG-2", name: "Aufmerksamkeit", beschreibung: "Reagiert auf einen Reiz mit kurzzeitig anhaltender Aufmerksamkeit." },
+                    { id: "KOG-3", name: "Kurzzeitgedächtnis", beschreibung: "Zeigt Kurzzeitgedächtnis durch Wiedererkennen von Personen oder Objekten." },
+                    { id: "KOG-4", name: "Komplexe Reaktionen", beschreibung: "Reagiert auf komplexe Umgebungsreize und verbale Impulse mit motorischer Handlung." },
+                    { id: "KOG-5", name: "Einfache Imitation", beschreibung: "Imitiert von sich aus einfache, vertraute Handlungen des Erwachsenen." },
+                    { id: "KOG-6", name: "Motorik 18 Monate", beschreibung: "Zeigt rudimentäre fein- und grobmotorische Fähigkeiten auf dem Niveau von 18 Monaten." },
+                    { id: "KOG-7", name: "Bezeichnung", beschreibung: "Lässt Verständnis von Bezeichnungen für vertraute Objekte erkennen." },
+                    { id: "KOG-8", name: "Wort-Annäherung", beschreibung: "Reagiert verbal auf Fragen mit erkennbaren Wort-Annäherungen." },
+                    { id: "KOG-9", name: "Wörter spontan", beschreibung: "Verwendet von sich aus erkennbare Wörter bei verschiedenen Aktivitäten." },
+                    { id: "KOG-10", name: "Form", beschreibung: "Passt ein Objekt in eine dafür passende Lücke ein." },
+                    { id: "KOG-11", name: "Körperteile", beschreibung: "Identifiziert eigene Körperteile." },
+                    { id: "KOG-12", name: "Details", beschreibung: "Erkennt einfache Details in Bildern." },
+                    { id: "KOG-13", name: "Sortieren", beschreibung: "Ordnet zwei Sorten von Objekten einander zu." },
+                    { id: "KOG-14", name: "Bilder benennen", beschreibung: "Äußert einzelne Wörter, um auf Abbildungen vertraute Dinge zu bezeichnen." }
+                ]
+            },
+            {
+                nummer: 2,
+                stufenziel: "Erfolgreich auf die Umwelt reagieren",
+                bereichsziel: "Beteiligung an Aktivitäten, die Selbsthilfe, motorische Koordination und Sprache erfordern",
+                items: [
+                    { id: "KOG-15", name: "Gebrauchswert", beschreibung: "Erkennt Gebrauchswert vertrauter Gegenstände." },
+                    { id: "KOG-16", name: "Körper 3 Jahre", beschreibung: "Führt motorische Aktivitäten auf dem Niveau eines dreijährigen Kindes aus." },
+                    { id: "KOG-17", name: "Serie identisch", beschreibung: "Ordnet zwei identische Bilder einander zu." },
+                    { id: "KOG-18", name: "Feinmotorik 3 Jahre", beschreibung: "Führt feinmotorische Aktivitäten auf dem Niveau eines dreijährigen Kindes aus." },
+                    { id: "KOG-19", name: "Serie anders", beschreibung: "Erkennt das Objekt, das sich von den anderen unterscheidet." },
+                    { id: "KOG-20", name: "Gegenteile", beschreibung: "Versteht mindestens drei einfache Gegenteile." },
+                    { id: "KOG-21", name: "Kategorisieren", beschreibung: "Gebraucht Kategorien beim Zuordnen einfacher Bilder." },
+                    { id: "KOG-22", name: "Zählen 4", beschreibung: "Zählt bis 4 und wendet dabei 1 zu 1 Zuordnung an." },
+                    { id: "KOG-23", name: "Farben", beschreibung: "Identifiziert vier Farben und drei Formen." },
+                    { id: "KOG-24", name: "Alternation", beschreibung: "Gibt korrekte Antworten bei wechselnden Zuordnungsaufgaben." },
+                    { id: "KOG-25", name: "Zählen 10", beschreibung: "Zählt mit 1 zu 1 Zuordnung bis 10." },
+                    { id: "KOG-26", name: "Auge-Hand 5 Jahre", beschreibung: "Führt Aktivitäten aus, die Auge-Hand-Koordination auf 5-Jahres-Niveau erfordern." },
+                    { id: "KOG-27", name: "Unterscheiden", beschreibung: "Unterscheidet zwischen Ziffern, Zeichen und Großbuchstaben." },
+                    { id: "KOG-28", name: "Körper 5 Jahre", beschreibung: "Führt motorische Aktivitäten auf dem Niveau eines fünfjährigen Kindes aus." },
+                    { id: "KOG-29", name: "Objekte 5", beschreibung: "Erkennt die Anzahl von Objekten in einer Menge bis zu 5, ohne zu zählen." },
+                    { id: "KOG-30", name: "Gedächtnis", beschreibung: "Gibt Auswendiggelerntes wieder auf dem Niveau eines fünfjährigen Kindes." },
+                    { id: "KOG-31", name: "Bilderserie", beschreibung: "Ordnet drei einfache Bilder in richtiger Reihenfolge an." }
+                ]
+            },
+            {
+                nummer: 3,
+                stufenziel: "Erwerben von Fähigkeiten zur erfolgreichen Teilnahme in Gruppen",
+                bereichsziel: "Beteiligt sich erfolgreich in einer Lerngruppe mit grundlegenden Lernkompetenzen",
+                items: [
+                    { id: "KOG-32", name: "Auge-Hand 6 Jahre", beschreibung: "Führt Aktivitäten aus, die Auge-Hand-Koordination auf 6-Jahres-Niveau erfordern." },
+                    { id: "KOG-33", name: "Körper 6 Jahre", beschreibung: "Führt motorische Aktivitäten auf dem Niveau eines sechsjährigen Kindes aus." },
+                    { id: "KOG-34", name: "Lesen 50", beschreibung: "Liest 50 Wörter des Grundwortschatzes." },
+                    { id: "KOG-35", name: "Zahlen 10", beschreibung: "Erkennt und schreibt Zahlen, die Mengen bis 10 repräsentieren." },
+                    { id: "KOG-36", name: "Schreiben 50", beschreibung: "Schreibt 50 Wörter des Grundwortschatzes nach Diktat." },
+                    { id: "KOG-37", name: "Verständnis", beschreibung: "Hört einer Geschichte zu und lässt Verständnis der Fakten erkennen." },
+                    { id: "KOG-38", name: "Erklären", beschreibung: "Erklärt das Verhalten anderer." },
+                    { id: "KOG-39", name: "Sinnentnahme", beschreibung: "Liest einfache Sätze und lässt dabei Verständnis des Inhalts erkennen." },
+                    { id: "KOG-40", name: "Plus/Minus 9", beschreibung: "Beherrscht Addition und Subtraktion im Zahlenraum bis 9." },
+                    { id: "KOG-41", name: "Unlogik", beschreibung: "Erkennt Unstimmigkeiten in einfachen Situationen." },
+                    { id: "KOG-42", name: "Antwortsätze", beschreibung: "Schreibt einfache Sätze als Antworten auf Fragen." },
+                    { id: "KOG-43", name: "Sport/Spiele", beschreibung: "Zeigt mindestens zwei motorische Kompetenzen auf Grundschulniveau." },
+                    { id: "KOG-44", name: "Sätze frei", beschreibung: "Formuliert und schreibt einfache Sätze." },
+                    { id: "KOG-45", name: "Numerische Konzepte", beschreibung: "Wendet grundlegende numerische Konzepte an (Addition, Subtraktion, Zeit, Geld)." },
+                    { id: "KOG-46", name: "Quantitativa", beschreibung: "Liest und erklärt quantitative Begriffe für Maßeinheiten." },
+                    { id: "KOG-47", name: "Sachverhalte", beschreibung: "Liest kurze Geschichten und erzählt von den Ereignissen." },
+                    { id: "KOG-48", name: "Operationen", beschreibung: "Führt grundlegende Rechenoperationen durch (Stellenwert, Übertrag, Multiplikation)." }
+                ]
+            },
+            {
+                nummer: 4,
+                stufenziel: "Sich einbringen in Gruppenprozesse",
+                bereichsziel: "Gebraucht kognitive und schulische Fähigkeiten für soziale Gruppenerfahrungen",
+                items: [
+                    { id: "KOG-49", name: "Kommunikation", beschreibung: "Schreibt, um Informationen, Ereignisse oder Gefühle mitzuteilen." },
+                    { id: "KOG-50", name: "Mult./Divis. 100", beschreibung: "Rechnet Multiplikations- und Divisionsaufgaben im Zahlenraum bis 100." },
+                    { id: "KOG-51", name: "Informationsgewinn", beschreibung: "Liest aus Freude am Lesen und zum persönlichen Informationsgewinn." },
+                    { id: "KOG-52", name: "Geldmenge 10€", beschreibung: "Berechnet Wert für Geldmengen bis zu 10 Euro." },
+                    { id: "KOG-53", name: "Fiktion", beschreibung: "Beschreibt fiktive Charaktere und erklärt deren Motive." },
+                    { id: "KOG-54", name: "Grammatik", beschreibung: "Verwendet grammatische Regeln beim Schreiben." },
+                    { id: "KOG-55", name: "Wertvorstellungen", beschreibung: "Erkennt und unterscheidet gegensätzliche Werte in sozialen Situationen." },
+                    { id: "KOG-56", name: "Konzepte", beschreibung: "Gebraucht Maßeinheiten, um einfache logische Probleme zu lösen." }
+                ]
+            },
+            {
+                nummer: 5,
+                stufenziel: "Anwenden von Fähigkeiten in neuen Situationen",
+                bereichsziel: "Setzt erfolgreich kognitive Fähigkeiten zur Bereicherung persönlicher Erfahrungen ein",
+                items: [
+                    { id: "KOG-57", name: "Zeitgeschichte", beschreibung: "Sucht die Meinung anderer zu aktuellen Problemen zu erfahren." },
+                    { id: "KOG-58", name: "Meinungen", beschreibung: "Unterscheidet in Texten zwischen Fakten und Meinungen." },
+                    { id: "KOG-59", name: "Inkonsistenz", beschreibung: "Erkennt unlogisches und unstimmiges Verhalten bei anderen." },
+                    { id: "KOG-60", name: "Textaufgaben", beschreibung: "Löst Textaufgaben mit Bruchrechnung, Dezimalrechnung und negativen Zahlen." },
+                    { id: "KOG-61", name: "Einsicht", beschreibung: "Löst persönliche Probleme anhand von Einsicht, Analyse und Generalisierung." },
+                    { id: "KOG-62", name: "Bürger/in", beschreibung: "Gebraucht selbständig kognitive Verfahren in der Rolle als Bürger/in und Arbeitnehmer/in." }
+                ]
+            }
+        ]
+    }
+};
+
+// ==========================================
+// Beispielkatalog (2-3 Verhaltensbeispiele pro Item)
+// ==========================================
+const BEISPIELE = {
+    // VERHALTEN
+    "V-1": ["Reagiert auf Berührung der Wange", "Dreht sich bei Geräuschen", "Folgt bewegenden Objekten mit den Augen"],
+    "V-2": ["Wendet Blick/Körper zu Seifenblasen", "Dreht Kopf zur Musik", "Lächelt wenn Hand ins Wasser getaucht wird"],
+    "V-3": ["Beobachtet Seifenblasen weiter und greift danach", "Schaut Erwachsenen beim Gitarrespielen zu", "Spritzt weiter im Wasser"],
+    "V-4": ["Sieht Bauklotz, hebt ihn hoch und wirft ihn", "Kommt zur Musikquelle gelaufen", "Streckt Hand aus um Gesicht zu berühren"],
+    "V-5": ["Spritzt im Wasser nach Aufforderung", "Schiebt Boot durchs Wasser nach Vormachen", "Fährt Spielzeugauto auf verbalen Hinweis"],
+    "V-6": ["Zeigt Toilettenbedarf an", "Versucht Wasserhahn aufzudrehen", "Zieht Hose hoch, versucht Reißverschluss"],
+    "V-7": ["Hebt Puppe hoch, streichelt Haare", "Zieht Auto über Boden, untersucht Räder", "Legt Spielzeug in Kiste auf Aufforderung"],
+    "V-8": ["Geht zur Spielecke wenn 'Jetzt spielen wir' gesagt wird", "Holt Mantel wenn Spaziergang angekündigt wird"],
+    "V-9": ["Fährt Spielzeugauto zur Tankstelle, tut als ob tanken", "Füttert und zieht Puppe an"],
+    "V-10": ["Wartet bis an der Reihe beim Turnen", "Wartet auf Plätzchen bis anderes Kind seins bekommen hat"],
+    "V-11": ["Kehrt in Erzählkreis zurück nach interessantem Hinweis", "Führt Arbeit fort nach Ermutigung sitzen zu bleiben"],
+    "V-12": ["Hört auf zu streiten, holt alternatives Spielzeug", "Folgt Klatsch-Rhythmus in der Gruppe"],
+    "V-13": ["Nimmt Arbeitsblatt ohne Aufforderung", "Beschäftigt sich mit Spielzeug, antwortet auf Fragen dazu"],
+    "V-14": ["Akzeptiert Schulterklopfen ohne Zurückzucken", "Lächelt zurück wenn für Geschichte gelobt"],
+    "V-15": ["Räumt Platz nach Frühstück ohne Aufforderung", "Arbeitet im vertrauten Übungsheft ohne Hilfe"],
+    "V-16": ["Sagt: 'Im Schwimmbad lassen sie uns nicht rein wenn wir prügeln'", "Kennt Schulbus-Regeln und Pausenregeln"],
+    "V-17": ["Erklärt: 'Nach Dunkelwerden kann einem was passieren'", "Begründet: 'Sonst können wir am Tisch nicht arbeiten'"],
+    "V-18": ["Sagt: 'Ich könnte aufzeigen anstatt zu rufen'", "Erkennt alternative Verhaltensweisen"],
+    "V-19": ["Erfüllt Kapitänsrolle verantwortungsbewusst", "Macht auch als Teilnehmer mit"],
+    "V-20": ["Stimmt nicht ein wenn andere Schimpfwörter rufen", "Bleibt auf Platz während andere herumlaufen"],
+    "V-21": ["Behält Selbstkontrolle während Gruppenaktivitäten", "Kontrolliert sich bei Übergängen"],
+    "V-22": ["Sagt: 'Als du dran warst, hab ich keinen Ton gesagt'", "Erinnert sich an eigene Verbesserungen"],
+    "V-23": ["Akzeptiert geänderten Ablauf ohne Ärger", "Wartet ruhig wenn Reihenfolge geändert wird"],
+    "V-24": ["Nimmt an Ausflug teil trotz Angst", "Probiert neue Aktivität aus"],
+    "V-25": ["Sagt Provokateur er solle aufhören, entzieht sich", "Schlägt Alternative vor wenn Plan ausfällt"],
+    "V-26": ["Behält Selbstkontrolle trotz Schimpfwörtern", "Reagiert besonnen auf Provokationen"],
+    "V-27": ["Setzt sich freiwillig um Versuchung zu vermeiden", "Ersetzt beschädigtes Buch eines Mitschülers"],
+    "V-28": ["Schlägt Abwechseln beim Abwaschen vor", "Bietet konstruktive Alternative an"],
+    "V-29": ["Überlegt ob er früh aufstehen könnte für Job", "Übernimmt Verantwortung für Materialien"],
+    "V-30": ["Sieht sich als Helfer bei Problemlösungen", "Sichert sich Leiterrolle auf positive Art"],
+    "V-31": ["Kommentiert: 'Radkappen klauen bringt nur Probleme'", "Hilft Regelkatalog zu formulieren"],
+    "V-32": ["Stellt sich zur Wahl der Schülervertretung", "Akzeptiert Mehrheitsbeschluss"],
+    "V-33": ["Analysiert Situation bei Gruppenausschluss", "Diskutiert Problem, plant neue Wege"],
+    // KOMMUNIKATION
+    "K-1": ["Sagt 'eee', 'nnn' oder 'mmm'", "Sagt 'baba', 'da da' Silbenreihen"],
+    "K-2": ["Dreht Körper/Blick zu grüßendem Erwachsenen", "Schaut Mutter an wenn sie spricht"],
+    "K-3": ["Zeigt Verständnis von 'Ball' durch Anschauen", "Winkt bei 'Wiedersehen'"],
+    "K-4": ["Antwortet annähernd mit Namen eines Kindes", "Antwortet mit Wortannäherung auf Objekt"],
+    "K-5": ["Sagt 'Mi..Mi' bei Milch", "Sagt 'Auch' wenn es mitmachen will"],
+    "K-6": ["Sagt 'Milch' wenn Milch hingestellt wird", "Sagt 'Bauen' mit Bauklötzen"],
+    "K-7": ["Sagt 'Auto' zu Kind das Lieblingsauto hat", "Sagt 'Geh weg' zum anderen Kind"],
+    "K-8": ["Sagt 'Gib mir das Auto'", "Singt Zeilen aus einfachem Lied"],
+    "K-9": ["Antwortet 'Das ist mein Laster' auf Anfrage", "Beantwortet Fragen mit sinnvollen Wörtern"],
+    "K-10": ["Rezeptives Vokabular max. 2 Jahre unter Altersnorm", "Wird durch Sprachentwicklungstests eingeschätzt"],
+    "K-11": ["Sagt 'Ich will deine rote Farbe'", "Fragt 'Was ist da drin?'"],
+    "K-12": ["Erzählt 'Ich hab meiner Mama beim Backen geholfen'", "Tauscht Informationen mit Erwachsenen"],
+    "K-13": ["Sagt 'Ich kann gut klettern, bis ganz oben'", "Beschreibt Vater: 'Mein Papi ist groß'"],
+    "K-14": ["Erzählt Schwester 'Ich habe das Buch gelesen'", "Sagt zu Mitschüler 'Das ist nicht richtig'"],
+    "K-15": ["Erzählt vom Umzug ins neue Haus", "Erklärt Bild: 'Das ist unser altes Haus'"],
+    "K-16": ["Erzählt 'Das Gewitter war so laut'", "Sagt 'Ich hab Angst vor Hunden'"],
+    "K-17": ["Schlägt Design für Wandgemälde vor", "Beteiligt sich an Gruppengespräch"],
+    "K-18": ["Sagt 'Hey, ich hab es fertig gekriegt'", "Zeigt Stolz auf eigene Arbeit"],
+    "K-19": ["Sagt 'Man soll wegbleiben wenn ich Wut habe'", "Beschreibt eigene Stärken und Schwächen"],
+    "K-20": ["Beschreibt Freundin: 'Schnellste Läuferin'", "Beschreibt Eigenschaften anderer Kinder"],
+    "K-21": ["'Stefan ist froh weil er Urkunde bekommen hat'", "'Er ist sauer weil er nicht dran ist'"],
+    "K-22": ["Sagt 'Die sind nicht so weit wie wir'", "Sagt 'Wir sind die größten Künstler'"],
+    "K-23": ["Malt Angelerlebnis mit Vater", "Formt wütendes Monster aus Ton"],
+    "K-24": ["Sagt 'Ich bin in fast allen Fächern besser als letztes Jahr'", "Erkennt eigenen Fortschritt"],
+    "K-25": ["'Susie hat mir eine gescheuert weil ich Blöde Kuh gesagt hab'", "Erklärt Ursache-Wirkung"],
+    "K-26": ["'Ich war stinkig als du Farbe über unser Gemälde gekippt hast'", "Drückt eigene Gefühle aus"],
+    "K-27": ["Fragt Mechaniker 'Wie lange hat es gedauert das zu lernen?'", "Knüpft Beziehungen durch Fragen"],
+    "K-28": ["Erklärt Mitschüler eine Matheaufgabe", "Steht für anderen Mitschüler ein"],
+    "K-29": ["'Wir haben auf Lilli gehackt weil sie Ball fallen ließ'", "Beschreibt Zusammenhang von Gefühlen/Verhalten"],
+    "K-30": ["'Softball hier erinnert an Hunde die um Knochen balgen'", "Verwendet bildhafte Sprache"],
+    "K-31": ["'Setzen wir uns hin, jeder erzählt was er denkt'", "'Hört auf mit dem Blödsinn'"],
+    "K-32": ["'Peters Idee ist gut'", "'Deine Idee hat was für sich'"],
+    "K-33": ["Vergleicht Eltern: Vater rast, Mutter hält sich an Regeln", "Unterscheidet verschiedene Motive"],
+    "K-34": ["'Väter sollten bei Familien bleiben auch bei Problemen'", "Beschreibt eigene Wertvorstellungen"],
+    "K-35": ["'Unser Spiel ist gut weil wir zusammenspielen'", "Pflegt positive Beziehungen durch Sprache"],
+    // SOZIALISATION
+    "SOZ-1": ["Dreht Kopf zu wenn Rücken berührt wird", "Zeigt Interesse an Kuckuck-Spiel"],
+    "SOZ-2": ["Beobachtet was Erwachsener und Kind tun", "Beobachtet Vater beim Reden"],
+    "SOZ-3": ["Schaut hoch wenn Name gerufen wird", "Reagiert auf den eigenen Namen"],
+    "SOZ-4": ["Stapelt Bauklötze allein", "Klettert Rutsche hoch und rutscht runter"],
+    "SOZ-5": ["Führt Hand des Erwachsenen zum Keks", "Zeigt auf gewünschten Gegenstand"],
+    "SOZ-6": ["Geht zur Mutter und erlaubt Arm um sich", "Rutscht zur Erzieherin hinüber"],
+    "SOZ-7": ["Setzt sich auf Aufforderung", "Hängt Mantel auf wenn gesagt"],
+    "SOZ-8": ["Sagt 'Milch' wenn Vater Milch hinstellt", "Sagt 'Bauen' mit Bauklötzen"],
+    "SOZ-9": ["Erkennt sich im Spiegel", "Verwendet 'ich, mein, mir'"],
+    "SOZ-10": ["Spielt mit Lastwagen neben Kind mit Auto", "Baut Turm während anderes Kind auch baut"],
+    "SOZ-11": ["Sagt 'Auto' zu Kind mit Lieblingsauto", "Sagt 'Geh weg'"],
+    "SOZ-12": ["Betritt Raum und umarmt Erzieherin", "Bringt Buch um Bild zu zeigen"],
+    "SOZ-13": ["Spielt 'Einkaufen gehen' mit Spielgeld", "Tut als ob Bus fahren"],
+    "SOZ-14": ["Wartet auf Position nach Ermutigung", "Bleibt stehen wenn gesagt 'Warte bitte'"],
+    "SOZ-15": ["Geht zu freiem Stuhl neben bestimmtem Kind", "Schließt sich Murmelspiel an"],
+    "SOZ-16": ["Reicht Material/Spielzeug weiter", "Teilt Buntstifte mit anderem Kind"],
+    "SOZ-17": ["Spielt 'Nachlaufen' mit anderem Kind", "Bereitet gemeinsam Puppenkaffeeklatsch vor"],
+    "SOZ-18": ["Spielt Dialog in Theaterstück mit Partner", "Malt gemeinsam Teil eines Wandgemäldes"],
+    "SOZ-19": ["Teilt Erdnussflips beim Fernsehen mit Bruder", "Wechselt sich ab beim Völkerball"],
+    "SOZ-20": ["Hängt Mantel auf wie älterer Bruder", "Bleibt bei Gruppe statt loszurennen"],
+    "SOZ-21": ["Sagt 'Das ist nicht fair'", "Sagt 'Wände beschmieren ist schlecht'"],
+    "SOZ-22": ["Demonstriert anderen wie Lagerfeuer entzünden", "Organisiert Frage-Antwort-Spiel"],
+    "SOZ-23": ["Nimmt an Aktivität teil obwohl anderes gewünscht", "Akzeptiert Vorschlag der Schwester"],
+    "SOZ-24": ["Zeichnet Bilderreihe über Erlebnis", "Beschreibt Konfliktverlauf im Gespräch"],
+    "SOZ-25": ["Sagt 'Ich will mit Peter in der Mannschaft sein'", "Wählt regelmäßig bestimmtes Kind"],
+    "SOZ-26": ["Zeigt Bild und fragt 'Wie findest du das?'", "Bittet Mitschüler um Hilfe"],
+    "SOZ-27": ["Sagt im Kino 'Seid leise sonst setzen sie uns raus'", "Erklärt Neuem die Klassenregeln"],
+    "SOZ-28": ["Sammelt Infos über Olympiasieger", "Imitiert Stil der beliebten Lehrerin"],
+    "SOZ-29": ["Erzählt Details über Gruppenerlebnis", "Beschreibt Konfliktverlauf der Gruppe"],
+    "SOZ-30": ["Schlägt vor 'Sollen wir fragen ob Fußball?'", "Initiiert geeignete Gruppenaktivität"],
+    "SOZ-31": ["Sagt 'Peter soll gehen, er hat keine Angst'", "Erkennt Unterschiede zu anderen"],
+    "SOZ-32": ["Hört aufmerksam zu bei Erklärung", "Akzeptiert Trainers Rat"],
+    "SOZ-33": ["Sagt 'Ich glaube Luise mag mich nicht mehr'", "Fragt nach Meinung über sich"],
+    "SOZ-34": ["Schlägt Abstimmung vor für Ausflugsziel", "Bietet konstruktive Lösung an"],
+    "SOZ-35": ["'Nachbarin hält Prügel für normal'", "Erkennt gegensätzliche Werte"],
+    "SOZ-36": ["Sagt 'Eltern hatten wohl Sorgen'", "Zieht Schlussfolgerungen aus Situationen"],
+    "SOZ-37": ["'Daniels Eltern erlauben ihm nichts, ist nicht fair'", "Zeigt Verständnis für andere"],
+    "SOZ-38": ["Geben-Nehmen Austausch mit Freund", "Nimmt verschiedene Rollen ein"],
+    "SOZ-39": ["'Ich mag nicht mit Billy sein, der ist Unruhestifter'", "Trifft Entscheidungen nach Werten"],
+    "SOZ-40": ["Erkennt 'Ich bin zu klein für erstklassigen Basketball'", "Zeigt realistisches Selbstbild"],
+    "SOZ-41": ["Entwickelt offene Freundschaft", "Engagiert sich in Gruppe"],
+    // KOGNITION
+    "KOG-1": ["Wendet sich Seifenblasen zu", "Dreht Kopf zur Gitarrenmusik"],
+    "KOG-2": ["Beobachtet Seifenblasen weiter", "Beobachtet Erwachsenen weiter"],
+    "KOG-3": ["Lächelt bei vertrautem Erwachsenen", "Macht Gesten wenn es essen will"],
+    "KOG-4": ["Spritzt nach Aufforderung und Vormachen", "Fährt Auto nach verbalem Hinweis"],
+    "KOG-5": ["Winkt zum Abschied nach Vorbild", "Imitiert Klötzestapeln"],
+    "KOG-6": ["Baut Turm aus 3-5 Klötzen", "Rennt, klettert, geht allein"],
+    "KOG-7": ["Zeigt auf genanntes Spielzeug", "Wählt richtig zwischen Papier und Stiften"],
+    "KOG-8": ["Antwortet annähernd mit Namen", "Gibt Wortannäherung auf Objekt"],
+    "KOG-9": ["Sagt 'Mi..Mi' bei Milch", "Sagt 'Gehn' wenn es gehen will"],
+    "KOG-10": ["Steckt Formen in passendes Brett", "Legt Puzzleteile richtig"],
+    "KOG-11": ["Antwortet richtig auf 'Was ist das?' bei Haaren", "Zeigt Ohr/Fuß auf Frage"],
+    "KOG-12": ["Zeigt richtige Person im Bild", "Sagt 'Hund' und zeigt ihn unter Objekten"],
+    "KOG-13": ["Sortiert Lastwagen und Autos in zwei Kisten", "Ordnet Objekte in Kategorien"],
+    "KOG-14": ["Zeigt Hund im Buch, sagt 'Hund'", "Benennt Abbildungen mit Wörtern"],
+    "KOG-15": ["Erklärt/zeigt wozu Schaufel dient", "Demonstriert Verwendung von Gegenständen"],
+    "KOG-16": ["Fährt Gokart", "Balanciert kurz auf einem Fuß"],
+    "KOG-17": ["Zieht Linie zwischen zwei gleichen Bällen", "Findet Memory-Paare"],
+    "KOG-18": ["Baut Brücke aus Bauklötzen", "Fädelt Perlen auf"],
+    "KOG-19": ["Findet anderen Lastwagen unter drei Wagen", "Erkennt was anders ist"],
+    "KOG-20": ["Versteht: hoch/runter, unter/über", "Zeigt Ersten und Letzten in Reihe"],
+    "KOG-21": ["Sortiert Bilder: Menschen hierhin, Tiere dahin", "Ordnet nach Kategorien zu"],
+    "KOG-22": ["Nennt 1-4 in richtiger Reihenfolge", "Zeigt beim Zählen auf jeweiliges Objekt"],
+    "KOG-23": ["Zeigt richtig auf Kreis, Viereck, Dreieck", "Benennt vier Farben"],
+    "KOG-24": ["Wechselt zwischen 'Was ist anders?' und 'Was ist gleich?'", "Reagiert auf wechselnde Aufgaben"],
+    "KOG-25": ["Wählt 10 Bauklötze für Straße", "Zählt 10 Becher ab"],
+    "KOG-26": ["Zeichnet Menschen mit Körper", "Schreibt Namen ab", "Schneidet an Linien"],
+    "KOG-27": ["Findet Buchstaben unter Zeichen", "Unterscheidet Ziffern von Buchstaben"],
+    "KOG-28": ["Hüpft abwechselnd mit beiden Füßen", "Fährt Fahrrad mit Stützrädern"],
+    "KOG-29": ["Erkennt Anzahl Dominopunkte ohne Zählen", "Erfasst Mengen bis 5 spontan"],
+    "KOG-30": ["Singt Lied von ca. 30 Wörtern", "Zählt bis 20"],
+    "KOG-31": ["Ordnet drei Bilder zu Geschichte richtig", "Beantwortet 'Was passiert zuerst?'"],
+    "KOG-32": ["Zeichnet Menschen mit Armen, Beinen, Kleidung", "Bindet Schnürsenkel"],
+    "KOG-33": ["Wirft und fängt Ball gesteuert", "Unterscheidet rechts und links"],
+    "KOG-34": ["Liest 50 Wörter des Grundwortschatzes", "Liest einfache Wörter flüssig"],
+    "KOG-35": ["Schreibt 1-10 auswendig", "Schreibt Zahl zu gezeigter Menge"],
+    "KOG-36": ["Schreibt 50 Wörter lesbar nach Diktat", "Schreibt Grundwortschatz"],
+    "KOG-37": ["Erinnert sich an Details einer Geschichte", "Beantwortet Fragen zur Geschichte"],
+    "KOG-38": ["Erklärt: 'Junge weint weil andere ihn ärgern'", "Erklärt Verhalten anderer"],
+    "KOG-39": ["Liest einfache Sätze und beantwortet Fragen", "Versteht Inhalt beim Lesen"],
+    "KOG-40": ["Beherrscht Addition und Subtraktion bis 9", "Rechnet einfache Aufgaben"],
+    "KOG-41": ["Erkennt was im Bild fehlt", "Findet Unstimmigkeiten"],
+    "KOG-42": ["Schreibt Eigenschaften einer Figur auf", "Beantwortet Fragen schriftlich"],
+    "KOG-43": ["Schwimmt, trifft Ball beim Schlagball", "Nimmt an Staffellauf teil"],
+    "KOG-44": ["Schreibt drei Sätze als Geschichtsende", "Formuliert eigene Sätze"],
+    "KOG-45": ["Addiert/subtrahiert bis 100", "Benennt Uhrzeiten", "Zählt in 5er/10er"],
+    "KOG-46": ["Versteht Viertel/Halbe Stunden", "Versteht Zentimeter/Meter"],
+    "KOG-47": ["Erzählt von Zeitungsbericht", "Fasst Gelesenes zusammen"],
+    "KOG-48": ["Ordnet Zahlen in Stellenwerttabelle", "Rechnet mit Übertrag"],
+    "KOG-49": ["Schreibt Artikel für Schülerzeitung", "Schreibt Briefe"],
+    "KOG-50": ["Beherrscht Einmaleins", "Versteht 2+2+2+2 = 4x2"],
+    "KOG-51": ["Liest Zeitschriften zum Hobby", "Liest aus eigenem Interesse"],
+    "KOG-52": ["Wechselt Cent-Münzen in größere", "Rechnet mit Geld"],
+    "KOG-53": ["Beschreibt Fernsehfigur nach Aussehen und Verhalten", "Erklärt Motive von Figuren"],
+    "KOG-54": ["Verwendet korrekte Grammatik und Rechtschreibung", "Schreibt Aufsätze"],
+    "KOG-55": ["Unterscheidet legal/illegal", "Erkennt verschiedene Wertvorstellungen"],
+    "KOG-56": ["Wendet Mathematik in Sachaufgaben an", "Plant mit Preisvergleich"],
+    "KOG-57": ["Führt Meinungsumfrage durch", "Nimmt an Debatten teil"],
+    "KOG-58": ["Unterscheidet Fakten von Meinungen", "Hinterfragt Berichte kritisch"],
+    "KOG-59": ["Erkennt widersprüchliche Aussagen", "Bemerkt inkonsistentes Verhalten"],
+    "KOG-60": ["Berechnet Mehrwertsteuer", "Passt Rezeptmengen an"],
+    "KOG-61": ["Analysiert Probleme und wählt Lösung", "Verarbeitet schwierige Situationen"],
+    "KOG-62": ["Berechnet Monatsbudget", "Diskutiert gesellschaftliche Themen"]
+};
+
+// ==========================================
+// State
+// ==========================================
+const assessments = {};
+let currentDomain = 'verhalten';
+
+// Initialize assessments
+Object.keys(ELDIB_DATA).forEach(domain => {
+    assessments[domain] = {};
+    ELDIB_DATA[domain].stufen.forEach(stufe => {
+        stufe.items.forEach(item => {
+            assessments[domain][item.id] = { erreicht: false, nichtErreicht: false, ziel: false };
+        });
+    });
+});
+
+// ==========================================
+// Render Functions
+// ==========================================
+function renderDomain(domain) {
+    const data = ELDIB_DATA[domain];
+    let html = '';
+
+    data.stufen.forEach(stufe => {
+        const allReached = isStufeComplete(domain, stufe.nummer);
+        const zielDisabledByAge = isZielDisabledByBioAge(domain, stufe.nummer);
+        const ageHint = zielDisabledByAge ? '<span class="age-hint" title="Ziele auf dieser Stufe sind deaktiviert, da das biologische Alter dem Entwicklungsalter entspricht oder darüber liegt">⚠️ Altersgemäß - keine Ziele möglich</span>' : '';
+
+        html += `
+            <div class="stufe-container" data-domain="${domain}">
+                <div class="stufe-header">
+                    <div class="stufe-header-text">
+                        <h3>Stufe ${stufe.nummer}: ${stufe.stufenziel}</h3>
+                        <p>${stufe.bereichsziel}</p>
+                        ${ageHint}
+                    </div>
+                    <button class="stufe-complete-btn ${allReached ? 'completed' : ''}"
+                            onclick="toggleStufeComplete('${domain}', ${stufe.nummer})">
+                        ${allReached ? '✓ Stufe erreicht' : '☐ Stufe komplett erreicht'}
+                    </button>
+                </div>
+                <div class="items-list">
+                    ${stufe.items.map(item => renderItem(domain, item, stufe.nummer)).join('')}
+                </div>
+            </div>
+        `;
+    });
+
+    return html;
+}
+
+function isStufeComplete(domain, stufeNummer) {
+    const data = ELDIB_DATA[domain];
+    const stufe = data.stufen.find(s => s.nummer === stufeNummer);
+    if (!stufe) return false;
+    return stufe.items.every(item => assessments[domain][item.id].erreicht);
+}
+
+function toggleStufeComplete(domain, stufeNummer) {
+    const data = ELDIB_DATA[domain];
+    const stufe = data.stufen.find(s => s.nummer === stufeNummer);
+    if (!stufe) return;
+
+    const allReached = isStufeComplete(domain, stufeNummer);
+
+    // Toggle: if all reached, uncheck all; otherwise check all
+    stufe.items.forEach(item => {
+        assessments[domain][item.id].erreicht = !allReached;
+        if (!allReached) {
+            assessments[domain][item.id].ziel = false;
+        }
+    });
+
+    renderAllDomains();
+    updateStats();
+    saveToLocalStorage();
+}
+
+function renderItem(domain, item, stufeNummer) {
+    const status = assessments[domain][item.id];
+
+    // Prüfe ob Ziele blockiert werden sollen (verwendet neue isZielBlocked Funktion)
+    const blockCheck = isZielBlocked(domain, item.id);
+    const zielDisabled = blockCheck.blocked;
+    const zielDisabledClass = zielDisabled ? 'checkbox-disabled' : '';
+    const zielGroupDisabled = zielDisabled ? 'disabled' : '';
+    const zielTitle = zielDisabled ? blockCheck.reason : 'Als Ziel definieren';
+
+    return `
+        <div class="item-row" data-domain="${domain}" data-item-id="${item.id}">
+            <div class="item-info" ondblclick="showItemModal('${domain}', '${item.id}')">
+                <span class="item-code">${item.id}</span>
+                <span class="item-name">${item.name}</span>
+                <div class="item-description">${item.beschreibung}</div>
+            </div>
+            <div class="item-checkboxes">
+                <div class="checkbox-group">
+                    <label>Erreicht</label>
+                    <div class="checkbox-erreicht ${status.erreicht ? 'checked' : ''}"
+                         onclick="toggleStatus('${domain}', '${item.id}', 'erreicht')"></div>
+                </div>
+                <div class="checkbox-group">
+                    <label>Nicht err.</label>
+                    <div class="checkbox-nicht-erreicht ${status.nichtErreicht ? 'checked' : ''}"
+                         onclick="toggleStatus('${domain}', '${item.id}', 'nichtErreicht')"></div>
+                </div>
+                <div class="checkbox-group ${zielGroupDisabled}" title="${zielTitle}">
+                    <label>Ziel</label>
+                    <div class="checkbox-ziel ${status.ziel ? 'checked' : ''} ${zielDisabledClass}"
+                         onclick="toggleStatus('${domain}', '${item.id}', 'ziel')"></div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Ermittelt die Entwicklungsstufe basierend auf dem Alter
+function getBioAgeStufe(bioAge) {
+    if (bioAge <= 2) return 1;   // 0-2 Jahre
+    if (bioAge <= 5) return 2;   // 2-5 Jahre
+    if (bioAge <= 9) return 3;   // 6-9 Jahre
+    if (bioAge <= 12) return 4;  // 10-12 Jahre
+    return 5;                     // 13-16 Jahre
+}
+
+// Prüft ob Ziele für diese Stufe blockiert sind
+// Regel: Nur Stufen VOR dem biologischen Alter erlauben Ziele (Förderziele)
+// Die aktuelle Stufe und alle danach sind blockiert
+function isZielDisabledByBioAge(domain, stufeNummer) {
+    const birthDate = document.getElementById('birthDate')?.value;
+    if (!birthDate) return false;
+
+    const ageResult = calculateAge(birthDate);
+    if (!ageResult) return false;
+
+    const bioAgeDecimal = ageResult.decimal;
+    if (isNaN(bioAgeDecimal) || bioAgeDecimal <= 0) return false;
+
+    // Ermittle die Stufe in der sich das Kind befindet
+    const bioAgeStufe = getBioAgeStufe(bioAgeDecimal);
+
+    // Blockiere wenn Stufe >= Bio-Alter-Stufe
+    // Beispiel: Kind ist 7 Jahre → Bio-Stufe = 3
+    //   Stufe 1: 1 >= 3? Nein → ERLAUBT (Förderziel möglich)
+    //   Stufe 2: 2 >= 3? Nein → ERLAUBT (Förderziel möglich)
+    //   Stufe 3: 3 >= 3? Ja → BLOCKIERT (aktuelle Stufe)
+    //   Stufe 4: 4 >= 3? Ja → BLOCKIERT
+    //   Stufe 5: 5 >= 3? Ja → BLOCKIERT
+    return stufeNummer >= bioAgeStufe;
+}
+
+// Modal für Item-Details anzeigen
+function showItemModal(domain, itemId) {
+    const data = ELDIB_DATA[domain];
+    let item = null;
+
+    for (const stufe of data.stufen) {
+        item = stufe.items.find(i => i.id === itemId);
+        if (item) break;
+    }
+
+    if (!item) return;
+
+    document.getElementById('modalItemCode').textContent = item.id;
+    document.getElementById('modalItemCode').style.background = data.color;
+    document.getElementById('modalItemTitle').textContent = item.name;
+    document.getElementById('modalItemDescription').textContent = item.beschreibung;
+
+    // Beispiele anzeigen
+    const beispiele = BEISPIELE[itemId] || [];
+    const examplesList = document.getElementById('modalExamplesList');
+    if (beispiele.length > 0) {
+        examplesList.innerHTML = beispiele.map(b => `<li>${b}</li>`).join('');
+        document.getElementById('modalItemExamples').style.display = 'block';
+    } else {
+        document.getElementById('modalItemExamples').style.display = 'none';
+    }
+
+    document.getElementById('itemModal').classList.add('active');
+
+    // ESC-Taste zum Schließen
+    document.addEventListener('keydown', handleModalEsc);
+}
+
+function handleModalEsc(e) {
+    if (e.key === 'Escape') closeItemModal();
+}
+
+function closeItemModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    document.getElementById('itemModal').classList.remove('active');
+    document.removeEventListener('keydown', handleModalEsc);
+}
+
+function renderAllDomains() {
+    const container = document.getElementById('domainContent');
+    let html = '';
+
+    Object.keys(ELDIB_DATA).forEach(domain => {
+        html += `<div class="domain-section ${domain === currentDomain ? 'active' : ''}" data-domain="${domain}">
+            ${renderDomain(domain)}
+        </div>`;
+    });
+
+    container.innerHTML = html;
+}
+
+// ==========================================
+// Event Handlers
+// ==========================================
+function switchDomain(domain) {
+    currentDomain = domain;
+
+    // Update tabs
+    document.querySelectorAll('.domain-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.domain === domain);
+    });
+
+    // Update sections
+    document.querySelectorAll('.domain-section').forEach(section => {
+        section.classList.toggle('active', section.dataset.domain === domain);
+    });
+
+    // Vergleichs-Sektion
+    const compSection = document.getElementById('comparisonSection');
+    const mainContent = document.querySelector('.main-content');
+
+    if (domain === 'vergleich') {
+        compSection.classList.add('active');
+        mainContent.style.display = 'none';
+        renderComparison();
+    } else {
+        compSection.classList.remove('active');
+        mainContent.style.display = 'block';
+    }
+}
+
+// Hilfsfunktion: Findet die Stufennummer für ein Item
+function getStufeForItem(domain, itemId) {
+    const data = ELDIB_DATA[domain];
+    for (const stufe of data.stufen) {
+        if (stufe.items.some(i => i.id === itemId)) {
+            return stufe.nummer;
+        }
+    }
+    return null;
+}
+
+// Hilfsfunktion: Prüft ob ein früheres Item als "nicht erreicht" markiert ist
+// Wenn ja, können spätere Items keine Ziele sein (Entwicklungslogik)
+function hasEarlierNichtErreicht(domain, itemId) {
+    const data = ELDIB_DATA[domain];
+    let foundCurrentItem = false;
+
+    // Gehe durch alle Stufen und Items in Reihenfolge
+    for (const stufe of data.stufen) {
+        for (const item of stufe.items) {
+            if (item.id === itemId) {
+                // Wir haben das aktuelle Item erreicht - alle früheren wurden geprüft
+                return false;
+            }
+            // Prüfe ob dieses frühere Item als "nicht erreicht" markiert ist
+            if (assessments[domain][item.id]?.nichtErreicht) {
+                return true; // Ein früheres Item ist "nicht erreicht" → blockieren
+            }
+        }
+    }
+    return false;
+}
+
+// Prüft ob Ziel für dieses Item blockiert ist
+function isZielBlocked(domain, itemId) {
+    // Wenn Blockade-Regeln deaktiviert sind, keine Blockierung
+    if (!blockingRulesEnabled) {
+        return { blocked: false, reason: '' };
+    }
+
+    // Regel 1: Ein früheres Item ist "nicht erreicht"
+    if (hasEarlierNichtErreicht(domain, itemId)) {
+        return { blocked: true, reason: 'Ein früheres Item ist als "nicht erreicht" markiert' };
+    }
+
+    // Regel 2: Bio-Alter entspricht oder übersteigt Stufen-Alter
+    const stufeNummer = getStufeForItem(domain, itemId);
+    if (stufeNummer && isZielDisabledByBioAge(domain, stufeNummer)) {
+        return { blocked: true, reason: 'Bio-Alter entspricht der Entwicklungsstufe' };
+    }
+
+    return { blocked: false, reason: '' };
+}
+
+function toggleStatus(domain, itemId, type) {
+    const item = assessments[domain][itemId];
+
+    switch (type) {
+        case 'erreicht':
+            item.erreicht = !item.erreicht;
+            if (item.erreicht) {
+                // Erreicht schließt nichtErreicht und ziel aus
+                item.nichtErreicht = false;
+                item.ziel = false;
+            }
+            break;
+
+        case 'nichtErreicht':
+            item.nichtErreicht = !item.nichtErreicht;
+            if (item.nichtErreicht) {
+                // Nicht erreicht schließt erreicht aus, ziel wird automatisch deaktiviert
+                item.erreicht = false;
+                item.ziel = false;
+            }
+            break;
+
+        case 'ziel':
+            // Prüfe alle Blockierungsregeln
+            const blockCheck = isZielBlocked(domain, itemId);
+            if (blockCheck.blocked) {
+                console.log('Ziel blockiert:', blockCheck.reason);
+                return; // Abbrechen ohne Änderung
+            }
+            item.ziel = !item.ziel;
+            if (item.ziel) {
+                // Ziel schließt erreicht aus
+                item.erreicht = false;
+            }
+            break;
+    }
+
+    renderAllDomains();
+    updateStats();
+    saveToLocalStorage();
+}
+
+function updateStats() {
+    let totalErreicht = 0;
+    let totalZiele = 0;
+
+    Object.keys(assessments).forEach(domain => {
+        Object.values(assessments[domain]).forEach(status => {
+            if (status.erreicht) totalErreicht++;
+            if (status.ziel) totalZiele++;
+        });
+    });
+
+    document.getElementById('totalErreicht').textContent = totalErreicht;
+    document.getElementById('totalZiele').textContent = totalZiele;
+}
+
+// ==========================================
+// Local Storage
+// ==========================================
+function saveToLocalStorage() {
+    // Alte Speichermethode für Kompatibilität
+    const data = {
+        assessments: assessments,
+        student: getStudentData()
+    };
+    localStorage.setItem('eldib_data_v2', JSON.stringify(data));
+
+    // Neue Speichermethode: Aktuelle Evaluation speichern
+    saveCurrentEvaluation();
+}
+
+function loadFromLocalStorage() {
+    const saved = localStorage.getItem('eldib_data_v2');
+    if (saved) {
+        try {
+            const data = JSON.parse(saved);
+            if (data.assessments) {
+                Object.keys(data.assessments).forEach(domain => {
+                    if (assessments[domain]) {
+                        Object.assign(assessments[domain], data.assessments[domain]);
+                    }
+                });
+            }
+            if (data.student) {
+                document.getElementById('studentName').value = data.student.name || '';
+                document.getElementById('birthDate').value = data.student.birthDate || '';
+                document.getElementById('foerderort').value = data.student.foerderort || '';
+                document.getElementById('assessmentDate').value = data.student.assessmentDate || '';
+                document.getElementById('assessorName').value = data.student.assessorName || '';
+            }
+        } catch (e) {
+            console.error('Error loading saved data:', e);
+        }
+    }
+}
+
+function getStudentData() {
+    return {
+        name: document.getElementById('studentName').value,
+        birthDate: document.getElementById('birthDate').value,
+        foerderort: document.getElementById('foerderort').value,
+        assessmentDate: document.getElementById('assessmentDate').value,
+        assessorName: document.getElementById('assessorName').value
+    };
+}
+
+// ==========================================
+// Word Export (HTML-basiert, keine externen Bibliotheken nötig)
+// ==========================================
+
+// Entwicklungsstufen-Mapping
+const STAGE_DATA = {
+    1: { ageMin: 0, ageMax: 2, ageMid: 1, label: "0-2 Jahre", angst: "Verlassenheit", beschreibung: "Grundlegendes Vertrauen aufbauen" },
+    2: { ageMin: 2, ageMax: 5, ageMid: 3.5, label: "2-5 Jahre", angst: "Unzulänglichkeit", beschreibung: "Autonomie und Selbstwirksamkeit entwickeln" },
+    3: { ageMin: 6, ageMax: 9, ageMid: 7.5, label: "6-9 Jahre", angst: "Schuld", beschreibung: "Initiative und Kompetenz erwerben" },
+    4: { ageMin: 10, ageMax: 12, ageMid: 11, label: "10-12 Jahre", angst: "Konflikt", beschreibung: "Soziale Rollen und Beziehungen gestalten" },
+    5: { ageMin: 13, ageMax: 16, ageMid: 14.5, label: "13-16 Jahre", angst: "Identität", beschreibung: "Identität und Werte entwickeln" }
+};
+
+// Interventions-Datenbank aus ELDiB-Dokumenten
+const INTERVENTIONS_DATA = {
+    // VERHALTEN
+    "V-1": {
+        zielformulierung: "Ich schaue den/die LehrerIn an, wenn sie/er mich berührt.",
+        interventionen: ["Aktivierung des Ziels durch direkten Kontakt", "Spiegeln der Reaktionen des Kindes", "Sensorische Reize gezielt einsetzen"]
+    },
+    "V-2": {
+        zielformulierung: "Ich schaue mir Bilder an, die die Lehrerin/der Lehrer mir zeigt.",
+        interventionen: ["Geschichte vorlesen und Bilder zeigen", "Sensomotorische Aktivitäten anbieten", "Interaktive Spiele mit verschiedenen Texturen"]
+    },
+    "V-3": {
+        zielformulierung: "Ich schaue auf das, was mir vorgezeigt wird.",
+        interventionen: ["Aufmerksamkeit auf kurze Erklärungsphasen lenken", "Mit visuellen Verstärkungssignalen arbeiten (Piktogramme)", "Kurze, prägnante Reize verwenden"]
+    },
+    "V-4": {
+        zielformulierung: "Wenn der/die LehrerIn mir die Hand reicht, nehme ich sie.",
+        interventionen: ["Verhaltensanweisungen gezielt und direkt formulieren", "Konzentration durch spielerische Anreize fördern", "Individuelle Verhaltensanweisungen ausarbeiten"]
+    },
+    "V-5": {
+        zielformulierung: "Ich baue einen Turm, wenn ich Bauklötze angeboten bekomme.",
+        interventionen: ["Gezielte Aktivitäten mit klaren Anweisungen anbieten", "Rollenspiele und praktische Übungen", "Strukturierung der Umgebung"]
+    },
+    "V-6": {
+        zielformulierung: "Morgens hänge ich meine Jacke an den Haken.",
+        interventionen: ["Routineabläufe garantieren und institutionalisieren", "Piktogramme einsetzen", "Lernen am Modell ermöglichen"]
+    },
+    "V-7": {
+        zielformulierung: "Ich räume die Bücher in das Regal wenn die/der LehrerIn das sagt.",
+        interventionen: ["Verhaltensanforderung klar benennen", "Aufräumaktivitäten zur Zielerreichung nutzen", "Vielfältige Spielmaterialien anbieten"]
+    },
+    "V-8": {
+        zielformulierung: "Wenn der Lehrer/die Lehrerin sagt, dass wir in die Pause gehen, räume ich mein Pult.",
+        interventionen: ["Visualisierung durch Stundenablauf", "Klar definierte Aktivitätenbereiche", "Rituale und Routineabläufe garantieren"]
+    },
+    "V-9": {
+        zielformulierung: "In der Pause benutze ich den Fußball auf dem Fußballfeld.",
+        interventionen: ["Klare Spielregeln definieren", "Spiegeln bei angepasstem Verhalten", "Kontrolle des Materials durch den Erwachsenen"]
+    },
+    "V-10": {
+        zielformulierung: "Ich warte bis der/die LehrerIn mich mit meinem Namen ruft.",
+        interventionen: ["Wartezeit konkretisieren mit Time Timer oder Sanduhr", "Physische Nähe bieten", "Vorhersehbare Routine einführen"]
+    },
+    "V-11": {
+        zielformulierung: "Ich bleibe während der Matheaufgabe sitzen.",
+        interventionen: ["Zeitliche Struktur mit Time Timer festsetzen", "Interessante Aktivitäten anbieten", "Bewegungspausen einplanen"]
+    },
+    "V-12": {
+        zielformulierung: "Ich beteilige mich während des Sportunterrichts.",
+        interventionen: ["Wiederkehrenden Ablauf etablieren", "Piktogramme zur Visualisierung", "Ansprechende Bewegungspausen anbieten"]
+    },
+    "V-13": {
+        zielformulierung: "Ich setze mich in den Morgenkreis, wenn der Tag beginnt.",
+        interventionen: ["Zieleinführung und Aktivierung des Ziels", "Tagesablauf strukturieren", "Interessen des Kindes berücksichtigen"]
+    },
+    "V-14": {
+        zielformulierung: "Ich nehme Lob von anderen an und behalte die Kontrolle.",
+        interventionen: ["Selbstwertgefühl stärken", "Spezifische Lobsituationen initiieren (Rollenspiele)", "Ritual 'Siegerfaust' initiieren"]
+    },
+    "V-15": {
+        zielformulierung: "Wenn ich eine Aufgabe verstanden habe, löse ich sie alleine.",
+        interventionen: ["Zeit ankündigen mit Time Timer", "Strukturierung der Aufgaben anpassen", "Kleine Erfolgserlebnisse sichern"]
+    },
+    "V-16": {
+        zielformulierung: "Wenn mich jemand fragt, sage ich, was unsere Ziele in der Klasse sind.",
+        interventionen: ["Visualisieren der Ziele", "Ziele zu fest gelegten Zeiten aktivieren und einüben", "Klare Erklärungen geben"]
+    },
+    "V-17": {
+        zielformulierung: "Wenn ich gefragt werde, kann ich sagen warum ein bestimmtes Verhalten erwartet wird.",
+        interventionen: ["Im Klassenrat Verhalten und Folgen reflektieren", "Regelnotwendigkeit an Situationen erarbeiten", "Kognitive Rückschau durchführen"]
+    },
+    "V-18": {
+        zielformulierung: "Ich sage wie ich mich anders und angemessen verhalten könnte.",
+        interventionen: ["Konfliktgespräche initiieren", "Alternative Verhaltensweisen erarbeiten", "Rollenspiele zu sozialen Situationen"]
+    },
+    // KOMMUNIKATION
+    "K-1": {
+        zielformulierung: "Ich produziere verschiedene Laute um mich auszudrücken.",
+        interventionen: ["Logopädische Unterstützung einschalten", "Lautmuster wiederholen und bestärken", "Musikalische Aktivitäten anbieten"]
+    },
+    "K-2": {
+        zielformulierung: "Ich schaue die Person an, die spricht.",
+        interventionen: ["Blickkontakt herstellen", "Interessante Stimme und Gestik einsetzen", "Kurze und klare Kommunikation"]
+    },
+    "K-4": {
+        zielformulierung: "Wenn ich etwas gefragt werde, antworte ich.",
+        interventionen: ["Einfache Sprache verwenden", "Unterstützende Umgebung schaffen", "Fragen in Spiele integrieren"]
+    },
+    "K-5": {
+        zielformulierung: "Wenn der/die LehrerIn mir etwas zeigt und fragt was es ist, antworte ich.",
+        interventionen: ["Lernen am Modell", "Offene Fragen stellen", "Vokabular spielerisch erweitern"]
+    },
+    "K-6": {
+        zielformulierung: "Ich spreche mit dem/der LehrerIn, wenn ich etwas möchte.",
+        interventionen: ["Piktogramme benutzen", "Relevante Situationen schaffen", "Objekte benennen zur Vokabelerarbeitung"]
+    },
+    "K-7": {
+        zielformulierung: "Ich spreche mit dem anderen Kind, wenn ich etwas möchte.",
+        interventionen: ["Rollenspiel mit minimalem Vokabular", "Einfache Kooperationsspiele anbieten", "Visualisierung des Zieles durch Piktogramm"]
+    },
+    "K-8": {
+        zielformulierung: "Wenn ich etwas sagen will, mache ich einen ganzen Satz.",
+        interventionen: ["Wiederholung des ganzen Satzes", "Spielerisches Erlernen vom Satzbau", "Positive Verstärkung durch Spiegeln"]
+    },
+    "K-9": {
+        zielformulierung: "Ich antworte auf die Frage, die mir gestellt wird, so dass jeder meine Antwort verstehen kann.",
+        interventionen: ["Adaptierte Fragen gezielt stellen", "Kooperationsspiele anbieten", "Kleingruppenarbeit ermöglichen"]
+    },
+    "K-11": {
+        zielformulierung: "Ich spreche freundlich, wenn ich etwas haben möchte.",
+        interventionen: ["Einüben von freundlichem Sprechen (Rollenspiel)", "Giraffensprache einführen", "Adäquate Kontaktaufnahme einüben"]
+    },
+    "K-15": {
+        zielformulierung: "Ich erzähle von Dingen, die ich erlebt habe.",
+        interventionen: ["Morgenkreis und Erzählkreis nutzen", "Klassenrat für Austausch", "Gruppenaktivitäten die Austausch erfordern"]
+    },
+    "K-16": {
+        zielformulierung: "Wenn ich wütend bin, sage ich, was mich stört, ohne jemanden zu verletzen.",
+        interventionen: ["Gefühlsbarometer einführen", "Methoden zum Gefühle-Mitteilen erlernen", "Material zur Stressbewältigung anbieten"]
+    },
+    "K-17": {
+        zielformulierung: "Bei Besprechungen in der Gruppe sage ich ruhig und freundlich meine Meinung.",
+        interventionen: ["Verhaltensanforderungen klar formulieren", "Klassenrat nutzen", "Gesprächsregeln visualisieren"]
+    },
+    // SOZIALISATION
+    "SOZ-1": {
+        zielformulierung: "Ich nehme wahr, wenn andere Kinder in meiner Nähe sind.",
+        interventionen: ["Gemeinsame Aktivitäten in Kleingruppen", "Physische Nähe zu anderen ermöglichen", "Parallelspiel fördern"]
+    },
+    "SOZ-4": {
+        zielformulierung: "Ich beschäftige mich selbstständig mit Spielmaterialien.",
+        interventionen: ["Strukturierte Spielzeit anbieten", "Interessantes Material bereitstellen", "Sichere Spielumgebung schaffen"]
+    },
+    "SOZ-10": {
+        zielformulierung: "Ich spiele neben anderen Kindern.",
+        interventionen: ["Parallelspiel-Situationen schaffen", "Gemeinsame Spielbereiche einrichten", "Positives Verhalten spiegeln"]
+    },
+    "SOZ-14": {
+        zielformulierung: "Ich warte ohne körperliche Steuerungshilfe.",
+        interventionen: ["Time Timer oder Sanduhr verwenden", "Physische Nähe bieten", "Konkrete Verhaltensanweisungen geben"]
+    },
+    "SOZ-15": {
+        zielformulierung: "Ich zeige Ansätze, Kontakt zu einem anderen Kind aufzunehmen.",
+        interventionen: ["Kooperative Spiele initiieren", "Soziale Skripts üben", "Positive Interaktionen verstärken"]
+    },
+    "SOZ-17": {
+        zielformulierung: "Ich beteilige mich erfolgreich an interaktivem Spiel mit einem anderen Kind.",
+        interventionen: ["Strukturierte Spielsituationen schaffen", "Spielregeln klar kommunizieren", "Erwachsene als Spielbegleiter einsetzen"]
+    },
+    "SOZ-19": {
+        zielformulierung: "Ich teile von mir aus Materialien und wechsle mich mit anderen ab.",
+        interventionen: ["Teilen explizit üben", "Positive Verstärkung beim Teilen", "Abwechseln in Spielen thematisieren"]
+    },
+    "SOZ-25": {
+        zielformulierung: "Ich zeige beginnende Freundschaft durch Vorliebe für ein bestimmtes Kind.",
+        interventionen: ["Gemeinsame Aktivitäten mit bevorzugtem Kind", "Freundschaftliche Interaktionen fördern", "Über Freundschaft sprechen"]
+    },
+    // KOGNITION
+    "KOG-1": {
+        zielformulierung: "Ich reagiere auf Reize mit Zuwendung zur Reizquelle.",
+        interventionen: ["Sensorische Aktivitäten anbieten", "Visuelle und auditive Reize einsetzen", "Aufmerksamkeit gezielt lenken"]
+    },
+    "KOG-3": {
+        zielformulierung: "Ich erkenne Personen oder Objekte wieder.",
+        interventionen: ["Memory-Spiele einsetzen", "Bekannte Objekte benennen", "Wiedererkennungsspiele spielen"]
+    },
+    "KOG-10": {
+        zielformulierung: "Ich passe ein Objekt in eine passende Lücke ein.",
+        interventionen: ["Form-Sortierspiele anbieten", "Puzzles in steigender Schwierigkeit", "Hands-on Materialien verwenden"]
+    },
+    "KOG-15": {
+        zielformulierung: "Ich erkenne den Gebrauchswert vertrauter Gegenstände.",
+        interventionen: ["Alltagsgegenstände erkunden", "Funktionen spielerisch erarbeiten", "So-tun-als-ob-Spiele"]
+    },
+    "KOG-22": {
+        zielformulierung: "Ich zähle bis 4 und wende dabei 1-zu-1 Zuordnung an.",
+        interventionen: ["Zählspiele mit konkretem Material", "Mengen visuell darstellen", "Alltägliche Zählsituationen nutzen"]
+    },
+    "KOG-34": {
+        zielformulierung: "Ich lese 50 Wörter des Grundwortschatzes.",
+        interventionen: ["Tägliche Leseübungen", "Wort-Bild-Zuordnungen", "Lesespiele und -apps einsetzen"]
+    }
+};
+
+// Fallback für Items ohne spezifische Intervention
+function getInterventionData(itemId) {
+    if (INTERVENTIONS_DATA[itemId]) {
+        return INTERVENTIONS_DATA[itemId];
+    }
+    // Generische Intervention basierend auf Bereich
+    const prefix = itemId.split('-')[0];
+    const genericInterventions = {
+        'V': {
+            zielformulierung: "Ich zeige das erwartete Verhalten in der beschriebenen Situation.",
+            interventionen: ["Verhaltensanforderung klar benennen und aktivieren", "Positives Verhalten spiegeln", "Strukturierte Übungssituationen schaffen"]
+        },
+        'K': {
+            zielformulierung: "Ich drücke mich angemessen aus.",
+            interventionen: ["Sprachliche Modelle anbieten", "Kommunikationssituationen schaffen", "Positive Verstärkung bei Kommunikation"]
+        },
+        'SOZ': {
+            zielformulierung: "Ich verhalte mich sozial angemessen in der Gruppe.",
+            interventionen: ["Soziale Situationen üben", "Kooperative Spiele anbieten", "Positive Interaktionen verstärken"]
+        },
+        'KOG': {
+            zielformulierung: "Ich bewältige die kognitive Anforderung.",
+            interventionen: ["Aufgaben in kleine Schritte unterteilen", "Konkretes Material verwenden", "Wiederholung und Übung sicherstellen"]
+        }
+    };
+    return genericInterventions[prefix] || genericInterventions['V'];
+}
+
+function calculateAge(birthDate) {
+    if (!birthDate) return null;
+    const today = new Date();
+    const birth = new Date(birthDate);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+        age--;
+    }
+    // Also calculate months for more precision
+    let months = today.getMonth() - birth.getMonth();
+    if (today.getDate() < birth.getDate()) months--;
+    if (months < 0) months += 12;
+    return { years: age, months: months, decimal: age + (months / 12) };
+}
+
+// Generiert individuelle professionelle Statements pro Bereich mit Implikationen
+function generateDomainStatement(domain, domainName, bioAge, devAge, gap, stage, angst, domainStageData) {
+    if (gap === null || !bioAge || !devAge) {
+        return `Keine vollständige Einschätzung im Bereich ${domainName} möglich.`;
+    }
+
+    // Globale Implikationen: Was bedeutet dieser Entwicklungsstand konkret?
+    const implications = {
+        verhalten: {
+            1: {
+                alltag: "Das Kind braucht ständige Begleitung und reagiert impulsiv auf Reize. Übergänge und Veränderungen lösen starke Reaktionen aus.",
+                schwierigkeit: "Selbstständige Teilnahme an Gruppenaktivitäten ist nicht möglich. Jeder Handlungsschritt braucht direkte Anleitung.",
+                peers: "Während Gleichaltrige selbstständig Routinen folgen, benötigt dieses Kind 1:1-Begleitung wie ein Kleinkind."
+            },
+            2: {
+                alltag: "Das Kind kann kurz warten und an Aktivitäten teilnehmen, verliert aber bei Frustration schnell die Kontrolle.",
+                schwierigkeit: "Gruppensituationen ohne enge Begleitung führen zu Konflikten. Regeln werden noch nicht als sinnvoll verstanden.",
+                peers: "Gleichaltrige zeigen bereits Frustrationstoleranz - dieses Kind reagiert auf Enttäuschungen noch wie ein Kleinkind."
+            },
+            3: {
+                alltag: "Das Kind kennt Regeln und verhält sich in strukturierten Situationen angemessen, braucht aber Erinnerungen und Unterstützung.",
+                schwierigkeit: "Bei unerwarteten Situationen oder wenn andere die Kontrolle verlieren, destabilisiert sich das Kind.",
+                peers: "Im Vergleich zu Gleichaltrigen fehlt die Fähigkeit, Verhalten flexibel an neue Situationen anzupassen."
+            },
+            4: {
+                alltag: "Das Kind kann sein Verhalten reflektieren und Alternativen benennen, setzt diese unter Stress aber nicht immer um.",
+                schwierigkeit: "Eigenverantwortung und Selbststeuerung in komplexen Situationen fallen noch schwer.",
+                peers: "Gleichaltrige übernehmen bereits Verantwortung für Gruppenentscheidungen."
+            },
+            5: {
+                alltag: "Das Kind zeigt reife Verhaltenssteuerung und reagiert auch in neuen Situationen angemessen.",
+                schwierigkeit: "Unter extremem Druck können frühere Muster auftreten.",
+                peers: "Das Verhalten entspricht dem der Gleichaltrigen."
+            }
+        },
+        kommunikation: {
+            1: {
+                alltag: "Kommunikation erfolgt hauptsächlich nonverbal oder mit einzelnen Wörtern. Bedürfnisse werden durch Verhalten ausgedrückt.",
+                schwierigkeit: "Frustration durch mangelnde Ausdrucksmöglichkeit führt zu Verhaltensauffälligkeiten. Anweisungen werden oft nicht verstanden.",
+                peers: "Während Gleichaltrige komplexe Gespräche führen, kommuniziert dieses Kind auf Kleinkind-Niveau."
+            },
+            2: {
+                alltag: "Einfache Sätze werden verwendet, komplexe Gedanken können aber nicht verbalisiert werden.",
+                schwierigkeit: "Missverständnisse sind häufig. Konflikte können nicht verbal gelöst werden - das Kind greift auf Handlungen zurück.",
+                peers: "Gleichaltrige diskutieren und argumentieren - dieses Kind kann nur einfache Aussagen machen."
+            },
+            3: {
+                alltag: "Das Kind berichtet über Erlebnisse und benennt Gefühle, hat aber Schwierigkeiten mit abstrakten Themen.",
+                schwierigkeit: "Schulische Anforderungen an Leseverständnis und Ausdruck überfordern das Kind oft.",
+                peers: "Gespräche mit Gleichaltrigen scheitern manchmal am unterschiedlichen Sprachniveau."
+            },
+            4: {
+                alltag: "Gefühle werden reflektiert und Beziehungen sprachlich gestaltet, komplexe Themen brauchen Unterstützung.",
+                schwierigkeit: "Abstrakte Unterrichtsinhalte und differenzierte Diskussionen sind herausfordernd.",
+                peers: "Kommunikation gelingt, tiefere Gespräche über Werte oder Zukunft fallen schwer."
+            },
+            5: {
+                alltag: "Differenzierte Kommunikation und sprachliche Beziehungspflege sind möglich.",
+                schwierigkeit: "Sehr abstrakte oder emotionale Themen können gelegentlich schwierig sein.",
+                peers: "Kommunikationsfähigkeit entspricht der Altersgruppe."
+            }
+        },
+        sozialisation: {
+            1: {
+                alltag: "Das Kind spielt allein oder parallel, zeigt wenig Interesse an Peers. Bindung zu Erwachsenen steht im Vordergrund.",
+                schwierigkeit: "Gruppenaktivitäten sind kaum möglich. Das Kind sucht ständig die Nähe vertrauter Erwachsener.",
+                peers: "Gleichaltrige bilden Freundschaften und spielen kooperativ - dieses Kind ist noch im Parallelspiel."
+            },
+            2: {
+                alltag: "Kurzes gemeinsames Spiel ist möglich, Teilen und Abwechseln führen aber oft zu Konflikten.",
+                schwierigkeit: "Stabile Freundschaften entstehen nicht. Das Kind wird oft ausgeschlossen wegen unreifen Sozialverhaltens.",
+                peers: "Während Gleichaltrige feste Freundschaften haben, wechselt dieses Kind häufig Spielpartner."
+            },
+            3: {
+                alltag: "Beginnende Freundschaften und Befolgen von Gruppenregeln, aber Konflikte brauchen Unterstützung.",
+                schwierigkeit: "Komplexe soziale Dynamiken wie Cliquen oder subtile Ausgrenzung werden nicht verstanden.",
+                peers: "Gleichaltrige navigieren komplexe Situationen - dieses Kind versteht nur einfache Gruppenstrukturen."
+            },
+            4: {
+                alltag: "Aktive Beteiligung in Gruppen und Berücksichtigung verschiedener Perspektiven.",
+                schwierigkeit: "Tiefere Freundschaften mit gegenseitiger Unterstützung entwickeln sich noch.",
+                peers: "Soziale Fähigkeiten nähern sich dem Niveau Gleichaltriger an."
+            },
+            5: {
+                alltag: "Tragfähige Beziehungen und echte Empathie sind vorhanden.",
+                schwierigkeit: "Komplexe Situationen wie romantische Beziehungen können herausfordernd sein.",
+                peers: "Soziale Kompetenz entspricht der Altersgruppe."
+            }
+        },
+        kognition: {
+            1: {
+                alltag: "Lernen erfolgt durch Sinneserfahrung und Wiederholung. Abstraktes Denken ist nicht möglich.",
+                schwierigkeit: "Schulische Anforderungen können nicht erfüllt werden. Jeder Lernschritt braucht konkretes Material.",
+                peers: "Gleichaltrige arbeiten mit Texten und Zahlen - dieses Kind braucht Bildmaterial und Handlungsorientierung."
+            },
+            2: {
+                alltag: "Sortieren, Zählen und einfache Muster werden erkannt, Lesen und Schreiben sind noch nicht möglich.",
+                schwierigkeit: "Der Regellehrplan ist nicht zugänglich. Adaptiertes Material auf Vorschulniveau wird benötigt.",
+                peers: "Während Gleichaltrige lesen und rechnen, arbeitet dieses Kind mit Vorschulmaterial."
+            },
+            3: {
+                alltag: "Grundlegende Kulturtechniken sind vorhanden, schulische Anforderungen entsprechen jüngerem Alter.",
+                schwierigkeit: "Komplexere Aufgaben, Textaufgaben und abstraktes Denken überfordern.",
+                peers: "Der Leistungsunterschied zu Gleichaltrigen wird in höheren Klassen deutlicher."
+            },
+            4: {
+                alltag: "Wissen wird angewendet und einfache Probleme werden gelöst.",
+                schwierigkeit: "Abstrakte Konzepte erfordern zusätzliche Erklärung.",
+                peers: "Kognitive Fähigkeiten nähern sich dem Niveau Gleichaltriger an."
+            },
+            5: {
+                alltag: "Differenziertes Denken und Problemanalyse sind möglich.",
+                schwierigkeit: "Sehr komplexe Problemstellungen können Unterstützung erfordern.",
+                peers: "Kognitive Kompetenz entspricht der Altersgruppe."
+            }
+        }
+    };
+
+    const impl = implications[domain]?.[stage] || implications.verhalten[1];
+    const stufenLabel = STAGE_DATA[stage]?.label || "0-2 Jahre";
+
+    // Altersgemäß
+    if (gap <= 0) {
+        return `<strong>${domainName} – Altersgemäß (Stufe ${stage}):</strong> ${impl.alltag} Diese Kompetenz ist eine wichtige Ressource.`;
+    }
+
+    // Mit Entwicklungsdifferenz
+    return `<strong>${domainName} – Stufe ${stage} (${stufenLabel}) | ${gap.toFixed(1)} Jahre Differenz</strong><br>
+<em>Entwicklungsthema: ${angst}</em><br><br>
+<u>Alltag:</u> ${impl.alltag}<br>
+<u>Schwierigkeit:</u> ${impl.schwierigkeit}<br>
+<u>Vergleich Peers:</u> ${impl.peers}`;
+}
+
+function calculateDevelopmentalAge(highestStage, stageData, domain) {
+    if (highestStage === 0) return { age: 0, stage: 0 };
+
+    const stage = STAGE_DATA[highestStage];
+    const sd = stageData[domain][highestStage];
+
+    // Calculate weighted position within stage based on completion percentage
+    const completionPercent = sd.erreicht / sd.total;
+    const ageRange = stage.ageMax - stage.ageMin;
+    const developmentalAge = stage.ageMin + (ageRange * completionPercent);
+
+    return {
+        age: Math.round(developmentalAge * 10) / 10,
+        stage: highestStage,
+        stageLabel: stage.label,
+        angst: stage.angst,
+        beschreibung: stage.beschreibung,
+        completion: Math.round(completionPercent * 100)
+    };
+}
+
+function exportDS() {
+    const student = getStudentData();
+    const today = new Date().toLocaleDateString('de-DE');
+    const biologicalAge = calculateAge(student.birthDate);
+    const devAges = calculateAllDevelopmentalAges();
+    const gridData = generateELDiBGrid();
+
+    // Exaktes HTML für DS-Dokument nach CDSE Template
+    let html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Spezialisierte Diagnostik - ${student.name || 'DS'}</title>
+<style>
+@page {
+    size: A4;
+    margin: 2cm 2.5cm 2cm 2.5cm;
+}
+body {
+    font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.5;
+    color: #000;
+    margin: 0;
+    padding: 0;
+}
+p { margin: 0 0 11pt 0; }
+
+/* Header rechts ausgerichtet */
+.header-right {
+    text-align: right;
+    font-size: 11pt;
+    line-height: 1.5;
+    margin-bottom: 24pt;
+}
+
+/* Titel zentriert */
+.title-main {
+    text-align: center;
+    font-size: 16pt;
+    font-weight: bold;
+    margin: 0 0 6pt 0;
+}
+.title-sub {
+    text-align: center;
+    font-size: 14pt;
+    font-weight: normal;
+    margin: 0 0 24pt 0;
+}
+
+/* Info-Tabelle ohne Rahmen, nur vertikale Linie */
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24pt 0;
+}
+.info-table td {
+    padding: 6pt 10pt;
+    border: none;
+    vertical-align: top;
+    line-height: 1.5;
+}
+.info-table td:first-child {
+    font-weight: bold;
+    width: 180pt;
+    border-right: 1pt solid #AEAAAA;
+}
+.info-table td:last-child {
+    padding-left: 15pt;
+}
+
+/* Empfehlungen Box */
+.empfehlungen-box {
+    margin: 18pt 0;
+    padding: 0;
+}
+.empfehlungen-header {
+    font-weight: bold;
+    padding: 6pt 0;
+    border-bottom: 1pt solid #000;
+    margin-bottom: 6pt;
+}
+.checkbox-row {
+    padding: 4pt 0;
+    line-height: 1.4;
+}
+.checkbox-indent {
+    padding-left: 50pt;
+    font-size: 10pt;
+}
+
+/* Überschriften */
+.heading1 {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #2F5496;
+    margin: 18pt 0 6pt 0;
+    page-break-after: avoid;
+}
+.heading2 {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #2F5496;
+    margin: 12pt 0 6pt 0;
+    page-break-after: avoid;
+}
+
+/* Inhaltsverzeichnis */
+.toc {
+    margin: 12pt 0;
+}
+.toc-entry {
+    margin: 3pt 0;
+    line-height: 1.5;
+}
+.toc-indent {
+    margin-left: 24pt;
+}
+
+/* Platzhalter Text */
+.placeholder-text {
+    color: #808080;
+    font-style: italic;
+}
+
+/* Tabellen allgemein */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12pt 0;
+    font-size: 10pt;
+}
+.data-table th, .data-table td {
+    border: 1pt solid #000;
+    padding: 6pt 8pt;
+    text-align: left;
+    vertical-align: top;
+}
+.data-table th {
+    background: #D9E2F3;
+    font-weight: bold;
+}
+
+/* ELDiB Grid */
+.eldib-grid {
+    border-collapse: collapse;
+    margin: 12pt auto;
+    font-size: 7pt;
+}
+.eldib-grid td, .eldib-grid th {
+    border: 0.5pt solid #000;
+    width: 18pt;
+    height: 14pt;
+    text-align: center;
+    padding: 1pt;
+    vertical-align: middle;
+}
+.eldib-grid .header-cell {
+    background: #4472C4;
+    color: white;
+    font-weight: bold;
+    font-size: 8pt;
+}
+.eldib-grid .stufe-cell {
+    background: #D9E2F3;
+    font-weight: bold;
+    font-size: 7pt;
+    width: 100pt;
+    text-align: left;
+    padding-left: 4pt;
+}
+.erreicht { background: #70AD47 !important; color: white; }
+.ziel { background: #FFC000 !important; color: #000; }
+.empty-cell { background: #E7E6E6; }
+
+/* Legende */
+.legend {
+    margin: 12pt 0;
+    font-size: 9pt;
+    text-align: center;
+}
+.legend-item {
+    display: inline-block;
+    margin: 0 12pt;
+}
+.legend-box {
+    display: inline-block;
+    width: 14pt;
+    height: 10pt;
+    border: 0.5pt solid #000;
+    vertical-align: middle;
+    margin-right: 4pt;
+}
+
+/* Altersbalken */
+.age-comparison {
+    margin: 18pt 0;
+}
+.age-comparison-title {
+    font-weight: bold;
+    margin-bottom: 12pt;
+}
+.age-bar-row {
+    margin: 6pt 0;
+    display: table;
+    width: 100%;
+}
+.age-bar-label {
+    display: table-cell;
+    width: 160pt;
+    font-size: 10pt;
+    vertical-align: middle;
+}
+.age-bar-container {
+    display: table-cell;
+    width: 200pt;
+    vertical-align: middle;
+}
+.age-bar-wrapper {
+    width: 200pt;
+    height: 16pt;
+    background: #E7E6E6;
+    border: 0.5pt solid #999;
+}
+.age-bar {
+    height: 100%;
+    display: block;
+}
+.age-bar.bio { background: #5B9BD5; }
+.age-bar.verhalten { background: #ED7D31; }
+.age-bar.kommunikation { background: #70AD47; }
+.age-bar.sozialisation { background: #9E480E; }
+.age-bar.kognition { background: #7030A0; }
+.age-value {
+    display: table-cell;
+    width: 60pt;
+    text-align: right;
+    font-size: 10pt;
+    vertical-align: middle;
+    padding-left: 8pt;
+}
+
+/* Copyright */
+.copyright {
+    font-size: 7pt;
+    text-align: center;
+    margin-top: 12pt;
+    color: #666;
+}
+
+/* Seitenumbruch */
+.page-break { page-break-before: always; }
+
+/* Unterschrift */
+.signature-block {
+    margin-top: 36pt;
+}
+.signature-line {
+    border-bottom: 1pt solid #000;
+    width: 200pt;
+    margin-bottom: 6pt;
+}
+</style>
+</head>
+<body>
+
+<!-- SEITE 1: Deckblatt -->
+<div class="header-right">
+<strong>Commission nationale d'inclusion</strong><br>
+33, Rives de Clausen<br>
+L-2165 Luxembourg
+</div>
+
+<p class="title-main">Spezialisierte Diagnostik</p>
+<p class="title-sub">des Zentrums für sozio-emotionale Entwicklung (CDSE)</p>
+
+<table class="info-table">
+<tr><td>Name des/der Schüler.in</td><td>${student.name || ''}</td></tr>
+<tr><td>Sozialversicherungsnummer</td><td>${student.birthDate ? new Date(student.birthDate).toLocaleDateString('de-DE').replace(/\./g, ' ').split(' ').reverse().join(' ') : ''}</td></tr>
+<tr><td>Alter</td><td>${biologicalAge ? biologicalAge.years + ' Jahre, ' + biologicalAge.months + ' Monate' : ''}</td></tr>
+<tr><td>Schule</td><td>${student.foerderort || ''}</td></tr>
+<tr><td>Klasse</td><td></td></tr>
+<tr><td>Sprachen</td><td><span class="placeholder-text">(Sprachkompetenzranking)</span></td></tr>
+</table>
+
+<div class="empfehlungen-box">
+<div class="empfehlungen-header">Empfehlungen des CDSE</div>
+<div class="checkbox-row">☐ Spezialisierte Diagnostik in Zusammenarbeit mit einem Kompetenzzentrum</div>
+<div class="checkbox-row">☐ Beratung und Begleitung der Eltern und des/der betroffenen Schülers/-in</div>
+<div class="checkbox-row">☐ Beratung und Begleitung der Fachleute</div>
+<div class="checkbox-row">☐ Spezialisierte Lernwerkstatt</div>
+<div class="checkbox-row">☐ Spezialisierte ambulante Intervention (ISA)</div>
+<div class="checkbox-row">☐ Spezialisierte Beschulung im CDSE</div>
+<div class="checkbox-indent">☐ Classe de Participation (ClaPa)</div>
+<div class="checkbox-indent">☐ Centre socio-thérapeutique (CST)</div>
+<div class="checkbox-indent">☐ Annexe Junglinster</div>
+<div class="checkbox-row">☐ Spezialisierte Beschulung im Ausland</div>
+<div class="checkbox-row">☐ Abschluss der Aktivitäten des CDSE</div>
+<div class="checkbox-row">☐ Schließung der Akte im CDSE</div>
+</div>
+
+<!-- SEITE 2: Inhaltsverzeichnis -->
+<div class="page-break"></div>
+<p class="heading1" style="margin-top:0;">Inhaltsverzeichnis</p>
+<div class="toc">
+<div class="toc-entry">1. Auftragsklärung</div>
+<div class="toc-entry">2. Anamnese</div>
+<div class="toc-entry toc-indent">2.1 Vorgeschichte</div>
+<div class="toc-entry toc-indent">2.2 Sozialbericht</div>
+<div class="toc-entry">3. Aktuelle Situation</div>
+<div class="toc-entry toc-indent">3.1 Aktuelle schulische und außerschulische Unterstützungsmaßnahmen</div>
+<div class="toc-entry toc-indent">3.2 Sichtweise der Schule</div>
+<div class="toc-entry toc-indent">3.3 Sichtweise des Schülers/ der Schülerin</div>
+<div class="toc-entry toc-indent">3.4 Sichtweise der Eltern / Erziehungsberechtigten</div>
+<div class="toc-entry">4. Diagnostische Verfahren</div>
+<div class="toc-entry toc-indent">4.1 Verhaltensbeobachtungen</div>
+<div class="toc-entry toc-indent">4.2 Ergebnisse der Testverfahren</div>
+<div class="toc-entry toc-indent">4.3 Interpretation</div>
+<div class="toc-entry">5. Schlussfolgerung</div>
+<div class="toc-entry toc-indent">5.1 Spezifische Bedürfnisse des Schülers/der Schülerin</div>
+<div class="toc-entry toc-indent">5.2 Ziele</div>
+<div class="toc-entry toc-indent">5.3 Empfehlungen</div>
+<div class="toc-entry toc-indent">5.4 Empfehlungen - CNI</div>
+<div class="toc-entry">6. Anhänge</div>
+<div class="toc-entry toc-indent">6.1 Übersicht der Interventionen des CDSE</div>
+<div class="toc-entry toc-indent">6.2 Testergebnisse</div>
+<div class="toc-entry toc-indent">6.3 Produktionen des Schülers/der Schülerin</div>
+</div>
+
+<!-- SEITE 3: Auftragsklärung & Anamnese -->
+<div class="page-break"></div>
+<p class="heading1" style="margin-top:0;">1. Auftragsklärung</p>
+<p>Das Zentrum für sozio-emotionale Entwicklung wurde am <span class="placeholder-text">(Datum)</span> von der nationalen Kommission zur Inklusion (CNI) damit beauftragt, eine vertiefende Diagnostik bei <span class="placeholder-text">(Name des/der Schülers/Schülerin)</span> durchzuführen, um dessen aktuellen sozio-emotionalen Entwicklungsstand und Förderbedarf festzustellen. Der Anlass für die Beauftragung ist/sind <span class="placeholder-text">(spezifische Auffälligkeiten aus dem CI-Dokument kurz benennen)</span> in der Schule und/oder zu Hause, mit dem Anliegen eine <span class="placeholder-text">(ISA / Conseil & Guidance / CST)</span> einzuleiten. Die Anfrage erfolgte auf Empfehlung der betreuenden Fachkraft / Lehrperson / Arzt/Ärztin und/oder auf Wunsch der Eltern.</p>
+
+<p class="heading1">2. Anamnese</p>
+<p class="heading2">2.1 Vorgeschichte</p>
+<p class="placeholder-text">(Frühkindliche/Kindliche Entwicklung, wenn es relevant ist / bereits gestellte Diagnosen / schulische und außerschulische Unterstützungsmaßnahmen aus den letzten drei Jahren chronologisch aufzählen in Tabellen Form oder in einem Fliesstext / SCAS / CPI / …)</p>
+
+<table class="data-table">
+<tr><th>Zeitraum</th><th>Klasse</th><th>Maßnahme</th><th>Akteur</th></tr>
+<tr><td><span class="placeholder-text">Von … bis… oder seit …</span></td><td></td><td><span class="placeholder-text">SCAS, CPI, ESEB</span></td><td><span class="placeholder-text">Dir. XY, SPAD, …</span></td></tr>
+</table>
+
+<p class="heading2">2.2 Sozialbericht</p>
+<p class="placeholder-text">(Zusammensetzung der Familie / Familienstand / Besuchsrecht / Markante Ereignisse / Persönliche Situation der Eltern / Familienkonstellation / Berufliche Situation der Eltern / Arbeitszeiten / Organisation der Freizeit / Sprache zu Hause…)</p>
+
+<!-- SEITE 4: Aktuelle Situation -->
+<div class="page-break"></div>
+<p class="heading1" style="margin-top:0;">3. Aktuelle Situation</p>
+<p>Der/Die Schüler/Schülerin besucht derzeit die <span class="placeholder-text">...</span> Klasse der Schule in <span class="placeholder-text">... (Name und Ort der Schule)</span>, bei <span class="placeholder-text">… (Name der Lehrperson)</span> und seine Referenzperson ist <span class="placeholder-text">… (ESEB Referenzperson)</span>.</p>
+
+<p class="heading2">3.1 Aktuelle schulische und außerschulische Unterstützungsmaßnahmen</p>
+<p class="placeholder-text">(Aktuelle Unterstützungsmaßnahmen aus den letzten drei Jahren chronologisch aufzählen / SCAS / CPI / …)</p>
+
+<table class="data-table">
+<tr><th>Zeitraum</th><th>Klasse</th><th>Maßnahme</th><th>Akteur</th></tr>
+<tr><td><span class="placeholder-text">Von … bis… oder seit …</span></td><td></td><td><span class="placeholder-text">SCAS, CPI, ESEB</span></td><td><span class="placeholder-text">Dir. XY, SPAD, …</span></td></tr>
+</table>
+
+<p class="placeholder-text">(die folgenden 3 Punkte können ebenfalls in einem Fließtext verfasst werden, z.B. wenn sich alle drei Sichtweisen sehr ähnlich sind.)</p>
+
+<p class="heading2">3.2 Sichtweise der Schule</p>
+<p class="placeholder-text">(Verhalten in der Schule / Leistungen in der Schule / Beziehungen/ Erwartungen / Anliegen / Aussichtspunkt der Lehrperson …)</p>
+
+<p class="heading2">3.3 Sichtweise des Schülers/ der Schülerin</p>
+<p class="placeholder-text">(Leidensdruck / Eltern-Kind-Beziehung / Verhalten in der Schule / Lehrer:in-Schüler:in Verhalten / Hobbys / Freunde / Anliegen / Aussichtspunkt des/der Schülers/Schülerin/ …)</p>
+
+<p class="heading2">3.4 Sichtweise der Eltern / Erziehungsberechtigten</p>
+<p class="placeholder-text">(Verhalten zu Hause / Eltern-Kind-Beziehungen / Anliegen Erwartungen der Eltern / ...)</p>
+
+<!-- SEITE 5: Diagnostische Verfahren -->
+<div class="page-break"></div>
+<p class="heading1" style="margin-top:0;">4. Diagnostische Verfahren</p>
+<p>Diese Einschätzung wurde aufgrund von dem/den Tests/Methoden (z.B. ELDiB (Entwicklungstherapeutischer/Entwicklungspädagogischer Lernziel-Diagnose-Bogen, …) und der Beobachtungen im Klassenzimmer und in Zusammenarbeit mit den Lehrpersonen von <span class="placeholder-text">(Name des/der Schülers/Schülerin)</span> in <span class="placeholder-text">(Ortschaft)</span> durchgeführt.</p>
+
+<p class="heading2">4.1 Verhaltensbeobachtungen</p>
+<p class="placeholder-text">(objektiv, konkrete, relevante Verhaltensweisen beschreiben / sowohl die negativen als auch die positiven)</p>
+
+<p class="heading2">4.2 Ergebnisse der Testverfahren</p>
+` + generate42Section(student, devAges) + `
+
+<p class="heading2">4.3 Interpretation</p>
+<p class="placeholder-text">(von allen Informationen, Testergebnissen und Beobachtungen, Überschneidungen/Differenzen – wie kann man diese interpretieren? / ELDiB-Welche Abwehrmechanismen sind, wie genau, bei dem/der Schüler:in zu beobachten, die die jeweiligen Entwicklungsängste kompensieren?)</p>
+
+<!-- SEITE 6: Schlussfolgerung -->
+<div class="page-break"></div>
+<p class="heading1" style="margin-top:0;">5. Schlussfolgerung</p>
+<p>Auf Basis der erhobenen Testergebnisse, Beobachtungen und anamnestischen Informationen wurden in enger Abstimmung mit dem Schüler bzw. der Schülerin (ab etwa 12 Jahren) sowie den Eltern gezielte Förderbedarfe identifiziert. Daraus abgeleitet wurden gemeinsam Empfehlungen formuliert, die die individuelle Entwicklung wirksam unterstützen sollen.</p>
+
+<p class="heading2">5.1 Spezifische Bedürfnisse des Schülers/der Schülerin</p>
+<p class="placeholder-text">(Zusammenfassend in Bezug auf die Testergebnisse, Beobachtungen und Anamnese spezifische Bedürfnisse kurz beschreiben und welche Ressourcen der/die Schülerin hat.)</p>
+
+<p class="heading2">5.2 Ziele</p>
+<p class="placeholder-text">(SMART-Ziele ausgehend von den formulierten ELDiB Zielen)</p>
+
+<p class="heading2">5.3 Empfehlungen</p>
+<p class="placeholder-text">(Es ist wichtig die Maßnahmen zu gliedern nach dem familiären Kontext / schulischen Kontext / außerschulischer Kontext und ggfls. dem privaten Leben.)</p>
+
+<p class="heading2">5.4 Empfehlungen - CNI</p>
+<p class="placeholder-text">(Genaue Bezeichnung der CDSE Maßnahme, welche empfohlen wird / ggfls. eines Kompetenzzentrums, wenn weitere Diagnostik empfohlen wird...)</p>
+
+<div class="signature-block">
+<div class="signature-line"></div>
+<p style="margin:0;">Name des Verfassers des Berichts<br>
+Berufsbezeichnung<br>
+Unité de diagnostic, de conseil et de suivi</p>
+</div>
+
+<!-- SEITE 7: Anhänge -->
+<div class="page-break"></div>
+<p class="heading1" style="margin-top:0;">6. Anhänge</p>
+
+<p class="heading2">6.1 Übersicht der Interventionen des CDSE</p>
+
+<table class="data-table" style="font-size: 9pt;">
+<tr>
+<th>Datum</th>
+<th>Klassenbeobachtungen</th>
+<th>Kontakte mit Erziehungsberechtigten</th>
+<th>Kontakte mit der Herkunftsschule</th>
+<th>Kontakte mit externem Fachpersonal</th>
+<th>Kontakte mit dem/der Schüler:in</th>
+</tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<!-- SEITE 8: Testergebnisse (ELDiB) -->
+<div class="page-break"></div>
+<p class="heading2" style="margin-top:0;">6.2 Testergebnisse</p>
+
+<p style="text-align: center; font-weight: bold; margin: 12pt 0;">Zusammenfassung der Entwicklungsziele des ELDiB ©<br>
+<span style="font-weight: normal;">(Entwicklungstherapeutischer / entwicklungspädagogischer Lernziel-Diagnose-Bogen)</span></p>
+
+<table class="info-table" style="margin: 12pt 0;">
+<tr><td style="width: 140pt;">Name des/der Schüler:in</td><td>${student.name || ''}</td></tr>
+<tr><td>Geburtsdatum (Alter)</td><td>${student.birthDate ? new Date(student.birthDate).toLocaleDateString('de-DE') : ''} (${biologicalAge ? biologicalAge.years + ' Jahre ' + biologicalAge.months + ' Monate' : ''})</td></tr>
+<tr><td>Datum der Einschätzung</td><td>${student.assessmentDate ? new Date(student.assessmentDate).toLocaleDateString('de-DE') : today}</td></tr>
+</table>
+
+${generateDSGridHTML(gridData)}
+
+<div class="legend">
+<span>Legende: V-Verhalten; K-Kommunikation; SOZ-Sozialisation; KOG-Kognition</span><br>
+<span class="legend-item"><span class="legend-box erreicht"></span>grün = Entwicklungsziel erreicht</span>
+<span class="legend-item"><span class="legend-box ziel"></span>gelb = Förderziel</span>
+</div>
+
+<div class="copyright">
+© Distributed in the English original by the Developmental Therapy Institute, Inc., 1992.<br>
+© deutsche Ausgabe: Institut für Entwicklungstherapie/Entwicklungspädagogik e.V. (ETEP Europe) und Marita Bergsson
+</div>
+
+<!-- Altersbalken -->
+<div class="age-comparison">
+<p class="age-comparison-title">Vergleich: Biologisches Alter vs. Sozio-emotionales Entwicklungsalter</p>
+${generateAgeBarHTML('Biologisches Alter', biologicalAge ? biologicalAge.decimal : 0, 'bio', 17)}
+${generateAgeBarHTML('Verhalten (V)', devAges.verhalten || 0, 'verhalten', 17)}
+${generateAgeBarHTML('Kommunikation (K)', devAges.kommunikation || 0, 'kommunikation', 17)}
+${generateAgeBarHTML('Sozialisation (SOZ)', devAges.sozialisation || 0, 'sozialisation', 17)}
+${generateAgeBarHTML('Kognition (KOG)', devAges.kognition || 0, 'kognition', 17)}
+</div>
+
+<!-- SEITE 9: Produktionen -->
+<div class="page-break"></div>
+<p class="heading2" style="margin-top:0;">6.3 Produktionen des Schülers/der Schülerin</p>
+<p class="placeholder-text">(Hier können Zeichnungen, Texte oder andere Produktionen des Schülers/der Schülerin eingefügt werden.)</p>
+
+</body>
+</html>`;
+
+    // Download als .doc
+    var blob = new Blob(['\ufeff' + html], { type: 'application/msword' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = 'DS_' + (student.name || 'Spezialisierte_Diagnostik').replace(/\s+/g, '_') + '_' + today.replace(/\./g, '-') + '.doc';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+// Hilfsfunktion: Stufe aus Alter ermitteln
+function getStageForAge(age) {
+    if (age <= 2) return 1;
+    if (age <= 5) return 2;
+    if (age <= 9) return 3;
+    if (age <= 12) return 4;
+    return 5;
+}
+
+// Hilfsfunktion: Stufe als römische Zahl
+function getStageRoman(stage) {
+    var romans = {1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V'};
+    return romans[stage] || stage;
+}
+
+// Hilfsfunktion: Stufenbeschreibung
+function getStageDescription(stage) {
+    var descriptions = {
+        1: '0-2 Jahre',
+        2: '3-5 Jahre',
+        3: '6-9 Jahre',
+        4: '10-12 Jahre',
+        5: '13-17 Jahre'
+    };
+    return descriptions[stage] || '';
+}
+
+// Hilfsfunktion: Richtziel für Stufe
+function getStageRichtziel(stage) {
+    var richtziele = {
+        1: 'Auf die Umwelt mit Freude reagieren',
+        2: 'Auf die Umwelt mit Erfolg reagieren',
+        3: 'Fähigkeiten zur erfolgreichen Gruppenteilnahme erwerben',
+        4: 'Sich in Gruppenprozesse einbringen',
+        5: 'Individuelle/gruppenbezogene Fähigkeiten in neuen Situationen anwenden'
+    };
+    return richtziele[stage] || '';
+}
+
+// Hilfsfunktion: Bereichsname
+function getDomainName(domain) {
+    var names = {
+        verhalten: 'Verhalten (V)',
+        kommunikation: 'Kommunikation (K)',
+        sozialisation: 'Sozialisation (SOZ)',
+        kognition: 'Kognition (KOG)'
+    };
+    return names[domain] || domain;
+}
+
+// Hilfsfunktion: Bereichscode
+function getDomainCode(domain) {
+    var codes = {
+        verhalten: 'V',
+        kommunikation: 'K',
+        sozialisation: 'SOZ',
+        kognition: 'KOG'
+    };
+    return codes[domain] || domain;
+}
+
+// Hilfsfunktion: Sortierte Bereiche nach Entwicklungsalter
+function getSortedDomainsByAge(devAges) {
+    var domains = ['verhalten', 'kommunikation', 'sozialisation', 'kognition'];
+    return domains
+        .filter(function(d) { return devAges[d] && devAges[d] > 0; })
+        .sort(function(a, b) { return (devAges[b] || 0) - (devAges[a] || 0); });
+}
+
+// Hilfsfunktion: Ziele für einen Bereich sammeln
+function getGoalsForDomain(domain) {
+    var goals = [];
+    if (!ELDIB_DATA[domain]) return goals;
+    ELDIB_DATA[domain].stufen.forEach(function(stufe) {
+        stufe.items.forEach(function(item) {
+            var status = assessments[domain][item.id];
+            if (status && status.ziel) {
+                goals.push({
+                    id: item.id,
+                    nummer: item.id.split('-')[1],
+                    text: item.text,
+                    stufe: stufe.nummer
+                });
+            }
+        });
+    });
+    return goals;
+}
+
+// Hilfsfunktion: Erreichte Items für einen Bereich
+function getReachedItemsForDomain(domain) {
+    var reached = [];
+    if (!ELDIB_DATA[domain]) return reached;
+    ELDIB_DATA[domain].stufen.forEach(function(stufe) {
+        stufe.items.forEach(function(item) {
+            var status = assessments[domain][item.id];
+            if (status && status.erreicht) {
+                reached.push({
+                    id: item.id,
+                    nummer: item.id.split('-')[1],
+                    text: item.text,
+                    stufe: stufe.nummer
+                });
+            }
+        });
+    });
+    return reached;
+}
+
+// Generiert den 4.2 Abschnitt automatisch aus ELDiB-Daten
+function generate42Section(student, devAges) {
+    var sortedDomains = getSortedDomainsByAge(devAges);
+    if (sortedDomains.length === 0) {
+        return '<p class="placeholder-text">(Keine ELDiB-Daten vorhanden)</p>';
+    }
+
+    var html = '';
+    var studentName = student.name || '(Name des/der Schülers/Schülerin)';
+
+    // ELDiB Einleitung
+    html += '<p><strong>ELDiB (Entwicklungstherapeutischer/Entwicklungspädagogischer Lernziel-Diagnose-Bogen):</strong> ';
+    html += 'Der ELDiB ist ein standardisiertes Einschätzungsinstrument, das dazu dient, die soziale und emotionale ';
+    html += 'Entwicklung von Kindern und Jugendlichen im Alter zwischen Geburt und sechzehn Jahren zu erfassen. ';
+    html += 'Er stellt ein Profil von spezifischen Fähigkeiten zur Verfügung, die als Indikatoren der sozialen und emotionalen Förderung dienen.</p>';
+
+    // Höchster Bereich
+    var highestDomain = sortedDomains[0];
+    var highestAge = devAges[highestDomain];
+    var highestStage = getStageForAge(highestAge);
+    var highestGoals = getGoalsForDomain(highestDomain);
+
+    html += '<p><strong>Der am weitesten entwickelte Bereich</strong> bei ' + studentName + ', ist der ';
+    html += '<strong>' + getDomainName(highestDomain) + '</strong>, hier befindet sich der/die Schüler:in auf ';
+    html += '<strong>Entwicklungsstufe ' + getStageRoman(highestStage) + ' (' + getStageDescription(highestStage) + ')</strong> ';
+    html += 'mit einem Entwicklungsalter von <strong>' + highestAge.toFixed(1) + ' Jahren</strong>. ';
+    html += '<span class="placeholder-text">Er/Sie zeigt bereits gute ... . Dies wird beispielsweise deutlich durch ... . ';
+    html += 'Allerdings gelingt es ihm/ihr noch nicht immer, ... (anhand von 1-2 Beispielen darstellen).</span></p>';
+
+    html += '<p>Ausgehend vom Richtziel <em>„' + getStageRichtziel(highestStage) + '"</em> (siehe ELDiB Booklet), ergaben sich folgende Lernziele:</p>';
+    if (highestGoals.length > 0) {
+        html += '<ul style="margin: 6pt 0 12pt 24pt;">';
+        highestGoals.slice(0, 3).forEach(function(goal) {
+            html += '<li>' + getDomainCode(highestDomain) + ' ' + goal.nummer + ' – ' + goal.text + '</li>';
+        });
+        html += '</ul>';
+    } else {
+        html += '<ul style="margin: 6pt 0 12pt 24pt;"><li>' + getDomainCode(highestDomain) + ' <span class="placeholder-text">… – … (siehe ELDiB Booklet)</span></li></ul>';
+    }
+
+    // Mittlere Bereiche
+    for (var i = 1; i < sortedDomains.length - 1; i++) {
+        var domain = sortedDomains[i];
+        var age = devAges[domain];
+        var stage = getStageForAge(age);
+        var goals = getGoalsForDomain(domain);
+
+        html += '<p><strong>Im Bereich ' + getDomainName(domain) + '</strong> befindet sich der/die Schüler:in auf der ';
+        html += '<strong>Entwicklungsstufe ' + getStageRoman(stage) + ' (' + getStageDescription(stage) + ')</strong> ';
+        html += 'mit einem Entwicklungsalter von <strong>' + age.toFixed(1) + ' Jahren</strong>. ';
+        html += '<span class="placeholder-text">Er/Sie zeigt bereits gute ... . Dies wird beispielsweise deutlich durch ... . ';
+        html += 'Allerdings gelingt es ihm/ihr noch nicht immer, ... (anhand von 1-2 Beispielen darstellen).</span></p>';
+
+        html += '<p>Ausgehend vom Richtziel <em>„' + getStageRichtziel(stage) + '"</em> (siehe ELDiB Booklet), ergaben sich folgende Lernziele:</p>';
+        if (goals.length > 0) {
+            html += '<ul style="margin: 6pt 0 12pt 24pt;">';
+            goals.slice(0, 3).forEach(function(goal) {
+                html += '<li>' + getDomainCode(domain) + ' ' + goal.nummer + ' – ' + goal.text + '</li>';
+            });
+            html += '</ul>';
+        } else {
+            html += '<ul style="margin: 6pt 0 12pt 24pt;"><li>' + getDomainCode(domain) + ' <span class="placeholder-text">… – … (siehe ELDiB Booklet)</span></li></ul>';
+        }
+    }
+
+    // Niedrigster Bereich (falls mehr als ein Bereich)
+    if (sortedDomains.length > 1) {
+        var lowestDomain = sortedDomains[sortedDomains.length - 1];
+        var lowestAge = devAges[lowestDomain];
+        var lowestStage = getStageForAge(lowestAge);
+        var lowestGoals = getGoalsForDomain(lowestDomain);
+
+        html += '<p><strong>Der am niedrigsten entwickelte Bereich</strong> bei ' + studentName + ', ist der ';
+        html += '<strong>' + getDomainName(lowestDomain) + '</strong>, hier befindet sich der/die Schüler:in auf der ';
+        html += '<strong>Entwicklungsstufe ' + getStageRoman(lowestStage) + ' (' + getStageDescription(lowestStage) + ')</strong> ';
+        html += 'mit einem Entwicklungsalter von <strong>' + lowestAge.toFixed(1) + ' Jahren</strong>. ';
+        html += '<span class="placeholder-text">Er/Sie zeigt bereits gute ... . Dies wird beispielsweise deutlich durch ... . ';
+        html += 'Allerdings gelingt es ihm/ihr noch nicht immer, ... (anhand von 1-2 Beispielen darstellen).</span></p>';
+
+        html += '<p>Ausgehend vom Richtziel <em>„' + getStageRichtziel(lowestStage) + '"</em> (siehe ELDiB Booklet), ergaben sich folgende Lernziele:</p>';
+        if (lowestGoals.length > 0) {
+            html += '<ul style="margin: 6pt 0 12pt 24pt;">';
+            lowestGoals.slice(0, 3).forEach(function(goal) {
+                html += '<li>' + getDomainCode(lowestDomain) + ' ' + goal.nummer + ' – ' + goal.text + '</li>';
+            });
+            html += '</ul>';
+        } else {
+            html += '<ul style="margin: 6pt 0 12pt 24pt;"><li>' + getDomainCode(lowestDomain) + ' <span class="placeholder-text">… – … (siehe ELDiB Booklet)</span></li></ul>';
+        }
+    }
+
+    return html;
+}
+
+// Hilfsfunktion: Altersbalken HTML generieren
+function generateAgeBarHTML(label, age, cssClass, maxAge) {
+    var width = age > 0 ? Math.min((age / maxAge) * 100, 100) : 0;
+    var displayAge = age > 0 ? age.toFixed(1) + ' Jahre' : '-';
+    return '<div class="age-bar-row">' +
+        '<span class="age-bar-label">' + label + ':</span>' +
+        '<span class="age-bar-container"><div class="age-bar-wrapper"><span class="age-bar ' + cssClass + '" style="width:' + width + '%;"></span></div></span>' +
+        '<span class="age-value">' + displayAge + '</span>' +
+        '</div>';
+}
+
+// Hilfsfunktion fuer DS Grid HTML - Kompaktes Format für DIN A4
+function generateDSGridHTML(gridData) {
+    var statusLookup = {};
+    Object.keys(gridData).forEach(function(domain) {
+        statusLookup[domain] = {};
+        gridData[domain].forEach(function(item) {
+            statusLookup[domain][item.nummer] = item.status;
+        });
+    });
+
+    // Kompakte Tabelle - 5 Spalten nebeneinander pro Zeile für jede Stufe
+    var html = '<table style="width:100%; border-collapse:collapse; font-size:7pt; margin:8pt 0;">';
+
+    // Header
+    html += '<tr>';
+    html += '<td style="border:1px solid #000; background:#4472C4; color:white; font-weight:bold; text-align:center; padding:3pt; width:6%;">V</td>';
+    html += '<td style="border:1px solid #000; background:#4472C4; color:white; font-weight:bold; text-align:center; padding:3pt; width:6%;">KOMM</td>';
+    html += '<td style="border:1px solid #000; background:#4472C4; color:white; font-weight:bold; text-align:center; padding:3pt; width:6%;">SOZ</td>';
+    html += '<td style="border:1px solid #000; background:#4472C4; color:white; font-weight:bold; text-align:center; padding:3pt; width:6%;">KOG</td>';
+    html += '<td style="border:1px solid #000; background:#D9E2F3; font-weight:bold; text-align:left; padding:3pt;">Stufe</td>';
+    html += '</tr>';
+
+    // Stufendefinitionen mit Item-Bereichen
+    var stufen = [
+        { nr: 5, label: 'Stufe 5: 13-17 J.', v: [29,33], k: [30,35], s: [35,41], kog: [57,62] },
+        { nr: 4, label: 'Stufe 4: 10-12 J.', v: [23,28], k: [23,29], s: [28,34], kog: [50,56] },
+        { nr: 3, label: 'Stufe 3: 6-9 J.', v: [15,22], k: [14,22], s: [18,27], kog: [37,49] },
+        { nr: 2, label: 'Stufe 2: 3-5 J.', v: [8,14], k: [7,13], s: [9,17], kog: [20,36] },
+        { nr: 1, label: 'Stufe 1: 0-2 J.', v: [1,7], k: [1,6], s: [1,8], kog: [1,19] }
+    ];
+
+    stufen.forEach(function(stufe) {
+        // Mehrere Zeilen pro Stufe - komprimiert
+        var maxRows = Math.max(
+            stufe.v[1] - stufe.v[0] + 1,
+            stufe.k[1] - stufe.k[0] + 1,
+            stufe.s[1] - stufe.s[0] + 1,
+            stufe.kog[1] - stufe.kog[0] + 1
+        );
+
+        for (var i = 0; i < maxRows; i++) {
+            html += '<tr style="height:12pt;">';
+
+            // V
+            var vNum = stufe.v[1] - i;
+            if (vNum >= stufe.v[0]) {
+                var vStatus = statusLookup.verhalten ? (statusLookup.verhalten[vNum] || '') : '';
+                var vBg = vStatus === 'erreicht' ? '#70AD47' : (vStatus === 'ziel' ? '#FFC000' : '#fff');
+                var vCol = vStatus === 'erreicht' ? '#fff' : '#000';
+                html += '<td style="border:1px solid #000; text-align:center; background:' + vBg + '; color:' + vCol + ';">' + vNum + '</td>';
+            } else {
+                html += '<td style="border:1px solid #000; background:#E7E6E6;"></td>';
+            }
+
+            // KOMM
+            var kNum = stufe.k[1] - i;
+            if (kNum >= stufe.k[0]) {
+                var kStatus = statusLookup.kommunikation ? (statusLookup.kommunikation[kNum] || '') : '';
+                var kBg = kStatus === 'erreicht' ? '#70AD47' : (kStatus === 'ziel' ? '#FFC000' : '#fff');
+                var kCol = kStatus === 'erreicht' ? '#fff' : '#000';
+                html += '<td style="border:1px solid #000; text-align:center; background:' + kBg + '; color:' + kCol + ';">' + kNum + '</td>';
+            } else {
+                html += '<td style="border:1px solid #000; background:#E7E6E6;"></td>';
+            }
+
+            // SOZ
+            var sNum = stufe.s[1] - i;
+            if (sNum >= stufe.s[0]) {
+                var sStatus = statusLookup.sozialisation ? (statusLookup.sozialisation[sNum] || '') : '';
+                var sBg = sStatus === 'erreicht' ? '#70AD47' : (sStatus === 'ziel' ? '#FFC000' : '#fff');
+                var sCol = sStatus === 'erreicht' ? '#fff' : '#000';
+                html += '<td style="border:1px solid #000; text-align:center; background:' + sBg + '; color:' + sCol + ';">' + sNum + '</td>';
+            } else {
+                html += '<td style="border:1px solid #000; background:#E7E6E6;"></td>';
+            }
+
+            // KOG
+            var kogNum = stufe.kog[1] - i;
+            if (kogNum >= stufe.kog[0]) {
+                var kogStatus = statusLookup.kognition ? (statusLookup.kognition[kogNum] || '') : '';
+                var kogBg = kogStatus === 'erreicht' ? '#70AD47' : (kogStatus === 'ziel' ? '#FFC000' : '#fff');
+                var kogCol = kogStatus === 'erreicht' ? '#fff' : '#000';
+                html += '<td style="border:1px solid #000; text-align:center; background:' + kogBg + '; color:' + kogCol + ';">' + kogNum + '</td>';
+            } else {
+                html += '<td style="border:1px solid #000; background:#E7E6E6;"></td>';
+            }
+
+            // Stufe Label nur in erster Zeile
+            if (i === 0) {
+                html += '<td style="border:1px solid #000; background:#D9E2F3; font-weight:bold; padding:2pt 4pt;" rowspan="' + maxRows + '">' + stufe.label + '</td>';
+            }
+
+            html += '</tr>';
+        }
+    });
+
+    html += '</table>';
+    return html;
+}
+
+function generateELDiBGrid() {
+    const grid = {
+        verhalten: [],
+        kommunikation: [],
+        sozialisation: [],
+        kognition: []
+    };
+
+    // Map items to their status
+    Object.keys(ELDIB_DATA).forEach(domain => {
+        ELDIB_DATA[domain].stufen.forEach(stufe => {
+            stufe.items.forEach(item => {
+                const status = assessments[domain][item.id];
+                let statusClass = 'nicht-erreicht';
+                if (status?.erreicht) statusClass = 'erreicht';
+                else if (status?.ziel) statusClass = 'ziel';
+
+                grid[domain].push({
+                    id: item.id,
+                    nummer: parseInt(item.id.split('-')[1]),
+                    stufe: stufe.nummer,
+                    status: statusClass
+                });
+            });
+        });
+    });
+
+    return grid;
+}
+
+function generateELDiBGridHTML(gridData) {
+    // Define the grid structure based on PEI document
+    // COMP: 1-33, COMM: 1-35, SOC: 1-41, COG: 1-62
+    const maxItems = { verhalten: 33, kommunikation: 35, sozialisation: 41, kognition: 62 };
+    const stufeRanges = {
+        1: { min: 0, max: 2, label: 'NIVEAU I (0-2 J.)' },
+        2: { min: 2, max: 5, label: 'NIVEAU II (2-5 J.)' },
+        3: { min: 6, max: 9, label: 'NIVEAU III (6-9 J.)' },
+        4: { min: 10, max: 12, label: 'NIVEAU IV (10-12 J.)' },
+        5: { min: 13, max: 16, label: 'NIVEAU V (13-16 J.)' }
+    };
+
+    // Create lookup for status
+    const statusLookup = {};
+    Object.keys(gridData).forEach(domain => {
+        statusLookup[domain] = {};
+        gridData[domain].forEach(item => {
+            statusLookup[domain][item.nummer] = item.status;
+        });
+    });
+
+    // Build the grid HTML (similar to the PEI document format)
+    let html = `<table class="eldib-grid">
+        <thead>
+            <tr>
+                <th>COMP</th>
+                <th>COMM</th>
+                <th>SOC</th>
+                <th>COG</th>
+                <th>Niveau</th>
+            </tr>
+        </thead>
+        <tbody>`;
+
+    // Build rows from highest item number down to 1
+    const maxRow = 62; // Maximum items (Kognition has 62)
+
+    for (let row = maxRow; row >= 1; row--) {
+        // Determine which Niveau this row belongs to
+        let niveau = '';
+        if (row >= 57) niveau = 'V';
+        else if (row >= 50 && row <= 56) niveau = 'IV';
+        else if (row >= 37 && row <= 49) niveau = 'III';
+        else if (row >= 20 && row <= 36) niveau = 'II';
+        else if (row >= 1 && row <= 19) niveau = 'I';
+
+        html += '<tr>';
+
+        // COMP (Verhalten) - max 33
+        if (row <= 33) {
+            const status = statusLookup.verhalten[row] || 'nicht-erreicht';
+            html += `<td class="${status}">${row}</td>`;
+        } else {
+            html += '<td class="empty"></td>';
+        }
+
+        // COMM (Kommunikation) - max 35
+        if (row <= 35) {
+            const status = statusLookup.kommunikation[row] || 'nicht-erreicht';
+            html += `<td class="${status}">${row}</td>`;
+        } else {
+            html += '<td class="empty"></td>';
+        }
+
+        // SOC (Sozialisation) - max 41
+        if (row <= 41) {
+            const status = statusLookup.sozialisation[row] || 'nicht-erreicht';
+            html += `<td class="${status}">${row}</td>`;
+        } else {
+            html += '<td class="empty"></td>';
+        }
+
+        // COG (Kognition) - max 62
+        if (row <= 62) {
+            const status = statusLookup.kognition[row] || 'nicht-erreicht';
+            html += `<td class="${status}">${row}</td>`;
+        } else {
+            html += '<td class="empty"></td>';
+        }
+
+        // Niveau column
+        html += `<td class="niveau-header">${niveau}</td>`;
+        html += '</tr>';
+    }
+
+    html += '</tbody></table>';
+    return html;
+}
+
+function generateDomainSummaryHTML() {
+    const domainNames = {
+        verhalten: { name: 'Comportement (Verhalten)', class: 'verhalten', color: '#e74c3c' },
+        kommunikation: { name: 'Communication (Kommunikation)', class: 'kommunikation', color: '#3498db' },
+        sozialisation: { name: 'Socialisation', class: 'sozialisation', color: '#27ae60' },
+        kognition: { name: 'Cognition', class: 'kognition', color: '#9b59b6' }
+    };
+
+    let html = '';
+
+    Object.keys(ELDIB_DATA).forEach(domain => {
+        const data = ELDIB_DATA[domain];
+        let erreichtCount = 0;
+        let zielCount = 0;
+        let totalCount = 0;
+        const ziele = [];
+        const erreichte = [];
+
+        data.stufen.forEach(stufe => {
+            stufe.items.forEach(item => {
+                totalCount++;
+                const status = assessments[domain][item.id];
+                if (status?.erreicht) {
+                    erreichtCount++;
+                    erreichte.push(item);
+                }
+                if (status?.ziel) {
+                    zielCount++;
+                    ziele.push(item);
+                }
+            });
+        });
+
+        const info = domainNames[domain];
+        html += `
+            <div class="domain-box ${info.class}">
+                <h5 style="color: ${info.color}">${info.name}</h5>
+                <p><strong>Items atteints:</strong> ${erreichtCount}/${totalCount} (${Math.round(erreichtCount/totalCount*100)}%)</p>
+                <p><strong>Objectifs actuels:</strong> ${zielCount}</p>
+                ${ziele.length > 0 ? `<p style="font-size: 8pt; color: #666;"><em>Ziele: ${ziele.slice(0, 3).map(z => z.id).join(', ')}${ziele.length > 3 ? '...' : ''}</em></p>` : ''}
+            </div>
+        `;
+    });
+
+    return html;
+}
+
+// ==========================================
+// Initialize
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    // Warnung für file:// URLs
+    if (window.location.protocol === 'file:') {
+        console.warn('ELDiB: App läuft über file:// - localStorage könnte nicht persistent sein!');
+        // Zeige Warnung nach 2 Sekunden, wenn noch keine Profile existieren
+        setTimeout(() => {
+            const saved = localStorage.getItem('eldib_profiles_v3');
+            if (!saved || saved === '{}') {
+                console.log('ELDiB: Keine gespeicherten Profile gefunden.');
+            }
+        }, 2000);
+    }
+
+    // Neue Profile laden
+    loadAllProfiles();
+    console.log('ELDiB: Profile geladen:', Object.keys(allProfiles).length, 'Profile');
+    updateProfileDropdown();
+
+    // Blockade-Regeln Einstellung laden
+    loadBlockingRulesSetting();
+
+    // Letztes verwendetes Profil laden, wenn vorhanden
+    const lastProfileId = localStorage.getItem('eldib_last_profile');
+    console.log('ELDiB: Letztes Profil ID:', lastProfileId);
+    if (lastProfileId && allProfiles[lastProfileId]) {
+        document.getElementById('profileSelect').value = lastProfileId;
+        loadProfile(lastProfileId);
+        console.log('ELDiB: Profil geladen:', allProfiles[lastProfileId].studentData?.name);
+    } else {
+        // Alte Daten für Kompatibilität laden (nur wenn kein Profil gespeichert)
+        loadFromLocalStorage();
+    }
+
+    renderAllDomains();
+    updateStats();
+    updateEvaluationUI();
+
+    // Auto-save für alle Eingabefelder im Schüler-Grid
+    document.querySelectorAll('.student-grid input').forEach(input => {
+        input.addEventListener('change', () => {
+            saveToLocalStorage();
+            // Speichere aktuelles Profil
+            if (currentProfileId) {
+                localStorage.setItem('eldib_last_profile', currentProfileId);
+            }
+        });
+    });
+
+    // Geburtsdatum-Änderung: Re-render um Bio-Alter-Sperre zu aktualisieren
+    document.getElementById('birthDate')?.addEventListener('change', () => {
+        renderAllDomains();
+    });
+});
+    </script>
 </body>
 </html>
