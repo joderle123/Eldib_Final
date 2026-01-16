@@ -297,13 +297,13 @@ function generateDSGridHTML(gridData) {
             stufe.kog[1] - stufe.kog[0] + 1
         );
 
-        // Original-Template-Format: Nummern von UNTEN nach OBEN innerhalb jeder Stufe
+        // Original-Template-Format: Höchste Nummern OBEN, leere Zellen UNTEN
         for (var i = 0; i < maxRows; i++) {
             html += '<tr style="height:12pt;">';
 
-            // V - von unten nach oben: Start bei min, dann aufsteigend
-            var vNum = stufe.v[0] + (maxRows - 1 - i);
-            if (vNum <= stufe.v[1] && vNum >= stufe.v[0]) {
+            // V - Start bei max, dann absteigend (leere Zellen unten)
+            var vNum = stufe.v[1] - i;
+            if (vNum >= stufe.v[0]) {
                 var vStatus = statusLookup.verhalten ? (statusLookup.verhalten[vNum] || '') : '';
                 var vBg = vStatus === 'erreicht' ? '#70AD47' : (vStatus === 'ziel' ? '#FFC000' : '#fff');
                 var vCol = vStatus === 'erreicht' ? '#fff' : '#000';
@@ -312,9 +312,9 @@ function generateDSGridHTML(gridData) {
                 html += '<td style="border:1px solid #000; background:#E7E6E6;"></td>';
             }
 
-            // KOMM - von unten nach oben
-            var kNum = stufe.k[0] + (maxRows - 1 - i);
-            if (kNum <= stufe.k[1] && kNum >= stufe.k[0]) {
+            // KOMM - Start bei max, dann absteigend
+            var kNum = stufe.k[1] - i;
+            if (kNum >= stufe.k[0]) {
                 var kStatus = statusLookup.kommunikation ? (statusLookup.kommunikation[kNum] || '') : '';
                 var kBg = kStatus === 'erreicht' ? '#70AD47' : (kStatus === 'ziel' ? '#FFC000' : '#fff');
                 var kCol = kStatus === 'erreicht' ? '#fff' : '#000';
@@ -323,9 +323,9 @@ function generateDSGridHTML(gridData) {
                 html += '<td style="border:1px solid #000; background:#E7E6E6;"></td>';
             }
 
-            // SOZ - von unten nach oben
-            var sNum = stufe.s[0] + (maxRows - 1 - i);
-            if (sNum <= stufe.s[1] && sNum >= stufe.s[0]) {
+            // SOZ - Start bei max, dann absteigend
+            var sNum = stufe.s[1] - i;
+            if (sNum >= stufe.s[0]) {
                 var sStatus = statusLookup.sozialisation ? (statusLookup.sozialisation[sNum] || '') : '';
                 var sBg = sStatus === 'erreicht' ? '#70AD47' : (sStatus === 'ziel' ? '#FFC000' : '#fff');
                 var sCol = sStatus === 'erreicht' ? '#fff' : '#000';
@@ -334,9 +334,9 @@ function generateDSGridHTML(gridData) {
                 html += '<td style="border:1px solid #000; background:#E7E6E6;"></td>';
             }
 
-            // KOG - von unten nach oben
-            var kogNum = stufe.kog[0] + (maxRows - 1 - i);
-            if (kogNum <= stufe.kog[1] && kogNum >= stufe.kog[0]) {
+            // KOG - Start bei max, dann absteigend
+            var kogNum = stufe.kog[1] - i;
+            if (kogNum >= stufe.kog[0]) {
                 var kogStatus = statusLookup.kognition ? (statusLookup.kognition[kogNum] || '') : '';
                 var kogBg = kogStatus === 'erreicht' ? '#70AD47' : (kogStatus === 'ziel' ? '#FFC000' : '#fff');
                 var kogCol = kogStatus === 'erreicht' ? '#fff' : '#000';
