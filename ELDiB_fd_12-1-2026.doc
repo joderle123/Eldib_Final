@@ -1,0 +1,1640 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+    @page { margin: 1.5cm; }
+    body {
+        font-family: Calibri, Arial, sans-serif;
+        font-size: 10pt;
+        line-height: 1.3;
+        color: #333;
+    }
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+        border-bottom: 4px solid #2c3e50;
+        padding-bottom: 15px;
+    }
+    .header h1 {
+        font-size: 26pt;
+        color: #2c3e50;
+        margin: 0 0 5px 0;
+        letter-spacing: 2px;
+    }
+    .header h1 span { color: #3498db; }
+    .header p {
+        font-size: 11pt;
+        color: #666;
+        margin: 0;
+    }
+    .info-box {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    .info-grid {
+        display: table;
+        width: 100%;
+    }
+    .info-row {
+        display: table-row;
+    }
+    .info-cell {
+        display: table-cell;
+        padding: 5px 10px;
+        width: 25%;
+    }
+    .info-label {
+        font-weight: bold;
+        color: #495057;
+        font-size: 9pt;
+    }
+    .info-value {
+        color: #212529;
+        font-size: 11pt;
+    }
+
+    /* ===== ENTWICKLUNGSRASTER ===== */
+    .raster-section {
+        margin: 25px 0;
+        page-break-inside: avoid;
+    }
+    .raster-title {
+        font-size: 14pt;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #3498db;
+    }
+    .raster-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
+    .raster-table th {
+        background: #2c3e50;
+        color: white;
+        padding: 10px 8px;
+        font-size: 9pt;
+        text-align: center;
+        border: 1px solid #2c3e50;
+    }
+    .raster-table th.domain-col {
+        width: 18%;
+        text-align: left;
+        padding-left: 12px;
+    }
+    .raster-table th.stage-col {
+        width: 16.4%;
+    }
+    .raster-table td {
+        border: 1px solid #dee2e6;
+        padding: 8px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    .raster-table td.domain-name {
+        text-align: left;
+        font-weight: bold;
+        padding-left: 12px;
+    }
+    .stage-cell {
+        position: relative;
+        height: 50px;
+    }
+    .stage-indicator {
+        display: inline-block;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        line-height: 36px;
+        font-weight: bold;
+        font-size: 11pt;
+    }
+    .stage-empty {
+        background: #f8f9fa;
+        color: #adb5bd;
+        border: 2px dashed #dee2e6;
+    }
+    .stage-erreicht {
+        background: #27ae60;
+        color: white;
+        border: 2px solid #1e8449;
+    }
+    .stage-ziel {
+        background: #f39c12;
+        color: white;
+        border: 2px solid #d68910;
+    }
+    .stage-mixed {
+        background: linear-gradient(135deg, #27ae60 50%, #f39c12 50%);
+        color: white;
+        border: 2px solid #1e8449;
+    }
+    .stage-count {
+        font-size: 8pt;
+        color: #666;
+        margin-top: 3px;
+    }
+
+    /* ===== FORTSCHRITTSBALKEN ===== */
+    .progress-section {
+        margin: 25px 0;
+    }
+    .progress-title {
+        font-size: 14pt;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #27ae60;
+    }
+    .progress-item {
+        margin-bottom: 15px;
+        page-break-inside: avoid;
+    }
+    .progress-header {
+        display: table;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    .progress-domain {
+        display: table-cell;
+        font-weight: bold;
+        font-size: 11pt;
+    }
+    .progress-stats {
+        display: table-cell;
+        text-align: right;
+        font-size: 9pt;
+        color: #666;
+    }
+    .progress-bar-container {
+        background: #ecf0f1;
+        border-radius: 10px;
+        height: 24px;
+        overflow: hidden;
+        border: 1px solid #bdc3c7;
+    }
+    .progress-bar {
+        height: 100%;
+        border-radius: 10px 0 0 10px;
+        display: inline-block;
+        vertical-align: top;
+    }
+    .progress-bar.erreicht {
+        background: linear-gradient(90deg, #27ae60, #2ecc71);
+    }
+    .progress-bar.ziel {
+        background: linear-gradient(90deg, #f39c12, #f1c40f);
+    }
+
+    /* ===== ZUSAMMENFASSUNG CARDS ===== */
+    .summary-section {
+        margin: 25px 0;
+    }
+    .summary-title {
+        font-size: 14pt;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #9b59b6;
+    }
+    .summary-grid {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+    .summary-card {
+        display: table-cell;
+        width: 25%;
+        padding: 10px;
+        text-align: center;
+        vertical-align: top;
+    }
+    .summary-card-inner {
+        border: 2px solid;
+        border-radius: 10px;
+        padding: 15px 10px;
+    }
+    .summary-icon {
+        font-size: 24pt;
+        margin-bottom: 5px;
+    }
+    .summary-number {
+        font-size: 28pt;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .summary-label {
+        font-size: 9pt;
+        color: #666;
+    }
+    .summary-sublabel {
+        font-size: 8pt;
+        color: #999;
+        margin-top: 3px;
+    }
+
+    /* ===== VISUELLER ALTERSVERGLEICH ===== */
+    .age-visual-section {
+        margin: 25px 0;
+    }
+    .age-visual-title {
+        font-size: 14pt;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #8e44ad;
+    }
+    .age-visual-row {
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+    .age-visual-header {
+        display: table;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .age-visual-domain {
+        display: table-cell;
+        font-weight: bold;
+        font-size: 12pt;
+    }
+    .age-visual-values {
+        display: table-cell;
+        text-align: right;
+        font-size: 10pt;
+    }
+    .age-bar-table {
+        width: 100%;
+        border-collapse: collapse;
+        height: 30px;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    .age-bar-table td {
+        height: 30px;
+        padding: 0;
+        border: none;
+    }
+    .age-bar-wrapper {
+        position: relative;
+        margin-bottom: 5px;
+    }
+    .age-bar-markers {
+        position: relative;
+        height: 45px;
+        margin-top: -38px;
+    }
+    .age-bar-marker {
+        position: absolute;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 36px;
+        font-weight: bold;
+        font-size: 10pt;
+        color: white;
+        border: 3px solid white;
+        margin-left: -18px;
+    }
+    .age-bar-marker.bio {
+        background: #3498db;
+    }
+    .age-bar-marker.dev {
+        background: #9b59b6;
+    }
+    .age-bar-scale {
+        display: table;
+        width: 100%;
+        font-size: 8pt;
+        color: #666;
+        margin-top: 15px;
+    }
+    .age-bar-scale span {
+        display: table-cell;
+        text-align: center;
+    }
+    .age-bar-legend {
+        margin-top: 10px;
+        font-size: 9pt;
+        color: #666;
+    }
+    .age-bar-legend span {
+        margin-right: 15px;
+    }
+    .age-bar-legend .dot {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 4px;
+        vertical-align: middle;
+    }
+    .age-statement {
+        margin-top: 10px;
+        padding: 10px 12px;
+        background: #fff;
+        border-left: 4px solid;
+        font-size: 10pt;
+        font-style: italic;
+        color: #555;
+    }
+
+    /* ===== ZIELE MIT INTERVENTIONEN ===== */
+    .goal-card {
+        background: #fff9e6;
+        border: 2px solid #f39c12;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    .goal-header {
+        display: table;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    .goal-id {
+        display: table-cell;
+        font-weight: bold;
+        color: #d68910;
+        width: 60px;
+    }
+    .goal-name {
+        display: table-cell;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+    .goal-formulation {
+        background: #fef9e7;
+        border-left: 3px solid #f39c12;
+        padding: 8px 12px;
+        margin: 8px 0;
+        font-style: italic;
+        color: #7d6608;
+    }
+    .goal-formulation-label {
+        font-weight: bold;
+        font-size: 9pt;
+        color: #b7950b;
+        font-style: normal;
+    }
+    .goal-interventions {
+        margin-top: 10px;
+    }
+    .goal-interventions-label {
+        font-weight: bold;
+        font-size: 9pt;
+        color: #27ae60;
+        margin-bottom: 5px;
+    }
+    .goal-intervention-item {
+        padding: 4px 0 4px 15px;
+        font-size: 10pt;
+        color: #333;
+        position: relative;
+    }
+    .goal-intervention-item:before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: #27ae60;
+    }
+
+    /* ===== DETAILBEREICH ===== */
+    .detail-section {
+        margin: 30px 0;
+    }
+    .detail-title {
+        font-size: 16pt;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #2c3e50;
+    }
+    .domain-block {
+        margin-bottom: 25px;
+        page-break-inside: avoid;
+    }
+    .domain-header {
+        padding: 12px 15px;
+        color: white;
+        font-size: 13pt;
+        font-weight: bold;
+        border-radius: 6px 6px 0 0;
+        margin-bottom: 0;
+    }
+    .domain-content {
+        border: 1px solid #dee2e6;
+        border-top: none;
+        border-radius: 0 0 6px 6px;
+        padding: 15px;
+        background: #fafafa;
+    }
+    .section-header {
+        font-size: 11pt;
+        font-weight: bold;
+        margin: 10px 0 8px 0;
+        padding: 6px 10px;
+        border-radius: 4px;
+    }
+    .section-header.erreicht {
+        background: #d5f5e3;
+        color: #1e8449;
+        border-left: 4px solid #27ae60;
+    }
+    .section-header.ziel {
+        background: #fef9e7;
+        color: #b7950b;
+        border-left: 4px solid #f39c12;
+    }
+    .item-list {
+        margin: 0 0 15px 15px;
+    }
+    .item-entry {
+        padding: 6px 0;
+        border-bottom: 1px dotted #ddd;
+        font-size: 10pt;
+    }
+    .item-entry:last-child {
+        border-bottom: none;
+    }
+    .item-id {
+        font-weight: bold;
+        color: #2c3e50;
+        background: #ecf0f1;
+        padding: 2px 6px;
+        border-radius: 3px;
+        margin-right: 8px;
+    }
+    .item-name {
+        font-weight: bold;
+    }
+    .item-desc {
+        color: #555;
+        font-size: 9pt;
+        margin-left: 5px;
+    }
+    .no-items {
+        color: #999;
+        font-style: italic;
+        padding: 8px;
+    }
+
+    /* ===== LEGENDE ===== */
+    .legend {
+        margin-top: 20px;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        font-size: 9pt;
+    }
+    .legend-title {
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+    .legend-item {
+        display: inline-block;
+        margin-right: 20px;
+    }
+    .legend-dot {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+
+    .footer {
+        margin-top: 30px;
+        text-align: center;
+        color: #888;
+        font-size: 9pt;
+        border-top: 2px solid #eee;
+        padding-top: 15px;
+    }
+
+    /* ===== ENTWICKLUNGSPROFIL ===== */
+    .profile-section {
+        margin: 30px 0;
+        page-break-inside: avoid;
+    }
+    .profile-title {
+        font-size: 16pt;
+        font-weight: bold;
+        color: #8e44ad;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #8e44ad;
+    }
+    .age-comparison-box {
+        display: table;
+        width: 100%;
+        margin-bottom: 25px;
+        border: 2px solid #8e44ad;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .age-box {
+        display: table-cell;
+        width: 33.33%;
+        padding: 20px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    .age-box.bio {
+        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        color: white;
+    }
+    .age-box.dev {
+        background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        color: white;
+    }
+    .age-box.quotient {
+        background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+        color: white;
+    }
+    .age-box-label {
+        font-size: 10pt;
+        opacity: 0.9;
+        margin-bottom: 5px;
+    }
+    .age-box-value {
+        font-size: 32pt;
+        font-weight: bold;
+    }
+    .age-box-unit {
+        font-size: 11pt;
+        opacity: 0.8;
+    }
+    .age-box-sub {
+        font-size: 9pt;
+        opacity: 0.7;
+        margin-top: 5px;
+    }
+
+    /* Timeline Visualization */
+    .timeline-container {
+        margin: 25px 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+    .timeline-title {
+        font-size: 12pt;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+    .timeline {
+        position: relative;
+        height: 60px;
+        background: linear-gradient(90deg, #ecf0f1 0%, #bdc3c7 100%);
+        border-radius: 30px;
+        margin: 20px 0;
+    }
+    .timeline-scale {
+        display: table;
+        width: 100%;
+        font-size: 8pt;
+        color: #666;
+        margin-top: 5px;
+    }
+    .timeline-scale-item {
+        display: table-cell;
+        text-align: center;
+    }
+    .timeline-marker {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 11pt;
+        color: white;
+        border: 3px solid white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .timeline-marker.bio {
+        background: #3498db;
+    }
+    .timeline-marker.dev {
+        background: #9b59b6;
+    }
+    .timeline-label {
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 8pt;
+        white-space: nowrap;
+    }
+
+    /* Domain Profile Cards */
+    .domain-profile-grid {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        margin: 20px 0;
+    }
+    .domain-profile-card {
+        display: table-cell;
+        padding: 8px;
+        vertical-align: top;
+    }
+    .domain-profile-inner {
+        border: 2px solid;
+        border-radius: 10px;
+        padding: 12px;
+        background: white;
+        height: 100%;
+    }
+    .domain-profile-header {
+        font-size: 11pt;
+        font-weight: bold;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid;
+    }
+    .domain-profile-ages {
+        margin-bottom: 10px;
+    }
+    .domain-profile-age-row {
+        display: table;
+        width: 100%;
+        font-size: 9pt;
+        padding: 3px 0;
+    }
+    .domain-profile-age-label {
+        display: table-cell;
+        width: 60%;
+        color: #666;
+    }
+    .domain-profile-age-value {
+        display: table-cell;
+        text-align: right;
+        font-weight: bold;
+    }
+    .domain-profile-bar {
+        height: 8px;
+        background: #ecf0f1;
+        border-radius: 4px;
+        overflow: hidden;
+        margin: 8px 0;
+    }
+    .domain-profile-bar-fill {
+        height: 100%;
+        border-radius: 4px;
+    }
+    .domain-profile-angst {
+        font-size: 9pt;
+        padding: 8px;
+        background: #fef9e7;
+        border-radius: 6px;
+        border-left: 3px solid #f39c12;
+        margin-top: 10px;
+    }
+    .domain-profile-angst-label {
+        font-weight: bold;
+        color: #d68910;
+        font-size: 8pt;
+    }
+    .domain-profile-angst-value {
+        color: #7d6608;
+        margin-top: 3px;
+    }
+
+    /* Interpretation Box */
+    .interpretation-box {
+        margin: 25px 0;
+        padding: 20px;
+        border-radius: 10px;
+        border: 2px solid;
+    }
+    .interpretation-box.ahead {
+        background: #e8f8f5;
+        border-color: #1abc9c;
+    }
+    .interpretation-box.appropriate {
+        background: #eafaf1;
+        border-color: #27ae60;
+    }
+    .interpretation-box.delayed {
+        background: #fef9e7;
+        border-color: #f39c12;
+    }
+    .interpretation-box.significant {
+        background: #fdedec;
+        border-color: #e74c3c;
+    }
+    .interpretation-title {
+        font-size: 12pt;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .interpretation-text {
+        font-size: 10pt;
+        line-height: 1.5;
+    }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>ELD<span>i</span>B</h1>
+    <p>Entwicklungspädagogischer Lernziel-Diagnose-Bogen</p>
+</div>
+
+<div class="info-box">
+    <div class="info-grid">
+        <div class="info-row">
+            <div class="info-cell">
+                <div class="info-label">Name</div>
+                <div class="info-value">fd</div>
+            </div>
+            <div class="info-cell">
+                <div class="info-label">Geburtsdatum</div>
+                <div class="info-value">17.5.2015</div>
+            </div>
+            <div class="info-cell">
+                <div class="info-label">Förderort</div>
+                <div class="info-value">-</div>
+            </div>
+            <div class="info-cell">
+                <div class="info-label">Datum</div>
+                <div class="info-value">12.1.2026</div>
+            </div>
+        </div>
+        <div class="info-row">
+            <div class="info-cell" colspan="4">
+                <div class="info-label">Einschätzende Person</div>
+                <div class="info-value">-</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ENTWICKLUNGSPROFIL ===== -->
+<div class="profile-section">
+    <div class="profile-title">Sozio-Emotionales Entwicklungsprofil</div>
+
+    <div class="age-comparison-box">
+        <div class="age-box bio">
+            <div class="age-box-label">Biologisches Alter</div>
+            <div class="age-box-value">10</div>
+            <div class="age-box-unit">Jahre</div>
+            <div class="age-box-sub">7 Monate</div>
+        </div>
+        <div class="age-box dev">
+            <div class="age-box-label">Ø Entwicklungsalter</div>
+            <div class="age-box-value">5.0</div>
+            <div class="age-box-unit">Jahre</div>
+            <div class="age-box-sub">über alle Bereiche</div>
+        </div>
+        <div class="age-box quotient">
+            <div class="age-box-label">Entwicklungsquotient</div>
+            <div class="age-box-value">47</div>
+            <div class="age-box-unit">%</div>
+            <div class="age-box-sub">unter Altersnorm</div>
+        </div>
+    </div>
+
+    <div class="domain-profile-grid">
+        <div class="domain-profile-card">
+            <div class="domain-profile-inner" style="border-color: #e74c3c;">
+                <div class="domain-profile-header" style="color: #e74c3c; border-color: #e74c3c;">Verhalten</div>
+                <div class="domain-profile-ages">
+                    <div class="domain-profile-age-row">
+                        <span class="domain-profile-age-label">Entwicklungsalter:</span>
+                        <span class="domain-profile-age-value" style="color: #e74c3c;">5 J.</span>
+                    </div>
+                    <div class="domain-profile-age-row">
+                        <span class="domain-profile-age-label">Stufe:</span>
+                        <span class="domain-profile-age-value">2 (2-5 Jahre)</span>
+                    </div>
+                    <div class="domain-profile-age-row">
+                        <span class="domain-profile-age-label">Stufenfortschritt:</span>
+                        <span class="domain-profile-age-value">100%</span>
+                    </div>
+                </div>
+                <div class="domain-profile-bar">
+                    <div class="domain-profile-bar-fill" style="width: 47.24409448818898%; background: #e74c3c;"></div>
+                </div>
+                
+                <div class="domain-profile-angst">
+                    <div class="domain-profile-angst-label">Entwicklungsangst:</div>
+                    <div class="domain-profile-angst-value">Unzulänglichkeit</div>
+                </div>
+            </div>
+        </div>
+        <div class="domain-profile-card">
+            <div class="domain-profile-inner" style="border-color: #3498db;">
+                <div class="domain-profile-header" style="color: #3498db; border-color: #3498db;">Kommunikation</div>
+                <div class="domain-profile-ages">
+                    <div class="domain-profile-age-row">
+                        <span class="domain-profile-age-label">Entwicklungsalter:</span>
+                        <span class="domain-profile-age-value" style="color: #3498db;">5 J.</span>
+                    </div>
+                    <div class="domain-profile-age-row">
+                        <span class="domain-profile-age-label">Stufe:</span>
+                        <span class="domain-profile-age-value">2 (2-5 Jahre)</span>
+                    </div>
+                    <div class="domain-profile-age-row">
+                        <span class="domain-profile-age-label">Stufenfortschritt:</span>
+                        <span class="domain-profile-age-value">100%</span>
+                    </div>
+                </div>
+                <div class="domain-profile-bar">
+                    <div class="domain-profile-bar-fill" style="width: 47.24409448818898%; background: #3498db;"></div>
+                </div>
+                
+                <div class="domain-profile-angst">
+                    <div class="domain-profile-angst-label">Entwicklungsangst:</div>
+                    <div class="domain-profile-angst-value">Unzulänglichkeit</div>
+                </div>
+            </div>
+        </div>
+        <div class="domain-profile-card">
+            <div class="domain-profile-inner" style="border-color: #27ae60;">
+                <div class="domain-profile-header" style="color: #27ae60; border-color: #27ae60;">Sozialisation</div>
+                <div class="domain-profile-ages">
+                    <div class="domain-profile-age-row">
+                        <span class="domain-profile-age-label">Entwicklungsalter:</span>
+                        <span class="domain-profile-age-value" style="color: #27ae60;">5 J.</span>
+                    </div>
+                    <div class="domain-profile-age-row">
+                        <span class="domain-profile-age-label">Stufe:</span>
+                        <span class="domain-profile-age-value">2 (2-5 Jahre)</span>
+                    </div>
+                    <div class="domain-profile-age-row">
+                        <span class="domain-profile-age-label">Stufenfortschritt:</span>
+                        <span class="domain-profile-age-value">100%</span>
+                    </div>
+                </div>
+                <div class="domain-profile-bar">
+                    <div class="domain-profile-bar-fill" style="width: 47.24409448818898%; background: #27ae60;"></div>
+                </div>
+                
+                <div class="domain-profile-angst">
+                    <div class="domain-profile-angst-label">Entwicklungsangst:</div>
+                    <div class="domain-profile-angst-value">Unzulänglichkeit</div>
+                </div>
+            </div>
+        </div>
+        <div class="domain-profile-card">
+            <div class="domain-profile-inner" style="border-color: #9b59b6;">
+                <div class="domain-profile-header" style="color: #9b59b6; border-color: #9b59b6;">Kognition</div>
+                <div class="domain-profile-ages">
+                    <div class="domain-profile-age-row">
+                        <span class="domain-profile-age-label">Entwicklungsalter:</span>
+                        <span class="domain-profile-age-value" style="color: #9b59b6;">5 J.</span>
+                    </div>
+                    <div class="domain-profile-age-row">
+                        <span class="domain-profile-age-label">Stufe:</span>
+                        <span class="domain-profile-age-value">2 (2-5 Jahre)</span>
+                    </div>
+                    <div class="domain-profile-age-row">
+                        <span class="domain-profile-age-label">Stufenfortschritt:</span>
+                        <span class="domain-profile-age-value">100%</span>
+                    </div>
+                </div>
+                <div class="domain-profile-bar">
+                    <div class="domain-profile-bar-fill" style="width: 47.24409448818898%; background: #9b59b6;"></div>
+                </div>
+                
+                <div class="domain-profile-angst">
+                    <div class="domain-profile-angst-label">Entwicklungsangst:</div>
+                    <div class="domain-profile-angst-value">Unzulänglichkeit</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="interpretation-box significant">
+        <div class="interpretation-title">→ Multiprofessionelle Begleitung zur Entwicklungsförderung</div>
+        <div class="interpretation-text">Das Kind benötigt intensive Unterstützung auf den grundlegenden Entwicklungsstufen. Jeder kleine Fortschritt ist ein Erfolg. Multiprofessionelle Zusammenarbeit und ein wertschätzender, ressourcenorientierter Ansatz sind der Schlüssel zur Förderung.</div>
+    </div>
+    <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+        <div style="font-weight: bold; margin-bottom: 10px; font-size: 11pt;">Stufenreferenz nach ELDiB</div>
+        <table style="width: 100%; border-collapse: collapse; font-size: 9pt;">
+            <tr style="background: #2c3e50; color: white;">
+                <th style="padding: 8px; text-align: left; width: 15%;">Stufe</th>
+                <th style="padding: 8px; text-align: left; width: 15%;">Alter</th>
+                <th style="padding: 8px; text-align: left; width: 25%;">Entwicklungsangst</th>
+                <th style="padding: 8px; text-align: left; width: 45%;">Entwicklungsaufgabe</th>
+            </tr>
+            <tr style="background: #ecf0f1;"><td style="padding: 8px; font-weight: bold;">1</td><td style="padding: 8px;">0-2 Jahre</td><td style="padding: 8px; color: #c0392b;">Verlassenheit</td><td style="padding: 8px;">Grundlegendes Vertrauen aufbauen</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold;">2</td><td style="padding: 8px;">2-5 Jahre</td><td style="padding: 8px; color: #c0392b;">Unzulänglichkeit</td><td style="padding: 8px;">Autonomie und Selbstwirksamkeit entwickeln</td></tr>
+            <tr style="background: #ecf0f1;"><td style="padding: 8px; font-weight: bold;">3</td><td style="padding: 8px;">6-9 Jahre</td><td style="padding: 8px; color: #c0392b;">Schuld</td><td style="padding: 8px;">Initiative und Kompetenz erwerben</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold;">4</td><td style="padding: 8px;">10-12 Jahre</td><td style="padding: 8px; color: #c0392b;">Konflikt</td><td style="padding: 8px;">Soziale Rollen und Beziehungen gestalten</td></tr>
+            <tr style="background: #ecf0f1;"><td style="padding: 8px; font-weight: bold;">5</td><td style="padding: 8px;">13-16 Jahre</td><td style="padding: 8px; color: #c0392b;">Identität</td><td style="padding: 8px;">Identität und Werte entwickeln</td></tr>
+        </table>
+    </div>
+
+    <!-- ===== VISUELLER ALTERSVERGLEICH ===== -->
+    <div class="age-visual-section">
+        <div class="age-visual-title">Visueller Altersvergleich pro Bereich</div>
+        <div class="age-visual-row">
+            <div class="age-visual-header">
+                <span class="age-visual-domain" style="color: #e74c3c;">Verhalten</span>
+                <span class="age-visual-values" style="color: #e74c3c; font-weight: bold;">5.6 Jahre Differenz</span>
+            </div>
+            <table style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+                <tr>
+                    <td style="width: 140px; padding: 5px 10px 5px 0; font-size: 10pt; color: #3498db; font-weight: bold;">Bio. Alter: 10.6 J.</td>
+                    <td style="padding: 5px;">
+                        <table style="width: 100%; height: 20px; border-collapse: collapse; border: 1px solid #bdc3c7;">
+                            <tr>
+                                <td style="width: 58.796296296296305%; background: #3498db; height: 20px;"></td>
+                                <td style="background: #ecf0f1; height: 20px;"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 140px; padding: 5px 10px 5px 0; font-size: 10pt; color: #9b59b6; font-weight: bold;">Entw. Alter: 5.0 J.</td>
+                    <td style="padding: 5px;">
+                        <table style="width: 100%; height: 20px; border-collapse: collapse; border: 1px solid #bdc3c7;">
+                            <tr>
+                                <td style="width: 27.77777777777778%; background: #9b59b6; height: 20px;"></td>
+                                <td style="background: #ecf0f1; height: 20px;"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%; font-size: 8pt; color: #888; margin-left: 150px;">
+                <tr>
+                    <td style="width: 11%;">0</td>
+                    <td style="width: 11%;">2</td>
+                    <td style="width: 17%;">5</td>
+                    <td style="width: 22%;">9</td>
+                    <td style="width: 17%;">12</td>
+                    <td style="width: 22%;">16+ Jahre</td>
+                </tr>
+            </table>
+            <div style="margin-top: 10px; padding: 10px 12px; background: #fff; border-left: 4px solid #e74c3c; font-size: 10pt; color: #333;">
+                <strong>Verhalten – Stufe 2 (2-5 Jahre) | 5.6 Jahre Differenz</strong><br>
+<em>Entwicklungsthema: Unzulänglichkeit</em><br><br>
+<u>Alltag:</u> Das Kind kann kurz warten und an Aktivitäten teilnehmen, verliert aber bei Frustration schnell die Kontrolle.<br>
+<u>Schwierigkeit:</u> Gruppensituationen ohne enge Begleitung führen zu Konflikten. Regeln werden noch nicht als sinnvoll verstanden.<br>
+<u>Vergleich Peers:</u> Gleichaltrige zeigen bereits Frustrationstoleranz - dieses Kind reagiert auf Enttäuschungen noch wie ein Kleinkind.
+            </div>
+        </div>
+        <div class="age-visual-row">
+            <div class="age-visual-header">
+                <span class="age-visual-domain" style="color: #3498db;">Kommunikation</span>
+                <span class="age-visual-values" style="color: #e74c3c; font-weight: bold;">5.6 Jahre Differenz</span>
+            </div>
+            <table style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+                <tr>
+                    <td style="width: 140px; padding: 5px 10px 5px 0; font-size: 10pt; color: #3498db; font-weight: bold;">Bio. Alter: 10.6 J.</td>
+                    <td style="padding: 5px;">
+                        <table style="width: 100%; height: 20px; border-collapse: collapse; border: 1px solid #bdc3c7;">
+                            <tr>
+                                <td style="width: 58.796296296296305%; background: #3498db; height: 20px;"></td>
+                                <td style="background: #ecf0f1; height: 20px;"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 140px; padding: 5px 10px 5px 0; font-size: 10pt; color: #9b59b6; font-weight: bold;">Entw. Alter: 5.0 J.</td>
+                    <td style="padding: 5px;">
+                        <table style="width: 100%; height: 20px; border-collapse: collapse; border: 1px solid #bdc3c7;">
+                            <tr>
+                                <td style="width: 27.77777777777778%; background: #9b59b6; height: 20px;"></td>
+                                <td style="background: #ecf0f1; height: 20px;"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%; font-size: 8pt; color: #888; margin-left: 150px;">
+                <tr>
+                    <td style="width: 11%;">0</td>
+                    <td style="width: 11%;">2</td>
+                    <td style="width: 17%;">5</td>
+                    <td style="width: 22%;">9</td>
+                    <td style="width: 17%;">12</td>
+                    <td style="width: 22%;">16+ Jahre</td>
+                </tr>
+            </table>
+            <div style="margin-top: 10px; padding: 10px 12px; background: #fff; border-left: 4px solid #e74c3c; font-size: 10pt; color: #333;">
+                <strong>Kommunikation – Stufe 2 (2-5 Jahre) | 5.6 Jahre Differenz</strong><br>
+<em>Entwicklungsthema: Unzulänglichkeit</em><br><br>
+<u>Alltag:</u> Einfache Sätze werden verwendet, komplexe Gedanken können aber nicht verbalisiert werden.<br>
+<u>Schwierigkeit:</u> Missverständnisse sind häufig. Konflikte können nicht verbal gelöst werden - das Kind greift auf Handlungen zurück.<br>
+<u>Vergleich Peers:</u> Gleichaltrige diskutieren und argumentieren - dieses Kind kann nur einfache Aussagen machen.
+            </div>
+        </div>
+        <div class="age-visual-row">
+            <div class="age-visual-header">
+                <span class="age-visual-domain" style="color: #27ae60;">Sozialisation</span>
+                <span class="age-visual-values" style="color: #e74c3c; font-weight: bold;">5.6 Jahre Differenz</span>
+            </div>
+            <table style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+                <tr>
+                    <td style="width: 140px; padding: 5px 10px 5px 0; font-size: 10pt; color: #3498db; font-weight: bold;">Bio. Alter: 10.6 J.</td>
+                    <td style="padding: 5px;">
+                        <table style="width: 100%; height: 20px; border-collapse: collapse; border: 1px solid #bdc3c7;">
+                            <tr>
+                                <td style="width: 58.796296296296305%; background: #3498db; height: 20px;"></td>
+                                <td style="background: #ecf0f1; height: 20px;"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 140px; padding: 5px 10px 5px 0; font-size: 10pt; color: #9b59b6; font-weight: bold;">Entw. Alter: 5.0 J.</td>
+                    <td style="padding: 5px;">
+                        <table style="width: 100%; height: 20px; border-collapse: collapse; border: 1px solid #bdc3c7;">
+                            <tr>
+                                <td style="width: 27.77777777777778%; background: #9b59b6; height: 20px;"></td>
+                                <td style="background: #ecf0f1; height: 20px;"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%; font-size: 8pt; color: #888; margin-left: 150px;">
+                <tr>
+                    <td style="width: 11%;">0</td>
+                    <td style="width: 11%;">2</td>
+                    <td style="width: 17%;">5</td>
+                    <td style="width: 22%;">9</td>
+                    <td style="width: 17%;">12</td>
+                    <td style="width: 22%;">16+ Jahre</td>
+                </tr>
+            </table>
+            <div style="margin-top: 10px; padding: 10px 12px; background: #fff; border-left: 4px solid #e74c3c; font-size: 10pt; color: #333;">
+                <strong>Sozialisation – Stufe 2 (2-5 Jahre) | 5.6 Jahre Differenz</strong><br>
+<em>Entwicklungsthema: Unzulänglichkeit</em><br><br>
+<u>Alltag:</u> Kurzes gemeinsames Spiel ist möglich, Teilen und Abwechseln führen aber oft zu Konflikten.<br>
+<u>Schwierigkeit:</u> Stabile Freundschaften entstehen nicht. Das Kind wird oft ausgeschlossen wegen unreifen Sozialverhaltens.<br>
+<u>Vergleich Peers:</u> Während Gleichaltrige feste Freundschaften haben, wechselt dieses Kind häufig Spielpartner.
+            </div>
+        </div>
+        <div class="age-visual-row">
+            <div class="age-visual-header">
+                <span class="age-visual-domain" style="color: #9b59b6;">Kognition</span>
+                <span class="age-visual-values" style="color: #e74c3c; font-weight: bold;">5.6 Jahre Differenz</span>
+            </div>
+            <table style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+                <tr>
+                    <td style="width: 140px; padding: 5px 10px 5px 0; font-size: 10pt; color: #3498db; font-weight: bold;">Bio. Alter: 10.6 J.</td>
+                    <td style="padding: 5px;">
+                        <table style="width: 100%; height: 20px; border-collapse: collapse; border: 1px solid #bdc3c7;">
+                            <tr>
+                                <td style="width: 58.796296296296305%; background: #3498db; height: 20px;"></td>
+                                <td style="background: #ecf0f1; height: 20px;"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 140px; padding: 5px 10px 5px 0; font-size: 10pt; color: #9b59b6; font-weight: bold;">Entw. Alter: 5.0 J.</td>
+                    <td style="padding: 5px;">
+                        <table style="width: 100%; height: 20px; border-collapse: collapse; border: 1px solid #bdc3c7;">
+                            <tr>
+                                <td style="width: 27.77777777777778%; background: #9b59b6; height: 20px;"></td>
+                                <td style="background: #ecf0f1; height: 20px;"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%; font-size: 8pt; color: #888; margin-left: 150px;">
+                <tr>
+                    <td style="width: 11%;">0</td>
+                    <td style="width: 11%;">2</td>
+                    <td style="width: 17%;">5</td>
+                    <td style="width: 22%;">9</td>
+                    <td style="width: 17%;">12</td>
+                    <td style="width: 22%;">16+ Jahre</td>
+                </tr>
+            </table>
+            <div style="margin-top: 10px; padding: 10px 12px; background: #fff; border-left: 4px solid #e74c3c; font-size: 10pt; color: #333;">
+                <strong>Kognition – Stufe 2 (2-5 Jahre) | 5.6 Jahre Differenz</strong><br>
+<em>Entwicklungsthema: Unzulänglichkeit</em><br><br>
+<u>Alltag:</u> Sortieren, Zählen und einfache Muster werden erkannt, Lesen und Schreiben sind noch nicht möglich.<br>
+<u>Schwierigkeit:</u> Der Regellehrplan ist nicht zugänglich. Adaptiertes Material auf Vorschulniveau wird benötigt.<br>
+<u>Vergleich Peers:</u> Während Gleichaltrige lesen und rechnen, arbeitet dieses Kind mit Vorschulmaterial.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== DETAILIERTE AUFLISTUNG ===== -->
+<div class="detail-section">
+    <div class="detail-title">Detaillierte Auflistung</div>
+    <div class="domain-block">
+        <div class="domain-header" style="background-color: #e74c3c;">Verhalten</div>
+        <div class="domain-content">
+            <div class="section-header erreicht">✓ Erreichte Kompetenzen (10 von 14 angezeigt)</div>
+            <div class="item-list">
+                <div class="item-entry">
+                    <span class="item-id">V-9</span>
+                    <span class="item-name">Spielerfahrung</span>
+                    <span class="item-desc">– Geht mit Spielmaterialien sachgerecht um.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">V-10</span>
+                    <span class="item-name">Warten</span>
+                    <span class="item-desc">– Wartet ohne körperliche Steuerungshilfe durch den Erwachsenen.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">V-11</span>
+                    <span class="item-name">Sitzen</span>
+                    <span class="item-desc">– Beteiligt sich verbal und physisch an Aktivitäten im Sitzen ohne körperliche Steuerungshilfe.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">V-12</span>
+                    <span class="item-name">Bewegung</span>
+                    <span class="item-desc">– Beteiligt sich verbal und physisch an Bewegungsaktivitäten ohne körperliche Steuerungshilfe.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">V-13</span>
+                    <span class="item-name">Aktivitäten</span>
+                    <span class="item-desc">– Nimmt von sich aus verbal und physisch an Aktivitäten teil.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">V-14</span>
+                    <span class="item-name">Lob/Erfolg</span>
+                    <span class="item-desc">– Akzeptiert Lob oder Erfolg ohne unangemessenes Verhalten oder Kontrollverlust.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">V-1</span>
+                    <span class="item-name">Wahrnehmung</span>
+                    <span class="item-desc">– Lässt Wahrnehmung eines sensorischen Reizes erkennen durch beliebige Bewegungsreaktionen von der Reizquelle weg oder zu ihr hin.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">V-2</span>
+                    <span class="item-name">Orientierung</span>
+                    <span class="item-desc">– Reagiert auf sensorischen Reiz mit Zuwendung zur Reizquelle, entweder durch körperliche Reaktion oder durch Hinsehen.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">V-3</span>
+                    <span class="item-name">Aufmerksamkeit</span>
+                    <span class="item-desc">– Reagiert auf einen Reiz mit kurzzeitig anhaltender Aufmerksamkeit.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">V-4</span>
+                    <span class="item-name">Motorische Reaktion</span>
+                    <span class="item-desc">– Reagiert von sich aus auf einfache Umgebungsreize mit einer motorischen Handlung.</span>
+                </div><div style="font-size: 9pt; color: #888; font-style: italic; margin-top: 8px;">... und 4 weitere erreichte Items</div>
+            </div>
+            <div class="section-header ziel">◎ Aktuelle Förderziele (0)</div>
+            <div class="item-list"><div class="no-items">Keine Ziele definiert</div>
+            </div>
+        </div>
+    </div>
+    <div class="domain-block">
+        <div class="domain-header" style="background-color: #3498db;">Kommunikation</div>
+        <div class="domain-content">
+            <div class="section-header erreicht">✓ Erreichte Kompetenzen (10 von 14 angezeigt)</div>
+            <div class="item-list">
+                <div class="item-entry">
+                    <span class="item-id">K-9</span>
+                    <span class="item-name">Beantworten</span>
+                    <span class="item-desc">– Beantwortet Fragen, Bitten oder Aufforderungen mit erkennbaren, sinnvollen Wörtern.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">K-10</span>
+                    <span class="item-name">Vokabular</span>
+                    <span class="item-desc">– Zeigt ein rezeptives Vokabular, das nicht mehr als zwei Jahre hinter normalen Erwartungen zurückliegt.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">K-11</span>
+                    <span class="item-name">Wortsequenzen</span>
+                    <span class="item-desc">– Verwendet von sich aus einfache Wortsequenzen, um etwas zu fordern, zu erfragen oder zu erbitten.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">K-12</span>
+                    <span class="item-name">Austausch Erwachsene</span>
+                    <span class="item-desc">– Verwendet von sich aus Wörter, um mit einem Erwachsenen minimale Informationen auszutauschen.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">K-13</span>
+                    <span class="item-name">Merkmale</span>
+                    <span class="item-desc">– Beschreibt einfache, konkrete Merkmale sowohl von sich als auch von anderen.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">K-14</span>
+                    <span class="item-name">Austausch Kind</span>
+                    <span class="item-desc">– Verwendet von sich aus Wörter, um mit einem anderen Kind minimale Informationen auszutauschen.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">K-1</span>
+                    <span class="item-name">Laute</span>
+                    <span class="item-desc">– Produziert Laute (wiederholt eigene Lautmuster, um sich sozial oder imitierend zu äußern).</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">K-2</span>
+                    <span class="item-name">Sprecher</span>
+                    <span class="item-desc">– Richtet die Aufmerksamkeit auf eine sprechende Person.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">K-3</span>
+                    <span class="item-name">Verbaler Impuls</span>
+                    <span class="item-desc">– Reagiert auf einen verbalen Impuls mit einer Bewegung oder Handlung.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">K-4</span>
+                    <span class="item-name">Wort-Annäherung</span>
+                    <span class="item-desc">– Reagiert verbal auf Fragen oder Aufforderungen mit erkennbaren Wort-Annäherungen.</span>
+                </div><div style="font-size: 9pt; color: #888; font-style: italic; margin-top: 8px;">... und 4 weitere erreichte Items</div>
+            </div>
+            <div class="section-header ziel">◎ Aktuelle Förderziele (0)</div>
+            <div class="item-list"><div class="no-items">Keine Ziele definiert</div>
+            </div>
+        </div>
+    </div>
+    <div class="domain-block">
+        <div class="domain-header" style="background-color: #27ae60;">Sozialisation</div>
+        <div class="domain-content">
+            <div class="section-header erreicht">✓ Erreichte Kompetenzen (10 von 18 angezeigt)</div>
+            <div class="item-list">
+                <div class="item-entry">
+                    <span class="item-id">SOZ-13</span>
+                    <span class="item-name">Fantasie</span>
+                    <span class="item-desc">– Beschäftigt sich von sich aus mit Fantasie- und 'So-tun-als-ob'-Spielen.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">SOZ-14</span>
+                    <span class="item-name">Warten</span>
+                    <span class="item-desc">– Wartet ohne körperliche Steuerungshilfe durch den Erwachsenen.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">SOZ-15</span>
+                    <span class="item-name">Kontakt</span>
+                    <span class="item-desc">– Zeigt Ansätze, einen angemessenen sozialen Kontakt zu einem anderen Kind aufzunehmen.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">SOZ-16</span>
+                    <span class="item-name">Teilen</span>
+                    <span class="item-desc">– Beteiligt sich an einer Aktivität, die Teilen erfordert.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">SOZ-17</span>
+                    <span class="item-name">Spiel interaktiv</span>
+                    <span class="item-desc">– Beteiligt sich erfolgreich an interaktivem Spiel mit einem anderen Kind.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">SOZ-18</span>
+                    <span class="item-name">Kooperation</span>
+                    <span class="item-desc">– Kooperiert selbstständig mit einem anderen Kind in strukturierten Aktivitäten.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">SOZ-1</span>
+                    <span class="item-name">Gegenwart</span>
+                    <span class="item-desc">– Ist sich der Gegenwart anderer bewusst.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">SOZ-2</span>
+                    <span class="item-name">Gerichtetheit</span>
+                    <span class="item-desc">– Richtet Aufmerksamkeit auf Handlungen anderer.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">SOZ-3</span>
+                    <span class="item-name">Eigenname</span>
+                    <span class="item-desc">– Reagiert, wenn ein Erwachsener den Namen des Kindes nennt.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">SOZ-4</span>
+                    <span class="item-name">Spiel allein</span>
+                    <span class="item-desc">– Beschäftigt sich mit organisiertem Spiel und spielt dabei für sich allein.</span>
+                </div><div style="font-size: 9pt; color: #888; font-style: italic; margin-top: 8px;">... und 8 weitere erreichte Items</div>
+            </div>
+            <div class="section-header ziel">◎ Aktuelle Förderziele (0)</div>
+            <div class="item-list"><div class="no-items">Keine Ziele definiert</div>
+            </div>
+        </div>
+    </div>
+    <div class="domain-block">
+        <div class="domain-header" style="background-color: #9b59b6;">Kognition</div>
+        <div class="domain-content">
+            <div class="section-header erreicht">✓ Erreichte Kompetenzen (10 von 31 angezeigt)</div>
+            <div class="item-list">
+                <div class="item-entry">
+                    <span class="item-id">KOG-15</span>
+                    <span class="item-name">Gebrauchswert</span>
+                    <span class="item-desc">– Erkennt Gebrauchswert vertrauter Gegenstände.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">KOG-16</span>
+                    <span class="item-name">Körper 3 Jahre</span>
+                    <span class="item-desc">– Führt motorische Aktivitäten auf dem Niveau eines dreijährigen Kindes aus.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">KOG-17</span>
+                    <span class="item-name">Serie identisch</span>
+                    <span class="item-desc">– Ordnet zwei identische Bilder einander zu.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">KOG-18</span>
+                    <span class="item-name">Feinmotorik 3 Jahre</span>
+                    <span class="item-desc">– Führt feinmotorische Aktivitäten auf dem Niveau eines dreijährigen Kindes aus.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">KOG-19</span>
+                    <span class="item-name">Serie anders</span>
+                    <span class="item-desc">– Erkennt das Objekt, das sich von den anderen unterscheidet.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">KOG-20</span>
+                    <span class="item-name">Gegenteile</span>
+                    <span class="item-desc">– Versteht mindestens drei einfache Gegenteile.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">KOG-21</span>
+                    <span class="item-name">Kategorisieren</span>
+                    <span class="item-desc">– Gebraucht Kategorien beim Zuordnen einfacher Bilder.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">KOG-22</span>
+                    <span class="item-name">Zählen 4</span>
+                    <span class="item-desc">– Zählt bis 4 und wendet dabei 1 zu 1 Zuordnung an.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">KOG-23</span>
+                    <span class="item-name">Farben</span>
+                    <span class="item-desc">– Identifiziert vier Farben und drei Formen.</span>
+                </div>
+                <div class="item-entry">
+                    <span class="item-id">KOG-24</span>
+                    <span class="item-name">Alternation</span>
+                    <span class="item-desc">– Gibt korrekte Antworten bei wechselnden Zuordnungsaufgaben.</span>
+                </div><div style="font-size: 9pt; color: #888; font-style: italic; margin-top: 8px;">... und 21 weitere erreichte Items</div>
+            </div>
+            <div class="section-header ziel">◎ Aktuelle Förderziele (0)</div>
+            <div class="item-list"><div class="no-items">Keine Ziele definiert</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="margin-top: 30px;">
+    <div style="font-size: 16pt; font-weight: bold; color: #8e44ad; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 3px solid #8e44ad;">
+        Entwicklungsverlauf (2 Evaluationen)
+    </div>
+    <div style="margin-bottom: 12px; padding: 10px; background: #fafafa; border-left: 4px solid #e74c3c;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td style="width: 140px; font-weight: bold; font-size: 11pt; color: #e74c3c; vertical-align: top; padding-top: 3px;">
+                    V - Verhalten
+                    <div style="font-size: 9pt; color: #27ae60; font-weight: normal; margin-top: 2px;">+3.0 Jahre</div>
+                </td>
+                <td>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 4px;">
+                        <tr>
+                            <td style="width: 70px; font-size: 8pt; color: #888; vertical-align: middle;">Bio: 10.0 J.</td>
+                            <td>
+                                <table style="width: 100%; height: 12px; border: 1px solid #ccc; background: #fff;">
+                                    <tr>
+                                        <td style="width: 62.5%; background-color: #95a5a6;"></td>
+                                        <td style="background-color: #f0f0f0;"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 3px;">
+                        <tr>
+                            <td style="width: 70px; font-size: 8pt; color: #666; vertical-align: middle;">10.01.26</td>
+                            <td>
+                                <table style="width: 100%; height: 16px; border: 1px solid #aaa; background: #fff;">
+                                    <tr>
+                                        <td style="width: 12.5%; background-color: #fadbd8;"></td>
+                                        <td style="background-color: #f5f5f5;"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width: 45px; text-align: right; font-size: 9pt; font-weight: bold; color: #333; vertical-align: middle;">2.0 J.</td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 3px;">
+                        <tr>
+                            <td style="width: 70px; font-size: 8pt; color: #666; vertical-align: middle;">12.01.26</td>
+                            <td>
+                                <table style="width: 100%; height: 16px; border: 1px solid #aaa; background: #fff;">
+                                    <tr>
+                                        <td style="width: 31.25%; background-color: #e74c3c;"></td>
+                                        <td style="background-color: #f5f5f5;"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width: 45px; text-align: right; font-size: 9pt; font-weight: bold; color: #333; vertical-align: middle;">5.0 J.</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="margin-bottom: 12px; padding: 10px; background: #fafafa; border-left: 4px solid #3498db;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td style="width: 140px; font-weight: bold; font-size: 11pt; color: #3498db; vertical-align: top; padding-top: 3px;">
+                    K - Kommunikation
+                    <div style="font-size: 9pt; color: #27ae60; font-weight: normal; margin-top: 2px;">+3.0 Jahre</div>
+                </td>
+                <td>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 4px;">
+                        <tr>
+                            <td style="width: 70px; font-size: 8pt; color: #888; vertical-align: middle;">Bio: 10.0 J.</td>
+                            <td>
+                                <table style="width: 100%; height: 12px; border: 1px solid #ccc; background: #fff;">
+                                    <tr>
+                                        <td style="width: 62.5%; background-color: #95a5a6;"></td>
+                                        <td style="background-color: #f0f0f0;"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 3px;">
+                        <tr>
+                            <td style="width: 70px; font-size: 8pt; color: #666; vertical-align: middle;">10.01.26</td>
+                            <td>
+                                <table style="width: 100%; height: 16px; border: 1px solid #aaa; background: #fff;">
+                                    <tr>
+                                        <td style="width: 12.5%; background-color: #d4e6f1;"></td>
+                                        <td style="background-color: #f5f5f5;"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width: 45px; text-align: right; font-size: 9pt; font-weight: bold; color: #333; vertical-align: middle;">2.0 J.</td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 3px;">
+                        <tr>
+                            <td style="width: 70px; font-size: 8pt; color: #666; vertical-align: middle;">12.01.26</td>
+                            <td>
+                                <table style="width: 100%; height: 16px; border: 1px solid #aaa; background: #fff;">
+                                    <tr>
+                                        <td style="width: 31.25%; background-color: #3498db;"></td>
+                                        <td style="background-color: #f5f5f5;"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width: 45px; text-align: right; font-size: 9pt; font-weight: bold; color: #333; vertical-align: middle;">5.0 J.</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="margin-bottom: 12px; padding: 10px; background: #fafafa; border-left: 4px solid #27ae60;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td style="width: 140px; font-weight: bold; font-size: 11pt; color: #27ae60; vertical-align: top; padding-top: 3px;">
+                    S - Sozialisation
+                    <div style="font-size: 9pt; color: #27ae60; font-weight: normal; margin-top: 2px;">+3.0 Jahre</div>
+                </td>
+                <td>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 4px;">
+                        <tr>
+                            <td style="width: 70px; font-size: 8pt; color: #888; vertical-align: middle;">Bio: 10.0 J.</td>
+                            <td>
+                                <table style="width: 100%; height: 12px; border: 1px solid #ccc; background: #fff;">
+                                    <tr>
+                                        <td style="width: 62.5%; background-color: #95a5a6;"></td>
+                                        <td style="background-color: #f0f0f0;"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 3px;">
+                        <tr>
+                            <td style="width: 70px; font-size: 8pt; color: #666; vertical-align: middle;">10.01.26</td>
+                            <td>
+                                <table style="width: 100%; height: 16px; border: 1px solid #aaa; background: #fff;">
+                                    <tr>
+                                        <td style="width: 12.5%; background-color: #d4efdf;"></td>
+                                        <td style="background-color: #f5f5f5;"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width: 45px; text-align: right; font-size: 9pt; font-weight: bold; color: #333; vertical-align: middle;">2.0 J.</td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 3px;">
+                        <tr>
+                            <td style="width: 70px; font-size: 8pt; color: #666; vertical-align: middle;">12.01.26</td>
+                            <td>
+                                <table style="width: 100%; height: 16px; border: 1px solid #aaa; background: #fff;">
+                                    <tr>
+                                        <td style="width: 31.25%; background-color: #27ae60;"></td>
+                                        <td style="background-color: #f5f5f5;"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width: 45px; text-align: right; font-size: 9pt; font-weight: bold; color: #333; vertical-align: middle;">5.0 J.</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="margin-bottom: 12px; padding: 10px; background: #fafafa; border-left: 4px solid #9b59b6;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td style="width: 140px; font-weight: bold; font-size: 11pt; color: #9b59b6; vertical-align: top; padding-top: 3px;">
+                    C - Kognition
+                    <div style="font-size: 9pt; color: #27ae60; font-weight: normal; margin-top: 2px;">+3.0 Jahre</div>
+                </td>
+                <td>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 4px;">
+                        <tr>
+                            <td style="width: 70px; font-size: 8pt; color: #888; vertical-align: middle;">Bio: 10.0 J.</td>
+                            <td>
+                                <table style="width: 100%; height: 12px; border: 1px solid #ccc; background: #fff;">
+                                    <tr>
+                                        <td style="width: 62.5%; background-color: #95a5a6;"></td>
+                                        <td style="background-color: #f0f0f0;"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 3px;">
+                        <tr>
+                            <td style="width: 70px; font-size: 8pt; color: #666; vertical-align: middle;">10.01.26</td>
+                            <td>
+                                <table style="width: 100%; height: 16px; border: 1px solid #aaa; background: #fff;">
+                                    <tr>
+                                        <td style="width: 12.5%; background-color: #e8daef;"></td>
+                                        <td style="background-color: #f5f5f5;"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width: 45px; text-align: right; font-size: 9pt; font-weight: bold; color: #333; vertical-align: middle;">2.0 J.</td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 3px;">
+                        <tr>
+                            <td style="width: 70px; font-size: 8pt; color: #666; vertical-align: middle;">12.01.26</td>
+                            <td>
+                                <table style="width: 100%; height: 16px; border: 1px solid #aaa; background: #fff;">
+                                    <tr>
+                                        <td style="width: 31.25%; background-color: #9b59b6;"></td>
+                                        <td style="background-color: #f5f5f5;"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width: 45px; text-align: right; font-size: 9pt; font-weight: bold; color: #333; vertical-align: middle;">5.0 J.</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table style="width: 100%; font-size: 8pt; color: #999; margin-left: 140px; margin-top: 5px;">
+        <tr>
+            <td style="width: 70px;"></td>
+            <td>
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 12.5%;">0</td>
+                        <td style="width: 12.5%;">2</td>
+                        <td style="width: 12.5%;">4</td>
+                        <td style="width: 12.5%;">6</td>
+                        <td style="width: 12.5%;">8</td>
+                        <td style="width: 12.5%;">10</td>
+                        <td style="width: 12.5%;">12</td>
+                        <td style="width: 12.5%;">14</td>
+                        <td>16 J.</td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width: 45px;"></td>
+        </tr>
+    </table>
+    <div style="margin-top: 10px; font-size: 9pt; color: #666;">
+        <span style="display: inline-block; width: 12px; height: 12px; background: #95a5a6; vertical-align: middle; margin-right: 5px;"></span> Biologisches Alter |
+        <span style="margin-left: 10px;">Hell → Dunkel = Ältere → Neuere Evaluation</span>
+    </div>
+</div>
+<div class="footer">
+    <strong>ELDiB Digital</strong> | Erstellt am 12.1.2026 | CDSE - Centre pour le Développement Socio-Émotionnel
+</div>
+
+</body>
+</html>
