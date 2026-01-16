@@ -456,14 +456,13 @@ ${generateDSGridHTML(gridData)}
 © deutsche Ausgabe: Institut für Entwicklungstherapie/Entwicklungspädagogik e.V. (ETEP Europe) und Marita Bergsson
 </div>
 
-<!-- Altersbalken -->
-<div class="age-comparison">
-<p class="age-comparison-title">Vergleich: Biologisches Alter vs. Sozio-emotionales Entwicklungsalter</p>
-${generateAgeBarHTML('Biologisches Alter', biologicalAge ? biologicalAge.decimal : 0, 'bio', 17)}
-${generateAgeBarHTML('Verhalten (V)', devAges.verhalten || 0, 'verhalten', 17)}
-${generateAgeBarHTML('Kommunikation (K)', devAges.kommunikation || 0, 'kommunikation', 17)}
-${generateAgeBarHTML('Sozialisation (SOZ)', devAges.sozialisation || 0, 'sozialisation', 17)}
-${generateAgeBarHTML('Kognition (KOG)', devAges.kognition || 0, 'kognition', 17)}
+<!-- Visueller Altersvergleich pro Bereich -->
+<div style="margin-top:24pt;">
+<p style="font-weight:bold; font-size:11pt; margin-bottom:12pt; border-bottom:2pt solid #2F5496; padding-bottom:6pt;">Visueller Altersvergleich: Biologisches Alter vs. Sozio-emotionales Entwicklungsalter</p>
+${generateVisualAgeComparisonHTML('Verhalten (V)', '#ED7D31', biologicalAge ? biologicalAge.decimal : 0, devAges.verhalten || 0, 18)}
+${generateVisualAgeComparisonHTML('Kommunikation (K)', '#70AD47', biologicalAge ? biologicalAge.decimal : 0, devAges.kommunikation || 0, 18)}
+${generateVisualAgeComparisonHTML('Sozialisation (SOZ)', '#9E480E', biologicalAge ? biologicalAge.decimal : 0, devAges.sozialisation || 0, 18)}
+${generateVisualAgeComparisonHTML('Kognition (KOG)', '#7030A0', biologicalAge ? biologicalAge.decimal : 0, devAges.kognition || 0, 18)}
 </div>
 
 <!-- SEITE 9: Produktionen -->

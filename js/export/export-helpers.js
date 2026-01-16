@@ -205,7 +205,7 @@ function generate42Section(student, devAges) {
     return html;
 }
 
-// Hilfsfunktion: Altersbalken HTML generieren
+// Hilfsfunktion: Altersbalken HTML generieren (neues Format mit Bio vs. Entwicklungsalter)
 function generateAgeBarHTML(label, age, cssClass, maxAge) {
     var width = age > 0 ? Math.min((age / maxAge) * 100, 100) : 0;
     var displayAge = age > 0 ? age.toFixed(1) + ' Jahre' : '-';
@@ -216,7 +216,48 @@ function generateAgeBarHTML(label, age, cssClass, maxAge) {
         '</div>';
 }
 
+// Hilfsfunktion: Visueller Altersvergleich pro Bereich (Bio vs. Entwicklungsalter)
+function generateVisualAgeComparisonHTML(domainName, domainColor, bioAge, devAge, maxAge) {
+    if (!maxAge) maxAge = 18;
+    var bioWidth = bioAge > 0 ? Math.min((bioAge / maxAge) * 100, 100) : 0;
+    var devWidth = devAge > 0 ? Math.min((devAge / maxAge) * 100, 100) : 0;
+    var diff = bioAge - devAge;
+    var diffText = diff > 0 ? diff.toFixed(1) + ' Jahre Differenz' : 'Altersgemäß';
+    var diffColor = diff > 2 ? '#c0392b' : (diff > 0 ? '#e67e22' : '#27ae60');
+
+    return '<div style="margin-bottom:18pt; padding:10pt; background:#f8f9fa; border-radius:6pt; border-left:4pt solid ' + domainColor + ';">' +
+        '<div style="display:table; width:100%; margin-bottom:8pt;">' +
+            '<span style="display:table-cell; font-weight:bold; font-size:11pt; color:' + domainColor + ';">' + domainName + '</span>' +
+            '<span style="display:table-cell; text-align:right; font-size:10pt; color:' + diffColor + '; font-weight:bold;">' + diffText + '</span>' +
+        '</div>' +
+        '<table style="width:100%; border-collapse:collapse; margin:6pt 0;">' +
+            '<tr>' +
+                '<td style="width:120pt; padding:4pt 8pt 4pt 0; font-size:9pt; color:#5B9BD5; font-weight:bold;">Bio. Alter: ' + bioAge.toFixed(1) + ' J.</td>' +
+                '<td style="padding:4pt;">' +
+                    '<div style="width:100%; height:16pt; background:#E7E6E6; border:0.5pt solid #999; border-radius:2pt; overflow:hidden;">' +
+                        '<div style="width:' + bioWidth + '%; height:100%; background:#5B9BD5;"></div>' +
+                    '</div>' +
+                '</td>' +
+            '</tr>' +
+            '<tr>' +
+                '<td style="width:120pt; padding:4pt 8pt 4pt 0; font-size:9pt; color:' + domainColor + '; font-weight:bold;">Entw. Alter: ' + devAge.toFixed(1) + ' J.</td>' +
+                '<td style="padding:4pt;">' +
+                    '<div style="width:100%; height:16pt; background:#E7E6E6; border:0.5pt solid #999; border-radius:2pt; overflow:hidden;">' +
+                        '<div style="width:' + devWidth + '%; height:100%; background:' + domainColor + ';"></div>' +
+                    '</div>' +
+                '</td>' +
+            '</tr>' +
+        '</table>' +
+        '<div style="display:table; width:100%; font-size:7pt; color:#666; margin-top:4pt;">' +
+            '<span style="display:table-cell; text-align:left;">0</span>' +
+            '<span style="display:table-cell; text-align:center;">9</span>' +
+            '<span style="display:table-cell; text-align:right;">' + maxAge + ' Jahre</span>' +
+        '</div>' +
+    '</div>';
+}
+
 // Hilfsfunktion fuer DS Grid HTML - Kompaktes Format für DIN A4
+// Original-Template-Format: Nummern innerhalb jeder Stufe von unten nach oben
 function generateDSGridHTML(gridData) {
     var statusLookup = {};
     Object.keys(gridData).forEach(function(domain) {
@@ -238,13 +279,13 @@ function generateDSGridHTML(gridData) {
     html += '<td style="border:1px solid #000; background:#D9E2F3; font-weight:bold; text-align:left; padding:3pt;">Stufe</td>';
     html += '</tr>';
 
-    // Stufendefinitionen mit Item-Bereichen
+    // Stufendefinitionen mit Item-Bereichen und Richtziele (Original-Template)
     var stufen = [
-        { nr: 5, label: 'Stufe 5: 13-17 J.', v: [29,33], k: [30,35], s: [35,41], kog: [57,62] },
-        { nr: 4, label: 'Stufe 4: 10-12 J.', v: [23,28], k: [23,29], s: [28,34], kog: [50,56] },
-        { nr: 3, label: 'Stufe 3: 6-9 J.', v: [15,22], k: [14,22], s: [18,27], kog: [37,49] },
-        { nr: 2, label: 'Stufe 2: 3-5 J.', v: [8,14], k: [7,13], s: [9,17], kog: [20,36] },
-        { nr: 1, label: 'Stufe 1: 0-2 J.', v: [1,7], k: [1,6], s: [1,8], kog: [1,19] }
+        { nr: 5, label: 'Stufe 5: 13-17 Jahre', richtziel: 'Individuelle/gruppenbezogene Fähigkeiten in neuen Situationen anwenden', v: [29,33], k: [30,35], s: [35,41], kog: [57,62] },
+        { nr: 4, label: 'Stufe 4: 10-12 Jahre', richtziel: 'Sich in Gruppenprozesse einbringen', v: [23,28], k: [23,29], s: [28,34], kog: [50,56] },
+        { nr: 3, label: 'Stufe 3: 6-9 Jahre', richtziel: 'Fähigkeiten zur erfolgreichen Gruppenteilnahme erwerben', v: [15,22], k: [14,22], s: [18,27], kog: [37,49] },
+        { nr: 2, label: 'Stufe 2: 3-5 Jahre', richtziel: 'Auf die Umwelt mit Erfolg reagieren', v: [8,14], k: [7,13], s: [9,17], kog: [20,36] },
+        { nr: 1, label: 'Stufe 1: 0-2 Jahre', richtziel: 'Auf die Umwelt mit Freude reagieren', v: [1,7], k: [1,6], s: [1,8], kog: [1,19] }
     ];
 
     stufen.forEach(function(stufe) {
@@ -256,12 +297,13 @@ function generateDSGridHTML(gridData) {
             stufe.kog[1] - stufe.kog[0] + 1
         );
 
+        // Original-Template-Format: Nummern von UNTEN nach OBEN innerhalb jeder Stufe
         for (var i = 0; i < maxRows; i++) {
             html += '<tr style="height:12pt;">';
 
-            // V
-            var vNum = stufe.v[1] - i;
-            if (vNum >= stufe.v[0]) {
+            // V - von unten nach oben: Start bei min, dann aufsteigend
+            var vNum = stufe.v[0] + (maxRows - 1 - i);
+            if (vNum <= stufe.v[1] && vNum >= stufe.v[0]) {
                 var vStatus = statusLookup.verhalten ? (statusLookup.verhalten[vNum] || '') : '';
                 var vBg = vStatus === 'erreicht' ? '#70AD47' : (vStatus === 'ziel' ? '#FFC000' : '#fff');
                 var vCol = vStatus === 'erreicht' ? '#fff' : '#000';
@@ -270,9 +312,9 @@ function generateDSGridHTML(gridData) {
                 html += '<td style="border:1px solid #000; background:#E7E6E6;"></td>';
             }
 
-            // KOMM
-            var kNum = stufe.k[1] - i;
-            if (kNum >= stufe.k[0]) {
+            // KOMM - von unten nach oben
+            var kNum = stufe.k[0] + (maxRows - 1 - i);
+            if (kNum <= stufe.k[1] && kNum >= stufe.k[0]) {
                 var kStatus = statusLookup.kommunikation ? (statusLookup.kommunikation[kNum] || '') : '';
                 var kBg = kStatus === 'erreicht' ? '#70AD47' : (kStatus === 'ziel' ? '#FFC000' : '#fff');
                 var kCol = kStatus === 'erreicht' ? '#fff' : '#000';
@@ -281,9 +323,9 @@ function generateDSGridHTML(gridData) {
                 html += '<td style="border:1px solid #000; background:#E7E6E6;"></td>';
             }
 
-            // SOZ
-            var sNum = stufe.s[1] - i;
-            if (sNum >= stufe.s[0]) {
+            // SOZ - von unten nach oben
+            var sNum = stufe.s[0] + (maxRows - 1 - i);
+            if (sNum <= stufe.s[1] && sNum >= stufe.s[0]) {
                 var sStatus = statusLookup.sozialisation ? (statusLookup.sozialisation[sNum] || '') : '';
                 var sBg = sStatus === 'erreicht' ? '#70AD47' : (sStatus === 'ziel' ? '#FFC000' : '#fff');
                 var sCol = sStatus === 'erreicht' ? '#fff' : '#000';
@@ -292,9 +334,9 @@ function generateDSGridHTML(gridData) {
                 html += '<td style="border:1px solid #000; background:#E7E6E6;"></td>';
             }
 
-            // KOG
-            var kogNum = stufe.kog[1] - i;
-            if (kogNum >= stufe.kog[0]) {
+            // KOG - von unten nach oben
+            var kogNum = stufe.kog[0] + (maxRows - 1 - i);
+            if (kogNum <= stufe.kog[1] && kogNum >= stufe.kog[0]) {
                 var kogStatus = statusLookup.kognition ? (statusLookup.kognition[kogNum] || '') : '';
                 var kogBg = kogStatus === 'erreicht' ? '#70AD47' : (kogStatus === 'ziel' ? '#FFC000' : '#fff');
                 var kogCol = kogStatus === 'erreicht' ? '#fff' : '#000';
@@ -303,9 +345,12 @@ function generateDSGridHTML(gridData) {
                 html += '<td style="border:1px solid #000; background:#E7E6E6;"></td>';
             }
 
-            // Stufe Label nur in erster Zeile
+            // Stufe Label mit Richtziel nur in erster Zeile
             if (i === 0) {
-                html += '<td style="border:1px solid #000; background:#D9E2F3; font-weight:bold; padding:2pt 4pt;" rowspan="' + maxRows + '">' + stufe.label + '</td>';
+                html += '<td style="border:1px solid #000; background:#D9E2F3; font-weight:bold; padding:2pt 4pt; font-size:6pt; vertical-align:top;" rowspan="' + maxRows + '">' +
+                    '<div style="font-size:7pt; font-weight:bold;">' + stufe.label + '</div>' +
+                    '<div style="font-size:6pt; font-weight:normal; font-style:italic; margin-top:2pt;">' + stufe.richtziel + '</div>' +
+                '</td>';
             }
 
             html += '</tr>';
@@ -587,3 +632,4 @@ function calculateDevelopmentalAge(highestStage, stageData, domain) {
         beschreibung: stage.beschreibung,
         completion: Math.round(completionPercent * 100)
     };
+}
